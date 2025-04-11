@@ -10,13 +10,12 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
         #map {
-            height: 500px;
+            height: 770px;
         }
     </style>
 </head>
 
 <body>
-    <h1>Lokasi Budidaya di Indramayu</h1>
     <div id="map"></div>
 
     {{-- <ul>
@@ -30,7 +29,7 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        var map = L.map('map').setView([-6.3265, 108.3249], 10);
+        var map = L.map('map').setView([-6.3473692, 108.2884701], 10);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -42,7 +41,8 @@
         var markers = []; // Array untuk menyimpan marker locations
 
         locations.forEach(function(location) {
-            var marker = L.marker([location.latitude, location.longitude]).addTo(map).bindPopup(location.nama_desa);
+            var marker = L.marker([location.latitude, location.longitude]).addTo(map).bindPopup(location.nama_desa + ', Kecamatan ' + location.kecamatan);
+
             markers.push(marker.getLatLng()); // Simpan lokasi marker untuk perhitungan bounds
         });
 
