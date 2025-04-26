@@ -12,7 +12,6 @@ class AdminPembudidayaController extends Controller
     {
         // Urutkan berdasarkan waktu dibuat, terbaru di atas
         $pembudidaya = Pembudidaya::orderBy('created_at', 'desc')->paginate(10);
-
         return view('admin.pembudidaya.index', compact('pembudidaya'));
     }
 
@@ -23,7 +22,6 @@ class AdminPembudidayaController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:pembudidaya,email',
@@ -40,14 +38,13 @@ class AdminPembudidayaController extends Controller
             }
         }
 
-        // Menyimpan data pembudidaya baru
         Pembudidaya::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'address' => $request->address,
             'documents' => json_encode($documents),
-            'is_approved' => null, // Diset null (menunggu persetujuan)
+            'is_approved' => null, // Awal: Menunggu persetujuan
         ]);
 
         return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditambahkan dan menunggu persetujuan.');
@@ -57,10 +54,9 @@ class AdminPembudidayaController extends Controller
     {
         $pembudidaya = Pembudidaya::findOrFail($id);
 
-        if ($pembudidaya->is_approved === null) {
+        if (is_null($pembudidaya->is_approved)) {
             $pembudidaya->is_approved = true;
             $pembudidaya->save();
-
             return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil disetujui.');
         }
 
@@ -71,10 +67,9 @@ class AdminPembudidayaController extends Controller
     {
         $pembudidaya = Pembudidaya::findOrFail($id);
 
-        if ($pembudidaya->is_approved === null) {
+        if (is_null($pembudidaya->is_approved)) {
             $pembudidaya->is_approved = false;
             $pembudidaya->save();
-
             return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditolak.');
         }
 
@@ -85,8 +80,8 @@ class AdminPembudidayaController extends Controller
     {
         $pembudidaya = Pembudidaya::findOrFail($id);
 
-        // Hanya bisa hapus kalau sudah disetujui
-        if ($pembudidaya->is_approved === true) {
+        // Hanya bisa dihapus jika sudah diproses (disetujui atau ditolak)
+        if (!is_null($pembudidaya->is_approved)) {
             if (!empty($pembudidaya->documents)) {
                 $documents = json_decode($pembudidaya->documents, true);
                 foreach ($documents as $doc) {
@@ -98,6 +93,6 @@ class AdminPembudidayaController extends Controller
             return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil dihapus.');
         }
 
-        return redirect()->route('admin.pembudidaya.index')->with('error', 'Hanya pembudidaya yang disetujui yang bisa dihapus.');
+        return redirect()->route('admin.pembudidaya.index')->with('error', 'Hanya pembudidaya yang sudah diproses bisa dihapus.');
     }
 }
