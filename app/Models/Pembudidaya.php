@@ -30,7 +30,7 @@ class Pembudidaya extends Authenticatable
 
     protected $casts = [
         'documents' => 'array', // Agar 'documents' di-cast sebagai array
-        'is_approved' => 'boolean', // Pastikan 'is_approved' di-cast sebagai boolean
+        'is_approved' => 'integer', // Pastikan 'is_approved' di-cast sebagai boolean
     ];
 
     /**
