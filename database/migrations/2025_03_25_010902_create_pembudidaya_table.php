@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('role')->default('pembudidaya'); // kolom role
             $table->json('documents')->nullable(); // kolom tambahan untuk dokumen (bisa simpan banyak file dalam array JSON)
+            $table->boolean('is_approved')->nullable(); // kolom tambahan untuk status persetujuan
             $table->rememberToken();
             $table->timestamps();
         });

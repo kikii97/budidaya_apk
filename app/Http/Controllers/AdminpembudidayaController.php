@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pembudidaya;
+use Illuminate\Support\Facades\Storage;
 
 class AdminPembudidayaController extends Controller
 {
     public function index()
     {
-        $pembudidaya = Pembudidaya::paginate(10);
+        // Urutkan berdasarkan waktu dibuat, terbaru di atas
+        $pembudidaya = Pembudidaya::orderBy('created_at', 'desc')->paginate(10);
+
         return view('admin.pembudidaya.index', compact('pembudidaya'));
     }
 
@@ -20,69 +23,81 @@ class AdminPembudidayaController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:pembudidaya,email',
             'password' => 'required|string|min:6|confirmed',
             'address' => 'required|string|max:255',
-        ], [
-            'name.required' => 'Nama wajib diisi.',
-            'email.required' => 'Email wajib diisi.',
-            'email.unique' => 'Email sudah terdaftar.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal 6 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'documents' => 'nullable|array',
+            'documents.*' => 'file|mimes:pdf,doc,docx,jpeg,png,jpg|max:2048',
         ]);
 
+        $documents = [];
+        if ($request->hasFile('documents')) {
+            foreach ($request->file('documents') as $file) {
+                $documents[] = $file->store('documents', 'public');
+            }
+        }
+
+        // Menyimpan data pembudidaya baru
         Pembudidaya::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'address' => $request->address,
+            'documents' => json_encode($documents),
+            'is_approved' => null, // Diset null (menunggu persetujuan)
         ]);
 
-        return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditambahkan.');
+        return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditambahkan dan menunggu persetujuan.');
     }
 
-    public function edit($id)
-    {
-        $pembudidaya = Pembudidaya::findOrFail($id);
-        return view('admin.pembudidaya.edit', compact('pembudidaya'));
-    }
-
-    public function update(Request $request, $id)
+    public function approve($id)
     {
         $pembudidaya = Pembudidaya::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:pembudidaya,email,' . $pembudidaya->id,
-            'password' => 'nullable|string|min:6|confirmed',
-            'address' => 'required|string|max:255',
-        ], [
-            'name.required' => 'Nama wajib diisi.',
-            'email.required' => 'Email wajib diisi.',
-            'email.unique' => 'Email sudah terdaftar.',
-            'password.min' => 'Password minimal 6 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
-        ]);
+        if ($pembudidaya->is_approved === null) {
+            $pembudidaya->is_approved = true;
+            $pembudidaya->save();
 
-        $pembudidaya->name = $request->name;
-        $pembudidaya->email = $request->email;
-        if ($request->filled('password')) {
-            $pembudidaya->password = bcrypt($request->password);
+            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil disetujui.');
         }
-        $pembudidaya->address = $request->address;
-        $pembudidaya->save();
 
-        return redirect()->route('admin.pembudidaya.index')->with('success', 'Data pembudidaya berhasil diperbarui.');
+        return redirect()->route('admin.pembudidaya.index')->with('error', 'Pembudidaya sudah diproses sebelumnya.');
+    }
+
+    public function reject($id)
+    {
+        $pembudidaya = Pembudidaya::findOrFail($id);
+
+        if ($pembudidaya->is_approved === null) {
+            $pembudidaya->is_approved = false;
+            $pembudidaya->save();
+
+            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditolak.');
+        }
+
+        return redirect()->route('admin.pembudidaya.index')->with('error', 'Pembudidaya sudah diproses sebelumnya.');
     }
 
     public function destroy($id)
     {
         $pembudidaya = Pembudidaya::findOrFail($id);
-        $pembudidaya->delete();
 
-        return redirect()->route('admin.pembudidaya.index')->with('success', 'Data pembudidaya berhasil dihapus.');
+        // Hanya bisa hapus kalau sudah disetujui
+        if ($pembudidaya->is_approved === true) {
+            if (!empty($pembudidaya->documents)) {
+                $documents = json_decode($pembudidaya->documents, true);
+                foreach ($documents as $doc) {
+                    Storage::delete('public/' . $doc);
+                }
+            }
+
+            $pembudidaya->delete();
+            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil dihapus.');
+        }
+
+        return redirect()->route('admin.pembudidaya.index')->with('error', 'Hanya pembudidaya yang disetujui yang bisa dihapus.');
     }
 }

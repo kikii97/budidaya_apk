@@ -19,12 +19,13 @@
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col" style="width: 50px;">No</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Nomor Telepon</th>
-                    <th scope="col">Alamat</th>
-                    <th scope="col" style="width: 100px;">Aksi</th>
+                    <th style="width: 50px;">No</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Alamat</th>
+                    <th>Dokumen</th>
+                    <th style="width: 120px;">Status</th>
+                    <th style="width: 180px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,34 +35,73 @@
                         <td class="text-wrap">{{ $item->name }}</td>
                         <td class="text-truncate" style="max-width: 200px;">{{ $item->email }}</td>
                         <td class="text-wrap" style="max-width: 300px;">{{ $item->address ?? '-' }}</td>
+                        <td>
+                            @php
+                                $dokumen = json_decode($item->documents, true);
+                            @endphp
+
+                            @if ($dokumen)
+                                @foreach ($dokumen as $doc)
+                                    @php
+                                        $file_path = str_replace('\\/', '/', $doc);
+                                        $extension = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+                                    @endphp
+
+                                    @if (in_array($extension, ['pdf', 'doc', 'docx']))
+                                        <a href="{{ asset('storage/' . $file_path) }}" class="btn btn-sm btn-info d-block mb-2" target="_blank" style="font-size: 0.8rem;">
+                                            <i class="fas fa-file-alt"></i> Lihat Dokumen
+                                        </a>
+                                    @else
+                                        <img src="{{ asset('storage/' . $file_path) }}" alt="Dokumen" class="img-thumbnail mb-2" style="width: 100px;">
+                                    @endif
+                                @endforeach
+                            @else
+                                <span class="text-muted">Tidak ada dokumen</span>
+                            @endif
+                        </td>
+
+                        <td>
+                            @if (is_null($item->is_approved))
+                                <span class="badge bg-secondary">Menunggu</span>
+                            @elseif ($item->is_approved)
+                                <span class="badge bg-success">Disetujui</span>
+                            @else
+                                <span class="badge bg-danger">Ditolak</span>
+                            @endif
+                        </td>
+
                         <td class="text-nowrap">
-                            @if (!$item->is_approved)
-                                <form action="{{ route('admin.produk.approve', $item->id) }}" method="POST" style="display:inline-block; margin-bottom: 5px;">
+                            @if (is_null($item->is_approved))
+                                {{-- Tombol Setujui --}}
+                                <form action="{{ route('admin.pembudidaya.approve', $item->id) }}" method="POST" style="display:inline-block; margin-bottom:5px;">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Setujui komoditas ini?')" title="Setujui">
+                                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Setujui pembudidaya ini?')">
                                         <i class="fas fa-check"></i> Setujui
                                     </button>
                                 </form>
+
+                                {{-- Tombol Tolak --}}
+                                <form action="{{ route('admin.pembudidaya.reject', $item->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Tolak pembudidaya ini?')">
+                                        <i class="fas fa-times"></i> Tolak
+                                    </button>
+                                </form>
                             @else
-                                <span class="badge bg-success">Disetujui</span>
+                                {{-- Tombol Hapus --}}
+                                <form action="{{ route('admin.pembudidaya.destroy', $item->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
                             @endif
-                        
-                            <a href="{{ route('admin.produk.edit', $item->id) }}" class="btn btn-sm btn-warning" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        
-                            <form action="{{ route('admin.produk.destroy', $item->id) }}" method="POST" style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>                        
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center text-muted">Tidak ada data pembudidaya.</td>
+                        <td colspan="7" class="text-center text-muted">Tidak ada data pembudidaya.</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -19,7 +19,8 @@ class Pembudidaya extends Authenticatable
         'password',
         'address',
         'role',
-        'documents', // <<< tambahkan ini agar bisa mass assignment untuk dokumen
+        'documents', // Tambahkan field documents untuk mass assignment
+        'is_approved', // Tambahkan field is_approved untuk status persetujuan
     ];
 
     protected $hidden = [
@@ -28,7 +29,8 @@ class Pembudidaya extends Authenticatable
     ];
 
     protected $casts = [
-        'documents' => 'array', // <<< tambahkan ini supaya saat ambil dari database langsung jadi array
+        'documents' => 'array', // Agar 'documents' di-cast sebagai array
+        'is_approved' => 'boolean', // Pastikan 'is_approved' di-cast sebagai boolean
     ];
 
     /**

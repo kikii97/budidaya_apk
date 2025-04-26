@@ -84,15 +84,15 @@
                                 <form action="{{ route('admin.produk.approve', $item->id) }}" method="POST" class="d-inline-block mb-1">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Setujui" onclick="return confirm('Setujui komoditas ini?')">
-                                        <i class="fas fa-check"></i>
+                                        <i class="fas fa-check"></i> Setujui
                                     </button>
                                 </form>
-
-                                {{-- Tombol Tolak --}}
+                        
+                                {{-- Tombol Tolak (Ubah warna menjadi merah) --}}
                                 <form action="{{ route('admin.produk.reject', $item->id) }}" method="POST" class="d-inline-block mb-1">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Tolak" onclick="return confirm('Tolak komoditas ini?')">
-                                        <i class="fas fa-times"></i>
+                                    <button type="submit" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Tolak" onclick="return confirm('Tolak komoditas ini?')">
+                                        <i class="fas fa-times"></i> Tolak
                                     </button>
                                 </form>
                             @else
@@ -101,7 +101,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Hapus" onclick="return confirm('Yakin ingin menghapus?')">
-                                        <i class="fas fa-trash"></i>
+                                        <i class="fas fa-trash"></i> Hapus
                                     </button>
                                 </form>
                             @endif

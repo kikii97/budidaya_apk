@@ -70,6 +70,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
 Route::post('/admin/produk/{id}/approve', [AdminProdukController::class, 'approve'])->name('admin.produk.approve');
 Route::post('/admin/produk/{id}/reject', [AdminProdukController::class, 'reject'])->name('admin.produk.reject');
 
+Route::post('admin/pembudidaya/{id}/approve', [AdminPembudidayaController::class, 'approve'])->name('admin.pembudidaya.approve');
+Route::post('admin/pembudidaya/{id}/reject', [AdminPembudidayaController::class, 'reject'])->name('admin.pembudidaya.reject');
+
+
 
 /*
 |--------------------------------------------------------------------------|
