@@ -38,14 +38,15 @@ class AdminPembudidayaController extends Controller
             }
         }
 
-        Pembudidaya::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'address' => $request->address,
-            'documents' => json_encode($documents),
-            'is_approved' => null, // Awal: Menunggu persetujuan
-        ]);
+        // SOLUSI FIX: Gunakan instansiasi manual supaya NULL beneran
+        $pembudidaya = new Pembudidaya();
+        $pembudidaya->name = $request->name;
+        $pembudidaya->email = $request->email;
+        $pembudidaya->password = bcrypt($request->password);
+        $pembudidaya->address = $request->address;
+        $pembudidaya->documents = $documents;
+        $pembudidaya->is_approved = null; // NULL beneran, bukan dianggap 0
+        $pembudidaya->save();
 
         return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditambahkan dan menunggu persetujuan.');
     }
@@ -83,7 +84,7 @@ class AdminPembudidayaController extends Controller
         // Hanya bisa dihapus jika sudah diproses (disetujui atau ditolak)
         if (!is_null($pembudidaya->is_approved)) {
             if (!empty($pembudidaya->documents)) {
-                $documents = json_decode($pembudidaya->documents, true);
+                $documents = is_array($pembudidaya->documents) ? $pembudidaya->documents : json_decode($pembudidaya->documents, true);
                 foreach ($documents as $doc) {
                     Storage::delete('public/' . $doc);
                 }
