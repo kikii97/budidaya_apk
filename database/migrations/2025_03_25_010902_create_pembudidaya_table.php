@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('address');
             $table->enum('role', ['pembudidaya', 'admin'])->default('pembudidaya'); // Kolom role, enum terbatas
             $table->json('documents')->nullable(); // JSON array untuk dokumen
-            $table->boolean('is_approved')->nullable(); // SUPPORT NULL, tanpa default false
+            $table->boolean('is_approved')->nullable(); // <--- Ini diubah: Dapat bernilai NULL
             $table->rememberToken();
             $table->timestamps();
         });
