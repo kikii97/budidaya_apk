@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Pembudidaya extends Authenticatable
 {
-    use Notifiable;
-
-    protected $guard = 'pembudidaya'; // Nama guard khusus untuk Pembudidaya
-
-    protected $table = 'pembudidaya'; // Nama tabel di database
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -19,25 +16,17 @@ class Pembudidaya extends Authenticatable
         'password',
         'address',
         'role',
-        'documents', // Tambahkan field documents untuk mass assignment
-        'is_approved', // Tambahkan field is_approved untuk status persetujuan
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
+        'documents',
+        'is_approved',
     ];
 
     protected $casts = [
-        'documents' => 'array', // Agar 'documents' di-cast sebagai array
-        'is_approved' => 'integer', // Pastikan 'is_approved' di-cast sebagai boolean
+        'is_approved' => 'integer', // Tetap cast ke integer saat diakses
+        'documents' => 'array',     // Karena field documents disimpan JSON
     ];
 
-    /**
-     * Relasi: Pembudidaya memiliki banyak Produk
-     */
-    public function produk()
-    {
-        return $this->hasMany(Produk::class, 'pembudidaya_id');
-    }
+    protected $attributes = [
+        'role' => 'pembudidaya',   // Default role kalau tidak diisi
+        'is_approved' => null,     // Default NULL, belum dikonfirmasi
+    ];
 }
