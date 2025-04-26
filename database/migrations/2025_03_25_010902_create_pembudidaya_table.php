@@ -17,14 +17,13 @@ return new class extends Migration
             $table->string('email')->unique(); // pastikan email unik
             $table->string('password');
             $table->text('address');
-            $table->enum('role', ['pembudidaya', 'admin'])->default('pembudidaya'); // Kolom role, dengan enum untuk pilihan yang lebih terbatas
-            $table->json('documents')->nullable(); // Kolom tambahan untuk dokumen (bisa simpan banyak file dalam array JSON)
-            $table->boolean('is_approved')->default(false); // Kolom status persetujuan dengan default false
+            $table->enum('role', ['pembudidaya', 'admin'])->default('pembudidaya'); // Kolom role, enum terbatas
+            $table->json('documents')->nullable(); // JSON array untuk dokumen
+            $table->boolean('is_approved')->nullable(); // SUPPORT NULL, tanpa default false
             $table->rememberToken();
             $table->timestamps();
         });
     }
-    
 
     /**
      * Reverse the migrations.

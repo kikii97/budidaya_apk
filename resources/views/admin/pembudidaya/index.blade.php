@@ -63,8 +63,8 @@
                             @else
                                 <span class="text-muted">Tidak ada dokumen</span>
                             @endif
-                        </td>                        
-
+                        </td>
+                                                
                         {{-- Status --}}
                         <td>
                             @if (is_null($item->is_approved))
