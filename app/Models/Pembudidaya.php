@@ -9,20 +9,33 @@ class Pembudidaya extends Authenticatable
 {
     use Notifiable;
 
-    protected $guard = 'pembudidaya'; // Sesuaikan dengan guard di auth.php
+    protected $guard = 'pembudidaya'; // Nama guard khusus untuk Pembudidaya
 
-    protected $table = 'pembudidaya'; // Menyesuaikan nama tabel
+    protected $table = 'pembudidaya'; // Nama tabel di database
 
     protected $fillable = [
-        'name', 'email', 'password', 'address',
+        'name',
+        'email',
+        'password',
+        'address',
+        'role',
+        'documents', // <<< tambahkan ini agar bisa mass assignment untuk dokumen
     ];
 
     protected $hidden = [
         'password',
+        'remember_token',
     ];
-        // Relasi Pembudidaya ke Produk
-        public function produk()
-        {
-            return $this->hasMany(Produk::class, 'pembudidaya_id');
-        }
+
+    protected $casts = [
+        'documents' => 'array', // <<< tambahkan ini supaya saat ambil dari database langsung jadi array
+    ];
+
+    /**
+     * Relasi: Pembudidaya memiliki banyak Produk
+     */
+    public function produk()
+    {
+        return $this->hasMany(Produk::class, 'pembudidaya_id');
+    }
 }
