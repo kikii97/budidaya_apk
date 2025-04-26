@@ -41,7 +41,7 @@ class PembudidayaLoginRegisterAuthController extends Controller
             'password' => Hash::make($request->password),
             'address' => $request->address,
             'role' => 'pembudidaya',
-            'is_approved' => false, // Default belum disetujui
+            'is_approved' => null, // Default belum disetujui
         ]);
 
         // Proses upload dokumen kalau ada
