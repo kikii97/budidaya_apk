@@ -29,20 +29,38 @@
         <div class="card-body">
             <h3 class="text-center mb-4 fw-bold text-success">Login Pembudidaya</h3>
 
-            @if(session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ str_replace(['The password field confirmation does not match.', 'The email has already been taken.', 'The password field must be at least 6 characters.'], 
-                            ['Konfirmasi kata sandi tidak cocok.', 'Email sudah terdaftar.', 'Kata sandi harus terdiri dari minimal 6 karakter.'], $error) }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+        
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ 
+                            str_replace(
+                                [
+                                    'The password field confirmation does not match.', 
+                                    'The email has already been taken.', 
+                                    'The password field must be at least 6 characters.'
+                                ], 
+                                [
+                                    'Konfirmasi kata sandi tidak cocok.', 
+                                    'Email sudah terdaftar.', 
+                                    'Kata sandi harus terdiri dari minimal 6 karakter.'
+                                ], 
+                                $error
+                            ) 
+                        }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        
 
             <form action="{{ route('pembudidaya.login.post') }}" method="POST">
                 @csrf

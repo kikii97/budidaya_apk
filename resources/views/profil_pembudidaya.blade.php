@@ -63,17 +63,6 @@
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
-                            <button type="button" onclick="window.location.href='/favorit'"
-                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
-                                <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">Favorite</span>
-                                <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" aria-hidden="true" data-slot="icon">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 21l-1.45-1.318C5.4 15.363 2 12.274 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.774-3.4 6.863-8.55 11.182L12 21z" />
-                                </svg>
-                            </button>
-
                             <!-- Profile dropdown -->
                             <div class="relative ml-3" x-data="{ isOpen: false }">
                                 <div>

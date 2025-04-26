@@ -102,6 +102,11 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
     });
 });
 
+Route::get('/pembudidaya/waiting', function() {
+    return view('pembudidaya.waiting-approval');
+})->name('pembudidaya.waiting');
+
+
 /*
 |--------------------------------------------------------------------------|
 | 🔹 PENGGUNA UMUM (PEMBELI)                                              |

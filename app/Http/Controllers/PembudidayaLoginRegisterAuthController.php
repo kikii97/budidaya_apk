@@ -31,9 +31,9 @@ class PembudidayaLoginRegisterAuthController extends Controller
             'password' => 'required|min:6|confirmed',
             'address' => 'required|string',
             'documents' => 'required|array',
-            'documents.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048', // Validasi banyak file
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
-    
+
         // Simpan pembudidaya
         $pembudidaya = Pembudidaya::create([
             'name' => $request->name,
@@ -41,28 +41,26 @@ class PembudidayaLoginRegisterAuthController extends Controller
             'password' => Hash::make($request->password),
             'address' => $request->address,
             'role' => 'pembudidaya',
+            'is_approved' => false, // Default belum disetujui
         ]);
-    
+
         // Proses upload dokumen kalau ada
         $documents = [];
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $file) {
-                // Simpan file ke storage/public/documents_pembudidaya/
                 $filePath = $file->store('dokumen', 'public');
-                $documents[] = $filePath;  // Menyimpan path ke dalam array
+                $documents[] = $filePath;
             }
         }
-    
+
         // Update pembudidaya dengan dokumen yang sudah diupload
         if (!empty($documents)) {
-            $pembudidaya->update(['documents' => json_encode($documents)]);  // Menyimpan path dokumen sebagai JSON
+            $pembudidaya->update(['documents' => $documents]);
         }
-    
-        // Login otomatis setelah register
-        Auth::guard('pembudidaya')->login($pembudidaya);
-    
-        return redirect()->route('profil_pembudidaya')->with('success', 'Registrasi berhasil. Selamat datang!');
-    }    
+
+        // Tidak login otomatis, arahkan ke login dengan pesan
+        return redirect()->route('pembudidaya.waiting')->with('success', 'Pendaftaran berhasil. Akun Anda sedang menunggu persetujuan admin.');
+    }
 
     // Menampilkan form login
     public function showLoginForm()
@@ -81,8 +79,17 @@ class PembudidayaLoginRegisterAuthController extends Controller
         if (Auth::guard('pembudidaya')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Simpan ID Pembudidaya ke dalam sesi
-            session(['pembudidaya_id' => Auth::guard('pembudidaya')->user()->id]);
+            $pembudidaya = Auth::guard('pembudidaya')->user();
+
+            // Cek apakah sudah disetujui admin
+            if (!$pembudidaya->is_approved) {
+                Auth::guard('pembudidaya')->logout();
+                return back()->withErrors([
+                    'email' => 'Akun Anda belum disetujui oleh admin.',
+                ])->withInput();
+            }
+
+            session(['pembudidaya_id' => $pembudidaya->id]);
 
             return redirect()->route('profil_pembudidaya')->with('success', 'Login berhasil.');
         }
