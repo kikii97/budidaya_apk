@@ -10,7 +10,7 @@ class Pembudidaya extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'pembudidaya'; // <--- ini WAJIB supaya tidak cari "pembudidayas"
+    protected $table = 'pembudidaya';
 
     protected $fillable = [
         'name',
@@ -23,11 +23,11 @@ class Pembudidaya extends Authenticatable
     ];
 
     protected $casts = [
-        'documents' => 'array',     // Karena field documents disimpan JSON
+        'documents' => 'array', // hanya documents yang di-cast
     ];
 
     protected $attributes = [
-        'role' => 'pembudidaya',   // Default role kalau tidak diisi
-        'is_approved' => null,     // Default NULL, belum dikonfirmasi
+        'role' => 'pembudidaya',
+        'is_approved' => null,
     ];
 }
