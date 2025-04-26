@@ -10,6 +10,8 @@ class Pembudidaya extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'pembudidaya'; // <--- ini WAJIB supaya tidak cari "pembudidayas"
+
     protected $fillable = [
         'name',
         'email',
@@ -21,7 +23,6 @@ class Pembudidaya extends Authenticatable
     ];
 
     protected $casts = [
-        'is_approved' => 'integer', // Tetap cast ke integer saat diakses
         'documents' => 'array',     // Karena field documents disimpan JSON
     ];
 
