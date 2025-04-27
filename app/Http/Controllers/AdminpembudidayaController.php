@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pembudidaya;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\EmailHelper; // Tambahkan ini di atas file
 
 class AdminPembudidayaController extends Controller
 {
@@ -54,28 +55,42 @@ class AdminPembudidayaController extends Controller
     public function approve($id)
     {
         $pembudidaya = Pembudidaya::findOrFail($id);
-
+    
         if (is_null($pembudidaya->is_approved)) {
             $pembudidaya->is_approved = true;
             $pembudidaya->save();
-            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil disetujui.');
+    
+            // Kirim email ke pembudidaya
+            $subject = 'Pendaftaran Anda Diterima - Sistem Budidaya';
+            $body = view('emails.approved', ['pembudidaya' => $pembudidaya])->render();
+            EmailHelper::sendEmail($pembudidaya->email, $subject, $body);
+    
+            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil disetujui dan email telah dikirim.');
         }
-
+    
         return redirect()->route('admin.pembudidaya.index')->with('error', 'Pembudidaya sudah diproses sebelumnya.');
     }
+    
 
     public function reject($id)
     {
         $pembudidaya = Pembudidaya::findOrFail($id);
-
+    
         if (is_null($pembudidaya->is_approved)) {
             $pembudidaya->is_approved = false;
             $pembudidaya->save();
-            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditolak.');
-        }
+    
+            // Kirim email ke pembudidaya
+            $subject = 'Pendaftaran Anda Ditolak - Sistem Budidaya';
+            $body = view('emails.rejected', ['pembudidaya' => $pembudidaya])->render();
+            EmailHelper::sendEmail($pembudidaya->email, $subject, $body);
 
+            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditolak dan email telah dikirim.');
+        }
+    
         return redirect()->route('admin.pembudidaya.index')->with('error', 'Pembudidaya sudah diproses sebelumnya.');
     }
+    
 
     public function destroy($id)
     {
@@ -96,4 +111,6 @@ class AdminPembudidayaController extends Controller
 
         return redirect()->route('admin.pembudidaya.index')->with('error', 'Hanya pembudidaya yang sudah diproses bisa dihapus.');
     }
+
+    
 }
