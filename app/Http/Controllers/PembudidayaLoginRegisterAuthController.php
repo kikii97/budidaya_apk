@@ -75,29 +75,38 @@ class PembudidayaLoginRegisterAuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+    
         if (Auth::guard('pembudidaya')->attempt($credentials)) {
             $request->session()->regenerate();
-
+    
             $pembudidaya = Auth::guard('pembudidaya')->user();
-
-            // Cek apakah sudah disetujui admin
-            if (!$pembudidaya->is_approved) {
+    
+            // Cek status persetujuan
+            if (is_null($pembudidaya->is_approved)) {
                 Auth::guard('pembudidaya')->logout();
                 return back()->withErrors([
                     'email' => 'Akun Anda belum disetujui oleh admin.',
                 ])->withInput();
             }
-
+    
+            if ($pembudidaya->is_approved === 0) {
+                Auth::guard('pembudidaya')->logout();
+                return back()->withErrors([
+                    'email' => 'Akun Anda telah ditolak oleh admin.',
+                ])->withInput();
+            }
+    
+            // Jika is_approved === 1 (disetujui), lanjutkan
             session(['pembudidaya_id' => $pembudidaya->id]);
-
+    
             return redirect()->route('profil_pembudidaya')->with('success', 'Login berhasil.');
         }
-
+    
         return back()->withErrors([
             'email' => 'Email atau kata sandi salah.',
         ])->withInput();
     }
+    
 
     // Logout pembudidaya
     public function logout(Request $request)
