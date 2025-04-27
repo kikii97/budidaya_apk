@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Pembudidaya;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class PembudidayaLoginRegisterAuthController extends Controller
 {
     // Menampilkan halaman profil pembudidaya
     public function index()
     {
-        return view('profil_pembudidaya');
+        $pembudidaya = Auth::guard('pembudidaya')->user(); // ambil data pembudidaya yang login
+        $produk = $pembudidaya->produk; // ambil semua produk milik pembudidaya ini
+    
+        return view('profil_pembudidaya', compact('pembudidaya', 'produk'));
     }
+    
 
     // Menampilkan form register
     public function showRegisterForm()
@@ -33,7 +36,7 @@ class PembudidayaLoginRegisterAuthController extends Controller
             'documents' => 'required|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
-
+    
         // Simpan pembudidaya
         $pembudidaya = Pembudidaya::create([
             'name' => $request->name,
@@ -43,7 +46,7 @@ class PembudidayaLoginRegisterAuthController extends Controller
             'role' => 'pembudidaya',
             'is_approved' => null, // Default belum disetujui
         ]);
-
+    
         // Proses upload dokumen kalau ada
         $documents = [];
         if ($request->hasFile('documents')) {
@@ -52,13 +55,21 @@ class PembudidayaLoginRegisterAuthController extends Controller
                 $documents[] = $filePath;
             }
         }
-
+    
         // Update pembudidaya dengan dokumen yang sudah diupload
         if (!empty($documents)) {
             $pembudidaya->update(['documents' => $documents]);
         }
-
-        // Tidak login otomatis, arahkan ke login dengan pesan
+    
+        // ✅ Auto buat profil_pembudidaya setelah register
+        $pembudidaya->profil()->create([
+            'foto_profil' => 'default.jpg', // Atau kosongkan sesuai kebutuhan
+            'nomor_telepon' => null,
+            'deskripsi' => null,
+            'alamat' => $request->address, // Bisa ikut alamat saat register
+        ]);
+    
+        // Tidak login otomatis, arahkan ke halaman tunggu
         return redirect()->route('pembudidaya.waiting')->with('success', 'Pendaftaran berhasil. Akun Anda sedang menunggu persetujuan admin.');
     }
 
