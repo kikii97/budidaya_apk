@@ -21,7 +21,7 @@
         </div>
     @endif
 
-    <form action="{{ route('produk.update', $produk->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('pembudidaya.produk.update', $produk->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -90,7 +90,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Simpan Perubahan</button>
-        <a href="{{ route('profil') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('pembudidaya.profil') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 

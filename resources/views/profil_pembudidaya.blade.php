@@ -292,76 +292,77 @@
         </header>
         
         <main class="bg-gray-100 min-h-screen">
-            <div class="container mx-auto p-6 max-w-7xl px-8 md:px-12">
+            <div class="container mx-auto p-6 max-w-7xl px-4 md:px-12">
                 <div class="bg-white shadow-lg rounded-lg p-6">
                     <!-- Header -->
                     <div class="flex justify-between items-center pb-4">
                         <h2 class="text-lg md:text-xl font-bold break-words w-full whitespace-normal">
-                            {{ auth('pembudidaya')->user()->name }}
+                            {{ auth('pembudidaya')->check() ? auth('pembudidaya')->user()->name : 'Pembudidaya' }}
                         </h2>
                         <button id="btnUploadProduk"
-                        class="bg-gradient-to-r from-green-500 to-green-700 text-white py-2 px-3 rounded-lg text-sm md:text-base font-semibold hover:bg-green-700 transition cursor-pointer"
-                        onclick="window.location.href='{{ route('pembudidaya.unggah') }}'">
-                        Unggah Produk
+                            class="bg-gradient-to-r from-green-500 to-green-700 text-white py-2 px-3 rounded-lg text-sm md:text-base font-semibold hover:bg-green-700 transition cursor-pointer"
+                            onclick="window.location.href='{{ route('pembudidaya.unggah') }}'">
+                            Unggah Produk
                         </button>
                     </div>
         
                     <!-- Produk Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mt-4" id="productGrid">
                         @forelse($produk as $item)
-                        <div class="bg-white border rounded-lg p-3 shadow-md hover:shadow-lg transition duration-300 overflow-hidden flex flex-col relative">
-                            
-                            <!-- Tombol Delete -->
-                            <button class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-red-700 transition delete-button hidden"
-                                onclick="tampilkanKonfirmasi('{{ route('pembudidaya.produk.destroy', $item->id) }}')">
-                                ✖
-                            </button>
-        
-                            <!-- Gambar Produk -->
                             @php
-                                $gambarArray = json_decode($item->gambar, true);
+                                $gambarArray = json_decode($item->gambar, true) ?? [];
+                                $gambarUtama = !empty($gambarArray) ? $gambarArray[0] : null;
                             @endphp
-                            @if (!empty($gambarArray))
-                                <img src="{{ asset('storage/images/'.$gambarArray[0]) }}" 
-                                     alt="{{ $item->jenis_komoditas }}" 
-                                     class="w-full h-24 sm:h-28 md:h-40 object-cover rounded" 
-                                     loading="lazy">
-                            @endif
         
-                            <!-- Nama Produk -->
-                            <h4 class="font-semibold mt-2 text-xs sm:text-sm md:text-base line-clamp-2 leading-tight">
-                                {{ $item->jenis_komoditas }}
-                            </h4>
+                            <div class="bg-white border rounded-lg p-3 shadow-md hover:shadow-lg transition duration-300 overflow-hidden flex flex-col relative">
+                                <!-- Tombol Delete -->
+                                <button class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-red-700 transition delete-button hidden"
+                                    onclick="tampilkanKonfirmasi('{{ route('pembudidaya.produk.destroy', $item->id) }}')">
+                                    ✖
+                                </button>
         
-                            <!-- Harga Produk -->
-                            <p class="text-gray-700 font-medium text-xs sm:text-sm">
-                                Kisaran Harga: Rp {{ number_format($item->kisaran_harga_min) }} - Rp {{ number_format($item->kisaran_harga_max) }}/kg
-                            </p>
+                                <!-- Gambar Produk -->
+                                @if ($gambarUtama)
+                                    <img src="{{ asset('storage/images/'.$gambarUtama) }}"
+                                        alt="{{ $item->jenis_komoditas }}"
+                                        class="w-full h-24 sm:h-28 md:h-40 object-cover rounded"
+                                        loading="lazy">
+                                @endif
         
-                            <!-- Alamat Produk -->
-                            <p class="text-gray-600 text-xs sm:text-sm truncate">
-                                Alamat: {{ $item->alamat_lengkap }}
-                            </p>
+                                <!-- Nama Produk -->
+                                <h4 class="font-semibold mt-2 text-xs sm:text-sm md:text-base line-clamp-2 leading-tight">
+                                    {{ $item->jenis_komoditas }}
+                                </h4>
         
-                            <!-- Tombol Lihat Detail -->
-                            <button onclick="window.location.href='{{ route('pembudidaya.produk.edit', $item->id) }}'"
-                                class="mt-2 w-full bg-blue-600 text-white py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-blue-700 transition cursor-pointer">
-                                Lihat Detail
-                            </button>
+                                <!-- Harga Produk -->
+                                <p class="text-gray-700 font-medium text-xs sm:text-sm">
+                                    Kisaran Harga: Rp {{ number_format($item->kisaran_harga_min) }} - Rp {{ number_format($item->kisaran_harga_max) }}/kg
+                                </p>
         
-                            <!-- Tombol Edit -->
-                            <button class="mt-2 w-full bg-gray-500 text-white py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-gray-600 transition cursor-pointer hidden edit-button"
-                                onclick="window.location.href='{{ route('pembudidaya.produk.edit', $item->id) }}'">
-                                Edit
-                            </button>
-                        </div>
+                                <!-- Alamat Produk -->
+                                <p class="text-gray-600 text-xs sm:text-sm truncate">
+                                    Alamat: {{ $item->alamat_lengkap }}
+                                </p>
+        
+                                <!-- Tombol Lihat Detail -->
+                                <button onclick="window.location.href='{{ route('pembudidaya.produk.edit', $item->id) }}'"
+                                    class="mt-2 w-full bg-blue-600 text-white py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-blue-700 transition cursor-pointer">
+                                    Lihat Detail
+                                </button>
+        
+                                <!-- Tombol Edit -->
+                                <button class="mt-2 w-full bg-gray-500 text-white py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-gray-600 transition cursor-pointer hidden edit-button"
+                                    onclick="window.location.href='{{ route('pembudidaya.produk.edit', $item->id) }}'">
+                                    Edit
+                                </button>
+                            </div>
                         @empty
-                        <p class="text-gray-600 col-span-3 text-center">Belum ada produk tersedia.</p>
+                            <p class="text-gray-600 col-span-3 text-center">Belum ada produk tersedia.</p>
                         @endforelse
                     </div>
         
                     <!-- Modal Konfirmasi Hapus -->
-                    <div id="modalKonfirmasi" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+                    <div id="modalKonfirmasi" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
                         <div class="bg-white rounded-lg p-5 shadow-xl border w-80 text-center">
                             <p class="text-gray-800 font-semibold">Apakah Anda yakin ingin menghapus produk ini?</p>
                             <div class="mt-4 flex justify-center gap-4">
@@ -382,12 +383,9 @@
         
         <!-- Script Section -->
         <script>
-            let deleteUrl = '';
-        
             function tampilkanKonfirmasi(url) {
-                deleteUrl = url;
+                document.getElementById('formDelete').setAttribute('action', url);
                 document.getElementById('modalKonfirmasi').classList.remove('hidden');
-                document.getElementById('formDelete').setAttribute('action', deleteUrl);
             }
         
             function tutupModal() {

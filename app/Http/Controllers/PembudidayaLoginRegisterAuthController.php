@@ -37,17 +37,16 @@ class PembudidayaLoginRegisterAuthController extends Controller
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
     
-        // Simpan pembudidaya
         $pembudidaya = Pembudidaya::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'address' => $request->address,
             'role' => 'pembudidaya',
-            'is_approved' => null, // Default belum disetujui
+            'is_approved' => null,
         ]);
     
-        // Proses upload dokumen kalau ada
+        // Upload dokumen
         $documents = [];
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $file) {
@@ -56,22 +55,15 @@ class PembudidayaLoginRegisterAuthController extends Controller
             }
         }
     
-        // Update pembudidaya dengan dokumen yang sudah diupload
         if (!empty($documents)) {
             $pembudidaya->update(['documents' => $documents]);
         }
     
-        // ✅ Auto buat profil_pembudidaya setelah register
-        $pembudidaya->profil()->create([
-            'foto_profil' => 'default.jpg', // Atau kosongkan sesuai kebutuhan
-            'nomor_telepon' => null,
-            'deskripsi' => null,
-            'alamat' => $request->address, // Bisa ikut alamat saat register
-        ]);
-    
-        // Tidak login otomatis, arahkan ke halaman tunggu
-        return redirect()->route('pembudidaya.waiting')->with('success', 'Pendaftaran berhasil. Akun Anda sedang menunggu persetujuan admin.');
+        // ✅ Redirect ke halaman login dengan info bahwa akun sedang menunggu persetujuan
+        return view('pembudidaya.waiting-approval', ['pembudidaya' => $pembudidaya]);
     }
+    
+    
 
     // Menampilkan form login
     public function showLoginForm()
@@ -110,7 +102,7 @@ class PembudidayaLoginRegisterAuthController extends Controller
             // Jika is_approved === 1 (disetujui), lanjutkan
             session(['pembudidaya_id' => $pembudidaya->id]);
     
-            return redirect()->route('profil_pembudidaya')->with('success', 'Login berhasil.');
+            return redirect()->route('pembudidaya.profil')->with('success', 'Login berhasil.');
         }
     
         return back()->withErrors([

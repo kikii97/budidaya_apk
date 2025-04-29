@@ -17,9 +17,13 @@ class ProdukController extends Controller
 
     public function index()
     {
-        $produk = Produk::where('pembudidaya_id', Auth::guard('pembudidaya')->id())->get();
-        return view('profil_pembudidaya', compact('produk'));
+        $pembudidaya = Auth::guard('pembudidaya')->user();
+        $profil = $pembudidaya->profil;
+        $produk = Produk::where('pembudidaya_id', $pembudidaya->id)->get();
+    
+        return view('profil_pembudidaya', compact('pembudidaya', 'profil', 'produk'));
     }
+    
 
     public function create()
     {
@@ -75,8 +79,10 @@ class ProdukController extends Controller
     public function edit($id)
     {
         $produk = Produk::findOrFail($id);
-        return view('edit_produk', compact('produk'));
+        $kecamatanList = $this->getKecamatanList();  
+        return view('pembudidaya.edit_produk', compact('produk', 'kecamatanList'));
     }
+    
 
     // ➡️ Menyimpan perubahan edit produk
     public function update(Request $request, $id)

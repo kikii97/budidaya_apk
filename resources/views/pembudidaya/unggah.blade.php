@@ -70,7 +70,7 @@
         </div>
         @endif
 
-        <form action="{{ route('pembudidaya.produk.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('pembudidaya.unggah.simpan') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="pembudidaya_id" value="{{ session('pembudidaya_id') }}">
 
@@ -92,10 +92,16 @@
             <!-- Kecamatan -->
             <div class="mb-3">
                 <label for="kecamatan" class="form-label">Kecamatan</label>
-                <input type="text" class="form-control" id="kecamatan" name="kecamatan" required
-                placeholder="Indramayu"
-                oninvalid="this.setCustomValidity('Harap isi kecamatan anda.')" 
-                oninput="this.setCustomValidity('')"></textarea>
+                <select class="form-select" id="kecamatan" name="kecamatan" required
+                    oninvalid="this.setCustomValidity('Harap pilih kecamatan.')" 
+                    oninput="this.setCustomValidity('')">
+                    <option value="" disabled selected>Pilih Kecamatan</option>
+                    @foreach($kecamatanList as $kecamatan)
+                        <option value="{{ $kecamatan }}" {{ old('kecamatan') == $kecamatan ? 'selected' : '' }}>
+                            {{ $kecamatan }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <!-- Alamat Lengkap -->
@@ -187,7 +193,7 @@
             <!-- Tombol Submit -->
             <div class="mb-3 d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Unggah Komoditas</button>
-                <a href="{{ route('profil_pembudidaya') }}" class="btn btn-secondary">
+                <a href="{{ route('pembudidaya.profil') }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left-circle"></i> Kembali
                 </a>
             </div>
