@@ -134,49 +134,6 @@
         </div>
     </div>
 
-    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart">
-        <div class="offcanvas-header justify-content-center">
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="order-md-last">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">Your cart</span>
-                    <span class="badge bg-primary rounded-pill">3</span>
-                </h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Growers cider</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$12</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Fresh grapes</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$8</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Heinz tomato ketchup</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$5</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Total (USD)</span>
-                        <strong>$20</strong>
-                    </li>
-                </ul>
-
-                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-            </div>
-        </div>
-    </div>
-
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
 
         <div class="offcanvas-header justify-content-between">
@@ -223,7 +180,7 @@
 
     <header>
         <div class="container-fluid">
-            <div class="d-flex align-items-center py-1 border-bottom">
+            <div class="d-flex align-items-center py-1 border-bottom flex-wrap">
 
                 <!-- Logo & Toggler -->
                 <div class="d-flex align-items-center gap-4">
@@ -241,24 +198,25 @@
 
                 <!-- Navbar Menu -->
                 <div class="d-flex align-items-center justify-content-center flex-grow-1">
-                    <ul class="navbar-nav list-unstyled d-flex flex-row gap-4 mb-0 fw-semibold fs-20 text-uppercase text-dark">
-                        <li class="nav-item active">
+                    <ul
+                        class="navbar-nav list-unstyled d-flex flex-row gap-4 mb-0 fw-semibold fs-20 text-uppercase text-dark">
+                        <li class="nav-item">
                             <a href="{{ url('home') }}" class="nav-link">Beranda</a>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a href="#komoditas" class="nav-link">Komoditas</a>
                         </li>
-                        <li class="nav-item active">
-                            <a href="index.html" class="nav-link">Peta Budidaya</a>
+                        <li class="nav-item">
+                            <a href="{{ url('location') }}" class="nav-link">Peta Budidaya</a>
                         </li>
-                        <li class="nav-item active">
-                            <a href="#mitra" class="nav-link">Mitra</a>
+                        <li class="nav-item">
+                            <a href="#budidaya" class="nav-link">Budidaya</a>
                         </li>
                     </ul>
                 </div>
 
                 <!-- User Icon -->
-                <div class="d-flex align-items-center ms-auto" style="position: relative;">
+                <div class="d-flex align-items-center ms-auto position-relative">
                     <a href="#" class="mx-2" id="user-icon">
                         <svg width="28" height="28">
                             <use xlink:href="#user"></use>
@@ -266,7 +224,9 @@
                     </a>
 
                     <!-- Dropdown menu -->
-                    <div id="user-dropdown" class="user-dropdown">
+                    <div id="user-dropdown"
+                        class="user-dropdown position-absolute end-0 mt-2 bg-white border rounded shadow-sm"
+                        style="display: none; min-width: 180px;">
                         <a href="{{ url('login') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
                             style="transition: 0.2s; font-weight: 500;">Masuk</a>
                         <a href="{{ url('register') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
@@ -274,6 +234,31 @@
                         <a href="{{ route('pembudidaya.login') }}"
                             class="d-block px-3 py-2 text-dark text-decoration-none"
                             style="transition: 0.2s; font-weight: 500;">Sebagai Pembudidaya</a>
+                    </div>
+                </div>
+                <!-- Offcanvas Mobile Menu -->
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav list-unstyled gap-3">
+                            <li class="nav-item">
+                                <a href="{{ url('home') }}" class="nav-link">Beranda</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#komoditas" class="nav-link">Komoditas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="index.html" class="nav-link">Peta Budidaya</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#mitra" class="nav-link">Mitra</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -290,7 +275,7 @@
                             class="fw-bold">Perikanan</span></h2>
                     <p class="fs-4">Temukan informasi lengkap tentang budidaya ikan unggulan di Indramayu.</p>
                     <div class="d-flex gap-3">
-                        <a href="#" class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
+                        <a href="{{ url('register') }}" class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
                             Investor</a>
                     </div>
                     <div class="row my-5" style="margin-bottom: 2rem!important;">
@@ -409,32 +394,32 @@
 
                     <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
-                            <a href="category.html" class="nav-link swiper-slide text-center">
+                            <a href="#" class="nav-link swiper-slide text-center">
                                 <img src="apk_gis/public/images/udang.jpg" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
+                            <a href="#" class="nav-link swiper-slide text-center">
                                 <img src="apk_gis/public/images/rumputlaut.jpg" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Rumput Laut</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
+                            <a href="#" class="nav-link swiper-slide text-center">
                                 <img src="apk_gis/public/images/ikanbandeng.jpg" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Bandeng</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
+                            <a href="#" class="nav-link swiper-slide text-center">
                                 <img src="apk_gis/public/images/ikangurame.jpg" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Gurame</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
+                            <a href="#" class="nav-link swiper-slide text-center">
                                 <img src="apk_gis/public/images/ikanlele.jpg" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
+                            <a href="#" class="nav-link swiper-slide text-center">
                                 <img src="apk_gis/public/images/ikannila.jpeg" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Nila</h4>
@@ -447,7 +432,7 @@
         </div>
     </section>
 
-    <section id="mitra" class="pb-3">
+    <section id="budidaya" class="pb-3">
         <div class="container-lg">
 
             <div class="row">
@@ -455,10 +440,10 @@
 
                     <div class="section-header d-flex flex-wrap justify-content-between my-4">
 
-                        <h2 class="section-title">Mitra Pembudidaya</h2>
+                        <h2 class="section-title">Etalase Produk Budidaya</h2>
 
                         <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary rounded-1">View All</a>
+                            <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
                         </div>
                     </div>
 
@@ -474,7 +459,7 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="index.html" title="Product Title">
+                                    <a href="{{ url('detail') }}" title="Product Title">
                                         <img src="apk_gis/public/images/product-thumb-1.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
@@ -620,122 +605,6 @@
                                     <div class="d-flex justify-content-center align-items-center gap-2">
                                         <del>$14.00</del>
                                         <span class="text-dark fw-semibold">$12.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="apk_gis/public/images/product-thumb-4.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Organic Baby Spinach</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="apk_gis/public/images/product-thumb-5.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Organic Spinach Leaves (Fresh Produce)</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
                                         <span
                                             class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
                                             OFF</span>
@@ -997,8 +866,8 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="apk_gis/public/images/product-thumb-10.png"
-                                            alt="Product Thumbnail" class="tab-image">
+                                        <img src="apk_gis/public/images/product-thumb-10.png" alt="Product Thumbnail"
+                                            class="tab-image">
                                     </a>
                                 </figure>
                                 <div class="d-flex flex-column text-center">
@@ -1175,8 +1044,7 @@
 
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer-menu">
-                        <img src="apk_gis/public/images/logo1.png" width="170" height="auto"
-                            alt="logo">
+                        <img src="apk_gis/public/images/logo1.png" width="170" height="auto" alt="logo">
                         <div class="social-links mt-3">
                             <ul class="d-flex list-unstyled gap-2">
                                 <li>
@@ -1300,23 +1168,15 @@
         </div>
     </div>
     <script>
-        const userIcon = document.getElementById('user-icon');
-        const userDropdown = document.getElementById('user-dropdown');
-
-        userIcon.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Toggle dropdown visibility
-            if (userDropdown.style.display === 'none' || userDropdown.style.display === '') {
-                userDropdown.style.display = 'block';
-            } else {
-                userDropdown.style.display = 'none';
-            }
+        document.getElementById("user-icon").addEventListener("click", function() {
+            var dropdown = document.getElementById("user-dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         });
 
-        // Tutup dropdown jika klik di luar
-        document.addEventListener('click', function(e) {
-            if (!userIcon.contains(e.target) && !userDropdown.contains(e.target)) {
-                userDropdown.style.display = 'none';
+        document.addEventListener("click", function(e) {
+            var dropdown = document.getElementById("user-dropdown");
+            if (!document.getElementById("user-icon").contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = "none";
             }
         });
     </script>

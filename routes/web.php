@@ -33,6 +33,10 @@ Route::get('/lokasi', [LocationController::class, 'showLocations']);
 Route::resource('commodity', KomoditasController::class);
 Route::resource('budidaya', BudidayaController::class);
 
+<<<<<<< Updated upstream
+=======
+Route::get('/location', [LocationController::class, 'showLocations']);
+>>>>>>> Stashed changes
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', fn () => view('login'))->name('login');
@@ -56,8 +60,17 @@ Route::post('/logout', function () {
         Auth::logout(); // default guard
     }
 
+<<<<<<< Updated upstream
     request()->session()->invalidate();
     request()->session()->regenerateToken();
+=======
+// 🔸 Informasi Pembudidaya
+Route::get('/daftar_pembudidaya', fn () => view('daftar_pembudidaya'))->name('daftar_pembudidaya');
+Route::get('/katalog', fn () => view('katalog'))->name('katalog');
+Route::get('/detail_pembudidaya', fn () => view('detail_pembudidaya'))->name('detail_pembudidaya');
+Route::get('/detail', fn () => view('detail'))->name('detail');
+Route::get('/profil_pembudidaya', fn () => view('profil_pembudidaya'))->name('profil_pembudidaya');
+>>>>>>> Stashed changes
 
     return redirect()->route('beranda');
 })->name('logout');
