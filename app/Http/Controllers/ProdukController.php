@@ -15,15 +15,17 @@ class ProdukController extends Controller
         $this->middleware('auth:pembudidaya');
     }
 
+    // ✅ Tampilkan hanya produk yang sudah disetujui admin
     public function index()
     {
         $pembudidaya = Auth::guard('pembudidaya')->user();
         $profil = $pembudidaya->profil;
-        $produk = Produk::where('pembudidaya_id', $pembudidaya->id)->get();
-    
+        $produk = Produk::where('pembudidaya_id', $pembudidaya->id)
+                        ->where('is_approved', true)
+                        ->get();
+
         return view('profil_pembudidaya', compact('pembudidaya', 'profil', 'produk'));
     }
-    
 
     public function create()
     {
@@ -34,11 +36,11 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateProduk($request);
-    
+
         if ($request->hasFile('images')) {
             $data['gambar'] = json_encode($this->uploadImages($request->file('images')));
         }
-    
+
         $data['pembudidaya_id'] = Auth::guard('pembudidaya')->id();
         $data['telepon'] = $data['phone'];
         $data['alamat_lengkap'] = $data['address'];
@@ -54,13 +56,16 @@ class ProdukController extends Controller
         if (!empty($data['prediksi_panen'])) {
             $data['prediksi_panen'] = Carbon::createFromFormat('d-m-Y', $data['prediksi_panen'])->format('Y-m-d');
         }
-    
-        // 🔥 Hapus field input yang tidak ada di database
+
+        // Set status persetujuan jadi null (menunggu approval admin)
+        $data['is_approved'] = null;
+
+        // Hapus field input yang tidak ada di database
         unset(
-            $data['phone'], 
-            $data['address'], 
-            $data['commodity_type'], 
-            $data['price_range_min'], 
+            $data['phone'],
+            $data['address'],
+            $data['commodity_type'],
+            $data['price_range_min'],
             $data['price_range_max'],
             $data['specific_commodity_type'],
             $data['production_capacity'],
@@ -68,23 +73,19 @@ class ProdukController extends Controller
             $data['harvest_prediction'],
             $data['details']
         );
-            
-        Produk::create($data);
-    
-        return redirect()->route('pembudidaya.profil')->with('success', 'Komoditas berhasil diunggah!');
-    }
-    
 
-    // ➡️ Menampilkan form edit produk
+        Produk::create($data);
+
+        return redirect()->route('pembudidaya.profil')->with('success', 'Komoditas berhasil diunggah dan menunggu persetujuan admin.');
+    }
+
     public function edit($id)
     {
         $produk = Produk::findOrFail($id);
-        $kecamatanList = $this->getKecamatanList();  
+        $kecamatanList = $this->getKecamatanList();
         return view('pembudidaya.edit_produk', compact('produk', 'kecamatanList'));
     }
-    
 
-    // ➡️ Menyimpan perubahan edit produk
     public function update(Request $request, $id)
     {
         $produk = Produk::where('pembudidaya_id', Auth::guard('pembudidaya')->id())
@@ -93,7 +94,7 @@ class ProdukController extends Controller
 
         $data = $this->validateProduk($request);
 
-        // Kalau upload gambar baru, hapus gambar lama
+        // Hapus gambar lama jika ada gambar baru
         if ($request->hasFile('images')) {
             if ($produk->gambar) {
                 foreach (json_decode($produk->gambar) as $gambar) {
@@ -103,26 +104,61 @@ class ProdukController extends Controller
             $data['gambar'] = json_encode($this->uploadImages($request->file('images')));
         }
 
+        $data['telepon'] = $data['phone'];
+        $data['alamat_lengkap'] = $data['address'];
+        $data['jenis_komoditas'] = $data['commodity_type'];
+        $data['kisaran_harga_min'] = $data['price_range_min'];
+        $data['kisaran_harga_max'] = $data['price_range_max'];
+        $data['jenis_spesifik_komoditas'] = $data['specific_commodity_type'];
+        $data['kapasitas_produksi'] = $data['production_capacity'];
+        $data['masa_produksi_puncak'] = $data['peak_production_period'];
+        $data['prediksi_panen'] = $data['harvest_prediction'];
+        $data['detail'] = $data['details'];
+
+        if (!empty($data['prediksi_panen'])) {
+            $data['prediksi_panen'] = Carbon::createFromFormat('d-m-Y', $data['prediksi_panen'])->format('Y-m-d');
+        }
+
+        // Reset status persetujuan ke null saat update
+        $data['is_approved'] = null;
+
+        unset(
+            $data['phone'],
+            $data['address'],
+            $data['commodity_type'],
+            $data['price_range_min'],
+            $data['price_range_max'],
+            $data['specific_commodity_type'],
+            $data['production_capacity'],
+            $data['peak_production_period'],
+            $data['harvest_prediction'],
+            $data['details']
+        );
+
         $produk->update($data);
 
-        return redirect()->route('pembudidaya.profil')->with('success', 'Produk berhasil diperbarui!');
+        return redirect()->route('pembudidaya.profil')->with('success', 'Produk berhasil diperbarui dan menunggu persetujuan admin.');
     }
 
     public function destroy($id)
     {
         $produk = Produk::findOrFail($id);
-    
-        // Optional: pastikan hanya pemilik produk bisa hapus
+
         if ($produk->pembudidaya_id != auth('pembudidaya')->id()) {
             abort(403, 'Unauthorized');
         }
-    
+
+        if ($produk->gambar) {
+            foreach (json_decode($produk->gambar) as $gambar) {
+                Storage::disk('public')->delete('images/' . $gambar);
+            }
+        }
+
         $produk->delete();
-    
+
         return redirect()->route('pembudidaya.profil')->with('success', 'Produk berhasil dihapus.');
     }
 
-    // 🔹 Helper: Validasi data produk
     private function validateProduk(Request $request)
     {
         return $request->validate([
@@ -145,7 +181,6 @@ class ProdukController extends Controller
         ]);
     }
 
-    // 🔹 Helper: Upload gambar
     private function uploadImages($images)
     {
         $imageNames = [];
@@ -157,7 +192,6 @@ class ProdukController extends Controller
         return $imageNames;
     }
 
-    // 🔹 Helper: List kecamatan
     private function getKecamatanList()
     {
         return [

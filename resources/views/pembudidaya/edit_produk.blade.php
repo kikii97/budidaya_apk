@@ -44,9 +44,20 @@
             <input type="text" name="address" value="{{ old('address', $produk->alamat_lengkap) }}" class="form-control" required>
         </div>
 
+        <!-- Jenis Komoditas (Dropdown) -->
         <div class="form-group">
-            <label>Jenis Komoditas:</label>
-            <input type="text" name="commodity_type" value="{{ old('commodity_type', $produk->jenis_komoditas) }}" class="form-control" required>
+            <label for="commodity_type" class="form-label">Jenis Komoditas</label>
+            <select class="form-control" id="commodity_type" name="commodity_type" required
+                    oninvalid="this.setCustomValidity('Harap pilih jenis komoditas.')"
+                    oninput="this.setCustomValidity('')">
+                <option value="" disabled {{ old('commodity_type', $produk->jenis_komoditas) == null ? 'selected' : '' }}>Pilih Jenis Komoditas</option>
+                <option value="Rumput Laut" {{ old('commodity_type', $produk->jenis_komoditas) == 'Rumput Laut' ? 'selected' : '' }}>Rumput Laut</option>
+                <option value="Udang" {{ old('commodity_type', $produk->jenis_komoditas) == 'Udang' ? 'selected' : '' }}>Udang</option>
+                <option value="Ikan Gurame" {{ old('commodity_type', $produk->jenis_komoditas) == 'Ikan Gurame' ? 'selected' : '' }}>Ikan Gurame</option>
+                <option value="Ikan Bandeng" {{ old('commodity_type', $produk->jenis_komoditas) == 'Ikan Bandeng' ? 'selected' : '' }}>Ikan Bandeng</option>
+                <option value="Ikan Lele" {{ old('commodity_type', $produk->jenis_komoditas) == 'Ikan Lele' ? 'selected' : '' }}>Ikan Lele</option>
+                <option value="Ikan Nila" {{ old('commodity_type', $produk->jenis_komoditas) == 'Ikan Nila' ? 'selected' : '' }}>Ikan Nila</option>
+            </select>
         </div>
 
         <div class="form-group">
