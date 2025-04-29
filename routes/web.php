@@ -16,25 +16,27 @@ use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminPenggunaController;
 use App\Http\Controllers\AdminPembudidayaController;
 
-
-Route::get('/', fn () => view('beranda'))->name('beranda');
-Route::get('/beranda', fn () => view('beranda')); // alias
+// ─── Halaman Umum ─────────────────────────────────────────────────────────────
+Route::get('/', fn () => view('home'))->name('home');
 Route::get('/welcome', fn () => view('welcome'));
-Route::get('/home', fn () => view('home'));
 
-// Halaman informasi umum
+// Halaman informasi publik
 Route::view('/tentangkami', 'tentangkami')->name('tentangkami');
 Route::view('/daftar_pembudidaya', 'daftar_pembudidaya')->name('daftar_pembudidaya');
 Route::view('/detail_pembudidaya', 'detail_pembudidaya')->name('detail_pembudidaya');
+Route::view('/katalog', 'katalog')->name('katalog');
+Route::view('/detail', 'detail')->name('detail');
+Route::view('/profil_pembudidaya', 'profil_pembudidaya')->name('profil_pembudidaya');
 
+// Lokasi
 Route::get('/lokasi', [LocationController::class, 'showLocations']);
+Route::get('/location', [LocationController::class, 'showLocations']); // alias
 
-
+// ─── Komoditas dan Budidaya (CRUD) ────────────────────────────────────────────
 Route::resource('commodity', KomoditasController::class);
 Route::resource('budidaya', BudidayaController::class);
 
-Route::get('/location', [LocationController::class, 'showLocations']);
-
+// ─── Auth Pengguna Umum ───────────────────────────────────────────────────────
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', fn () => view('login'))->name('login');
     Route::post('/login', [LoginPenggunaAuthController::class, 'authenticate'])->name('login.post');
@@ -47,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
 });
 
-
+// ─── Logout (untuk semua guard) ───────────────────────────────────────────────
 Route::post('/logout', function () {
     if (Auth::guard('admin')->check()) {
         Auth::guard('admin')->logout();
@@ -59,24 +61,17 @@ Route::post('/logout', function () {
 
     request()->session()->invalidate();
     request()->session()->regenerateToken();
-// 🔸 Informasi Pembudidaya
-Route::get('/daftar_pembudidaya', fn () => view('daftar_pembudidaya'))->name('daftar_pembudidaya');
-Route::get('/katalog', fn () => view('katalog'))->name('katalog');
-Route::get('/detail_pembudidaya', fn () => view('detail_pembudidaya'))->name('detail_pembudidaya');
-Route::get('/detail', fn () => view('detail'))->name('detail');
-Route::get('/profil_pembudidaya', fn () => view('profil_pembudidaya'))->name('profil_pembudidaya');
 
     return redirect()->route('beranda');
 })->name('logout');
 
-
-// 🔐 Login Admin
+// ─── Login & Register Admin ───────────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminLoginAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AdminLoginAuthController::class, 'login'])->name('login.post');
 });
 
-// 🔐 Setelah Login Admin
+// ─── Setelah Login Admin ──────────────────────────────────────────────────────
 Route::prefix('admin')->middleware(['auth:admin'])->name('admin.')->group(function () {
     Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
 
@@ -89,11 +84,9 @@ Route::prefix('admin')->middleware(['auth:admin'])->name('admin.')->group(functi
 
     Route::post('/pembudidaya/{id}/approve', [AdminPembudidayaController::class, 'approve'])->name('pembudidaya.approve');
     Route::post('/pembudidaya/{id}/reject', [AdminPembudidayaController::class, 'reject'])->name('pembudidaya.reject');
-
 });
 
-
-// 🔐 Login & Register
+// ─── Login & Register Pembudidaya ─────────────────────────────────────────────
 Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
     Route::get('/login', [PembudidayaLoginRegisterAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [PembudidayaLoginRegisterAuthController::class, 'login'])->name('login.post');
@@ -104,13 +97,11 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
     Route::middleware(['auth:pembudidaya'])->group(function () {
         Route::get('/waiting', fn () => view('pembudidaya.waiting-approval'))->name('waiting');
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
-        Route::post('/unggah', [ProdukController::class, 'store'])->name('produk.store');
+        Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
         Route::get('/profil', [ProdukController::class, 'index'])->name('profil');
         Route::get('/profil_pembudidaya', [PembudidayaLoginRegisterAuthController::class, 'index'])->name('profil_pembudidaya');
-        Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
-        Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
 
-        // CRUD tambahan (jika edit dan delete diperlukan)
+        // CRUD produk tambahan
         Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
         Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
         Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
