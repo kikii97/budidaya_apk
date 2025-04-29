@@ -14,10 +14,13 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminPenggunaController;
 use App\Http\Controllers\AdminPembudidayaController;
-use App\Http\Controllers\ProfilPembudidayaController;
 
 Route::get('/welcome', function () {
     return view('welcome');
+});
+
+Route::get('/home', function () {
+    return view('home');
 });
 
 Route::resource('commodity', KomoditasController::class);
@@ -25,6 +28,11 @@ Route::resource('budidaya', BudidayaController::class);
 
 Route::get('/', [LocationController::class, 'showLocations']);
 
+/*
+|--------------------------------------------------------------------------|
+| 🔐 AUTH LOGIC (SEMUA JENIS USER)                                        |
+|--------------------------------------------------------------------------|
+*/
 
 // 🔸 Logout (semua guard)
 Route::post('/logout', function () {
@@ -42,6 +50,11 @@ Route::post('/logout', function () {
     return redirect()->route('beranda');
 })->name('logout');
 
+/*
+|--------------------------------------------------------------------------|
+| 🔹 ADMIN ROUTES                                                         |
+|--------------------------------------------------------------------------|
+*/
 
 // 🔓 Login Admin
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -61,9 +74,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
 Route::post('/admin/produk/{id}/approve', [AdminProdukController::class, 'approve'])->name('admin.produk.approve');
 Route::post('/admin/produk/{id}/reject', [AdminProdukController::class, 'reject'])->name('admin.produk.reject');
 
-Route::post('admin/pembudidaya/{id}/approve', [AdminPembudidayaController::class, 'approve'])->name('admin.pembudidaya.approve');
-Route::post('admin/pembudidaya/{id}/reject', [AdminPembudidayaController::class, 'reject'])->name('admin.pembudidaya.reject');
 
+/*
+|--------------------------------------------------------------------------|
+| 🔹 PEMBUDIDAYA ROUTES                                                   |
+|--------------------------------------------------------------------------|
+*/
 
 // 🔓 Login & Register Pembudidaya
 Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
@@ -80,18 +96,17 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
         // 🔄 Mengarahkan unggah ke ProdukController
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
         Route::post('/unggah', [ProdukController::class, 'store'])->name('produk.store');
+        
         // 🔸 Lihat daftar produk miliknya
         Route::get('/profil', [ProdukController::class, 'index'])->name('profil');
-        Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
-        Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
-        Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
     });
 });
 
-Route::get('/pembudidaya/waiting', function() {
-    return view('pembudidaya.waiting-approval');
-})->name('pembudidaya.waiting');
-
+/*
+|--------------------------------------------------------------------------|
+| 🔹 PENGGUNA UMUM (PEMBELI)                                              |
+|--------------------------------------------------------------------------|
+*/
 
 // Rute untuk login dan register untuk pengguna umum
 Route::middleware(['guest'])->group(function () {
@@ -107,6 +122,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
 });
 
+/*
+|--------------------------------------------------------------------------|
+| 🔹 ROUTE UMUM / PUBLIK                                                   |
+|--------------------------------------------------------------------------|
+*/
 
 // 🔸 Beranda
 Route::get('/', fn () => view('beranda'))->name('beranda');
@@ -115,7 +135,7 @@ Route::get('/beranda', fn () => view('beranda'))->name('beranda.duplikat');
 // 🔸 Informasi Pembudidaya
 Route::get('/daftar_pembudidaya', fn () => view('daftar_pembudidaya'))->name('daftar_pembudidaya');
 Route::get('/detail_pembudidaya', fn () => view('detail_pembudidaya'))->name('detail_pembudidaya');
-Route::get('/profil_pembudidaya', [ProfilPembudidayaController::class, 'index'])->name('profil_pembudidaya')->middleware('auth:pembudidaya');
+Route::get('/profil_pembudidaya', fn () => view('profil_pembudidaya'))->name('profil_pembudidaya');
 
 // 🔸 Halaman Informasi Tambahan
 Route::get('/tentangkami', fn () => view('tentangkami'))->name('tentangkami');

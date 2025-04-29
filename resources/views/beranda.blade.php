@@ -20,7 +20,7 @@
                     <div class="flex items-center">
                         <div class="shrink-0">
                             <img class="size-9"
-                                src="images/logosibikanda.png"
+                                src="apk_gis/public/images/logosibikanda.png"
                                 alt="Your Company">
                         </div>
                         <div class="hidden md:block">
@@ -280,42 +280,42 @@
             <p class="mt-2 text-lg text-gray-700">Temukan informasi lengkap tentang budidaya ikan unggulan di Indramayu
             </p>
             <div class="mt-6">
-                <img src="/images/tambak.jpg" alt="Gambar Budidaya Ikan" class="w-full h-auto rounded-lg shadow-lg">
+                <img src="apk_gis/public/images/tambak.jpg" alt="Gambar Budidaya Ikan" class="w-full h-auto rounded-lg shadow-lg">
             </div>
 
             <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-7">
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center">
-                    <img src="/images/rumputlaut.jpg" alt="Rumput Laut" class="w-full h-40 object-cover rounded-md">
+                    <img src="apk_gis/public/images/rumputlaut.jpg" alt="Rumput Laut" class="w-full h-40 object-cover rounded-md">
                     <h2 class="mt-4 text-lg font-semibold">Rumput Laut</h2>
                     <a href="/daftar_pembudidaya"
                         class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Selengkapnya</a>
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center">
-                    <img src="/images/udang.jpg" alt="Udang" class="w-full h-40 object-cover rounded-md">
+                    <img src="apk_gis/public/images/udang.jpg" alt="Udang" class="w-full h-40 object-cover rounded-md">
                     <h2 class="mt-4 text-lg font-semibold">Udang</h2>
                     <a href="/daftar_pembudidaya"
                         class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Selengkapnya</a>
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center">
-                    <img src="/images/ikangurame.jpg" alt="Ikan Gurame" class="w-full h-40 object-cover rounded-md">
+                    <img src="apk_gis/public/images/ikangurame.jpg" alt="Ikan Gurame" class="w-full h-40 object-cover rounded-md">
                     <h2 class="mt-4 text-lg font-semibold">Ikan Gurame</h2>
                     <a href="/daftar_pembudidaya"
                         class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Selengkapnya</a>
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center">
-                    <img src="/images/ikanbandeng.jpg" alt="Ikan Bandeng" class="w-full h-40 object-cover rounded-md">
+                    <img src="apk_gis/public/images/ikanbandeng.jpg" alt="Ikan Bandeng" class="w-full h-40 object-cover rounded-md">
                     <h2 class="mt-4 text-lg font-semibold">Ikan Bandeng</h2>
                     <a href="/daftar_pembudidaya"
                         class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Selengkapnya</a>
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center">
-                    <img src="/images/ikanlele.jpg" alt="Ikan Lele" class="w-full h-40 object-cover rounded-md">
+                    <img src="apk_gis/public/images/ikanlele.jpg" alt="Ikan Lele" class="w-full h-40 object-cover rounded-md">
                     <h2 class="mt-4 text-lg font-semibold">Ikan Lele</h2>
                     <a href="/daftar_pembudidaya"
                         class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Selengkapnya</a>
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center">
-                    <img src="/images/ikannila.jpg" alt="Ikan Nila" class="w-full h-40 object-cover rounded-md">
+                    <img src="apk_gis/public/images/ikannila.jpg" alt="Ikan Nila" class="w-full h-40 object-cover rounded-md">
                     <h2 class="mt-4 text-lg font-semibold">Ikan Nila</h2>
                     <a href="/daftar_pembudidaya"
                         class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Selengkapnya</a>
