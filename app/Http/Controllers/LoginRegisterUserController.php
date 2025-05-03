@@ -40,7 +40,7 @@ class LoginRegisterUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('home')->with('success', 'Registrasi berhasil!');
+        return redirect()->route('preferensi.form')->with('success', 'Registrasi berhasil!');
     }
 
     // Proses login (user atau admin)
@@ -82,6 +82,6 @@ class LoginRegisterUserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('preferensi.form')->with('success', 'Berhasil logout');
+        return redirect('home')->with('success', 'Berhasil logout');
     }
 }

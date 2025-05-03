@@ -467,287 +467,58 @@
                 </div>
             </div>
 
-            @foreach($recommendedProducts as $product)
-            <div class="col">
-                <div class="product-item">
-                    <figure>
-                        <a href="{{ route('produk.detail', $product->id) }}" title="{{ $product->nama }}">
-                            <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Thumbnail {{ $product->nama }}" class="tab-image">
-                        </a>
-                    </figure>
-                    <div class="d-flex flex-column text-center">
-                        <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
-                        <div>
-                            {{-- Dummy rating --}}
-                            <span class="rating">
-                                @for($i = 0; $i < 4; $i++)
-                                    <svg width="18" height="18" class="text-warning"><use xlink:href="#star-full"></use></svg>
-                                @endfor
-                                <svg width="18" height="18" class="text-warning"><use xlink:href="#star-half"></use></svg>
-                            </span>
-                            <span>({{ rand(10, 200) }})</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-2">
-                            <del>Rp{{ number_format($product->harga + 5000, 0, ',', '.') }}</del>
-                            <span class="text-dark fw-semibold">Rp{{ number_format($product->harga, 0, ',', '.') }}</span>
-                            <span class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10% OFF</span>
-                        </div>
-                        <div class="button-area p-3 pt-0">
-                            <div class="row g-1 mt-2">
-                                <div class="col-3">
-                                    <input type="number" name="quantity" class="form-control border-dark-subtle input-number quantity" value="1">
-                                </div>
-                                <div class="col-7">
-                                    <a href="{{ route('keranjang.tambah', $product->id) }}" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
-                                        <svg width="18" height="18"><use xlink:href="#cart"></use></svg> Tambah
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                        @foreach($recommendedProducts as $product)
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="{{ route('detail', $product->id) }}" title="{{ $product->nama }}">
+                                        @php
+                                            $gambarList = json_decode($product->gambar, true);
+                                            $thumbnail = $gambarList[0] ?? 'default.jpg';
+                                        @endphp
+                                        <img src="{{ asset('storage/images/' . $thumbnail) }}"
+                                             alt="Thumbnail {{ $product->nama }}"
+                                             class="tab-image"
+                                             style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
                                     </a>
-                                </div>
-                                <div class="col-2">
-                                    <a href="{{ route('wishlist.tambah', $product->id) }}" class="btn btn-outline-dark rounded-1 p-2 fs-6">
-                                        <svg width="18" height="18"><use xlink:href="#heart"></use></svg>
-                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
+            
+                                    {{-- Info komoditas dan pembudidaya --}}
+                                    <div class="mb-1">
+                                        <div class="fw-semibold fs-6">{{ $product->jenis_komoditas ?? 'Tidak tersedia' }}</div>
+                                        <div class="text-muted small">Pembudidaya: <strong>{{ $product->pembudidaya->name ?? 'Tidak diketahui' }}</strong></div>
+                                    </div>
+            
+                                    {{-- Kisaran harga dari database --}}
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">
+                                            Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} - Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
+                                        </span>
+                                    </div>
+            
+                                    {{-- Input jumlah --}}
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2">
+                                            <div class="col-3">
+                                                <input type="number" name="quantity" class="form-control border-dark-subtle input-number quantity" value="1">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
-            @endforeach
             
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-7.png') }}" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Imported Italian Spaghetti Pasta</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-8.png') }}" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Granny Smith Apples</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-9.png') }}" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Organic 2% Reduced Fat Milk </h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-10.png') }}" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Greek Style Plain Yogurt</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
+            
+            
                     </div>
                     <!-- / product-grid -->
 

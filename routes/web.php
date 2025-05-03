@@ -14,9 +14,10 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminPenggunaController;
 use App\Http\Controllers\AdminPembudidayaController;
+use App\Http\Controllers\HomeController;
 
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
-Route::get('/', fn () => view('home'))->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/welcome', fn () => view('welcome'));
 
 // Halaman informasi publik

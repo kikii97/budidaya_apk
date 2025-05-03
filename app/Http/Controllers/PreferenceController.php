@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserPreference;
 use Illuminate\Support\Facades\Auth;
 
 class PreferenceController extends Controller
@@ -14,17 +13,30 @@ class PreferenceController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $existingPreference = UserPreference::where('user_id', $user->id)->first();
 
-        if ($existingPreference) {
+        // Cek apakah preferensi sudah diisi
+        if (
+            $user->komoditas && $user->harga_min !== null && $user->harga_max !== null &&
+            $user->kecamatan && $user->prediksi_panen && $user->kapasitas_produksi !== null
+        ) {
             return redirect()->route('home')->with('info', 'Anda sudah mengisi preferensi.');
         }
 
-        return view('preferensi.form');
+        // Daftar kecamatan (bisa diganti ambil dari DB jika tersedia)
+        $kecamatanList = [
+            'Anjatan', 'Arahan', 'Balongan', 'Bangodua', 'Bongas',
+            'Cantigi', 'Cikedung', 'Gabuswetan', 'Gantar', 'Haurgeulis',
+            'Indramayu', 'Jatibarang', 'Juntinyuat', 'Kandanghaur', 'Karangampel',
+            'Kedokan Bunder', 'Kertasemaya', 'Krangkeng', 'Kroya', 'Lelea',
+            'Lohbener', 'Losarang', 'Pasekan', 'Patrol', 'Sindang',
+            'Sliyeg', 'Sukagumiwang', 'Sukra', 'Trisi', 'Tukdana', 'Widasari'
+        ];
+
+        return view('preferensi.form', compact('kecamatanList'));
     }
 
     /**
-     * Simpan data preferensi pengguna.
+     * Simpan data preferensi pengguna langsung ke tabel users.
      */
     public function store(Request $request)
     {
@@ -37,11 +49,24 @@ class PreferenceController extends Controller
             'kapasitas_produksi'  => 'required|integer|min:1',
         ]);
 
-        UserPreference::updateOrCreate(
-            ['user_id' => Auth::id()],
-            array_merge($validated, ['user_id' => Auth::id()])
-        );
+        if (preg_match('/^\d{2}-\d{2}-\d{4}$/', $validated['prediksi_panen'])) {
+            $tanggal = \DateTime::createFromFormat('d-m-Y', $validated['prediksi_panen']);
+            $validated['prediksi_panen'] = $tanggal->format('Y-m-d');
+        }
+
+        // Simpan preferensi ke user yang sedang login
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        foreach ($validated as $key => $value) {
+            $user->$key = $value;
+        }
+
+        $user->save();
 
         return redirect()->route('home')->with('success', 'Preferensi berhasil disimpan.');
     }
 }
+
+        /** @var \App\Models\User $user */
+
