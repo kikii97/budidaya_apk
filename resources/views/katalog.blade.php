@@ -229,16 +229,40 @@
 
                     <!-- Dropdown menu -->
                     <div id="user-dropdown"
-                        class="user-dropdown position-absolute end-0 mt-2 bg-white border rounded shadow-sm"
-                        style="display: none; min-width: 180px;">
-                        <a href="{{ url('login') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
+                    class="user-dropdown position-absolute end-0 mt-2 bg-white border rounded shadow-sm"
+                    style="display: none; min-width: 180px;">
+                    
+                    @if(Auth::guard('pembudidaya')->check())
+                        <div class="px-3 py-2 border-bottom">
+                            <strong>{{ Auth::guard('pembudidaya')->user()->name }}</strong><br>
+                            <small>{{ Auth::guard('pembudidaya')->user()->email }}</small>
+                        </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="d-block w-100 text-start px-3 py-2 text-dark bg-white border-0"
+                                style="transition: 0.2s; font-weight: 500;">Logout</button>
+                        </form>
+                
+                    @elseif(Auth::check())
+                        <div class="px-3 py-2 border-bottom">
+                            <strong>{{ Auth::user()->name }}</strong><br>
+                            <small>{{ Auth::user()->email }}</small>
+                        </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="d-block w-100 text-start px-3 py-2 text-dark bg-white border-0"
+                                style="transition: 0.2s; font-weight: 500;">Logout</button>
+                        </form>
+                
+                    @else
+                        <a href="{{ route('login') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
                             style="transition: 0.2s; font-weight: 500;">Masuk</a>
-                        <a href="{{ url('register') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
+                        <a href="{{ route('register') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
                             style="transition: 0.2s; font-weight: 500;">Daftar</a>
-                        <a href="{{ route('pembudidaya.login') }}"
-                            class="d-block px-3 py-2 text-dark text-decoration-none"
-                            style="transition: 0.2s; font-weight: 500;">Sebagai Pembudidaya</a>
-                    </div>
+                        <a href="{{ route('pembudidaya.login') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
+                            style="transition: 0.2s; font-weight: 500;">Masuk Sebagai Pembudidaya</a>
+                    @endif
+                </div>
                 </div>
                 <!-- Offcanvas Mobile Menu -->
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"

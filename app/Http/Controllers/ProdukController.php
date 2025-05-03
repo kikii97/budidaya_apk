@@ -12,7 +12,18 @@ class ProdukController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:pembudidaya');
+        $this->middleware('auth:pembudidaya')->only([
+            'index', 'create', 'store', 'edit', 'update', 'destroy'
+        ]);
+    }
+
+    public function show($id)
+    {
+        $produk = Produk::where('id', $id)
+                    ->where('is_approved', true)
+                    ->firstOrFail();
+
+        return view('produk.detail', compact('produk'));
     }
 
     // ✅ Tampilkan hanya produk yang sudah disetujui admin
@@ -179,6 +190,21 @@ class ProdukController extends Controller
             'images.*.mimes' => 'Gambar harus format JPEG, PNG, atau JPG.',
             'images.*.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
+    }
+
+    // Untuk menampilkan katalog publik
+    public function katalog(Request $request)
+    {
+        $produkList = Produk::query()
+            ->where('is_approved', true);
+    
+        if ($request->has('komoditas') && $request->komoditas !== '') {
+            $produkList->where('jenis_komoditas', $request->komoditas);
+        }
+    
+        $produkList = $produkList->get();
+    
+        return view('katalog', compact('produkList'));
     }
 
     private function uploadImages($images)

@@ -2,12 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\PreferenceController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KomoditasController;
 use App\Http\Controllers\BudidayaController;
-use App\Http\Controllers\LoginPenggunaAuthController;
-use App\Http\Controllers\RegisterPenggunaAuthController;
+use App\Http\Controllers\LoginRegisterUserController;
 use App\Http\Controllers\PembudidayaLoginRegisterAuthController;
 use App\Http\Controllers\AdminLoginAuthController;
 use App\Http\Controllers\ProfilController;
@@ -24,7 +23,7 @@ Route::get('/welcome', fn () => view('welcome'));
 Route::view('/tentangkami', 'tentangkami')->name('tentangkami');
 Route::view('/daftar_pembudidaya', 'daftar_pembudidaya')->name('daftar_pembudidaya');
 Route::view('/detail_pembudidaya', 'detail_pembudidaya')->name('detail_pembudidaya');
-Route::view('/katalog', 'katalog')->name('katalog');
+Route::get('/katalog', [ProdukController::class, 'katalog'])->name('katalog');
 Route::view('/detail', 'detail')->name('detail');
 Route::view('/profil_pembudidaya', 'profil_pembudidaya')->name('profil_pembudidaya');
 
@@ -38,15 +37,17 @@ Route::resource('budidaya', BudidayaController::class);
 
 // ─── Auth Pengguna Umum ───────────────────────────────────────────────────────
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', fn () => view('login'))->name('login');
-    Route::post('/login', [LoginPenggunaAuthController::class, 'authenticate'])->name('login.post');
+    Route::get('/login', [LoginRegisterUserController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginRegisterUserController::class, 'authenticate'])->name('login.post');
 
-    Route::get('/register', [RegisterPenggunaAuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [RegisterPenggunaAuthController::class, 'register'])->name('register.post');
+    Route::get('/register', [LoginRegisterUserController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [LoginRegisterUserController::class, 'register'])->name('register.post');
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::get('/preferensi', [PreferenceController::class, 'create'])->name('preferensi.form');
+    Route::post('/preferensi', [PreferenceController::class, 'store'])->name('preferensi.store');
 });
 
 // ─── Logout (untuk semua guard) ───────────────────────────────────────────────
@@ -62,7 +63,7 @@ Route::post('/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
 
-    return redirect()->route('beranda');
+    return redirect()->route('home');
 })->name('logout');
 
 // ─── Login & Register Admin ───────────────────────────────────────────────────
