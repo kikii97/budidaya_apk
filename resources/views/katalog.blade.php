@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <title>SIBIKANDA</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="author" content="">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+@section('title', 'Katalog - SIBIKANDA')
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet"
@@ -292,8 +282,13 @@
             </div>
         </div>
 
-    </header>
+    </header> --}}
+<!-- Header Navbar -->
+@section('header')
+    @include('partials.header')
+@endsection
 
+@section('content')
     <div class="container" style="padding-top: 2rem; padding-bottom: 10rem;">
         <!-- Top Bar -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -397,8 +392,7 @@
                         <a href="{{ url('detail') }}">
                             <div class="product-card shadow-sm">
                                 <div class="position-relative">
-                                    <img src="{{ asset('images/udang.jpg') }}" class="product-image w-100"
-                                        alt="Product">
+                                    <img src="{{ asset('images/udang.jpg') }}" class="product-image w-100" alt="Product">
                                     <span class="discount-badge">-20%</span>
                                     <button class="wishlist-btn">
                                         <i class="bi bi-heart"></i>
@@ -552,166 +546,8 @@
                             </div>
                         </div>
                     </div>
-
-
-
-                    <!-- More product cards can be added here -->
-
                 </div>
             </div>
         </div>
     </div>
-
-    <footer class="py-4">
-        <div class="container-lg">
-            <div class="row">
-
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer-menu">
-                        <img src="{{ asset('images/logo1.png') }}" width="170" height="auto" alt="logo">
-                        <div class="social-links mt-3">
-                            <ul class="d-flex list-unstyled gap-2">
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#facebook"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#twitter"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#youtube"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#instagram"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-sm-6">
-                    <div class="footer-menu">
-                        <h5 class="widget-title">Sibikanda</h5>
-                        <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">About us</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Conditions </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Our Journals</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Careers</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Affiliate Programme</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Ultras Press</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="footer-menu">
-                        <h5 class="widget-title">Quick Links</h5>
-                        <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Offers</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Discount Coupons</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Stores</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Track Order</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Shop</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Info</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="footer-menu">
-                        <h5 class="widget-title">Customer Service</h5>
-                        <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">FAQ</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Contact</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Privacy Policy</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Returns & Refunds</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Cookie Guidelines</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Delivery Information</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <div id="footer-bottom">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-md-6 copyright">
-                    <p>© 2024 Organic. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.getElementById("user-icon").addEventListener("click", function() {
-            var dropdown = document.getElementById("user-dropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        });
-
-        document.addEventListener("click", function(e) {
-            var dropdown = document.getElementById("user-dropdown");
-            if (!document.getElementById("user-icon").contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.style.display = "none";
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
-    </script>
-    <script src="{{ asset('js/plugins.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
-</body>
-
-</html>
+@endsection

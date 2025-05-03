@@ -12,11 +12,17 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/vendor.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/style.css') }}">
+
+    <link href="{{ asset('apk_gis/public/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{{ asset('apk_gis/public/css/main.css') }}" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,14 +30,10 @@
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <style>
-        .text-primary {
-            color: #005a8e !important;
-            /* ganti sesuai warna yang kamu mau */
-        }
     </style>
 </head>
 
-<body>
+<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <defs>
             <symbol xmlns="http://www.w3.org/2000/svg" id="facebook" viewBox="0 0 24 24">
@@ -58,41 +60,17 @@
                 <path fill="currentColor"
                     d="M17.92 11.62a1 1 0 0 0-.21-.33l-5-5a1 1 0 0 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l5-5a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76Z" />
             </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="calendar" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M19 4h-2V3a1 1 0 0 0-2 0v1H9V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7h16Zm0-9H4V7a1 1 0 0 1 1-1h2v1a1 1 0 0 0 2 0V6h6v1a1 1 0 0 0 2 0V6h2a1 1 0 0 1 1 1Z" />
-            </symbol>
             <symbol xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z" />
             </symbol>
+            <symbol xmlns="http://www.w3.org/2000/svg" id="detail" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+            </symbol>
+            
             <symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M8.5 19a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 8.5 19ZM19 16H7a1 1 0 0 1 0-2h8.491a3.013 3.013 0 0 0 2.885-2.176l1.585-5.55A1 1 0 0 0 19 5H6.74a3.007 3.007 0 0 0-2.82-2H3a1 1 0 0 0 0 2h.921a1.005 1.005 0 0 1 .962.725l.155.545v.005l1.641 5.742A3 3 0 0 0 7 18h12a1 1 0 0 0 0-2Zm-1.326-9l-1.22 4.274a1.005 1.005 0 0 1-.963.726H8.754l-.255-.892L7.326 7ZM16.5 19a1.5 1.5 0 1 0 1.5 1.5a1.5 1.5 0 0 0-1.5-1.5Z" />
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="delivery" viewBox="0 0 32 32">
-                <path fill="currentColor"
-                    d="m29.92 16.61l-3-7A1 1 0 0 0 26 9h-3V7a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v17a1 1 0 0 0 1 1h2.14a4 4 0 0 0 7.72 0h6.28a4 4 0 0 0 7.72 0H29a1 1 0 0 0 1-1v-7a1 1 0 0 0-.08-.39M23 11h2.34l2.14 5H23ZM9 26a2 2 0 1 1 2-2a2 2 0 0 1-2 2m10.14-3h-6.28a4 4 0 0 0-7.72 0H4V8h17v12.56A4 4 0 0 0 19.14 23M23 26a2 2 0 1 1 2-2a2 2 0 0 1-2 2m5-3h-1.14A4 4 0 0 0 23 20v-2h5Z" />
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="organic" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M0 2.84c1.402 2.71 1.445 5.241 2.977 10.4c1.855 5.341 8.703 5.701 9.21 5.711c.46.726 1.513 1.704 3.926 2.21l.268-1.272c-2.082-.436-2.844-1.239-3.106-1.68l-.005.006c.087-.484 1.523-5.377-1.323-9.352C7.182 3.583 0 2.84 0 2.84m24 .84c-3.898.611-4.293-.92-11.473 3.093a11.879 11.879 0 0 1 2.625 10.05c3.723-1.486 5.166-3.976 5.606-6.466c0 0 1.27-4.716 3.242-6.677M12.527 6.773l-.002-.002v.004zM2.643 5.22s5.422 1.426 8.543 11.543c-2.945-.889-4.203-3.796-4.63-5.168h.006a15.863 15.863 0 0 0-3.92-6.375z" />
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="fresh" viewBox="0 0 24 24">
-                <g fill="none">
-                    <path
-                        d="M24 0v24H0V0zM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036c-.01-.003-.019 0-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" />
-                    <path fill="currentColor"
-                        d="M20 9a1 1 0 0 1 1 1v1a8 8 0 0 1-8 8H9.414l.793.793a1 1 0 0 1-1.414 1.414l-2.496-2.496a.997.997 0 0 1-.287-.567L6 17.991a.996.996 0 0 1 .237-.638l.056-.06l2.5-2.5a1 1 0 0 1 1.414 1.414L9.414 17H13a6 6 0 0 0 6-6v-1a1 1 0 0 1 1-1m-4.793-6.207l2.5 2.5a1 1 0 0 1 0 1.414l-2.5 2.5a1 1 0 1 1-1.414-1.414L14.586 7H11a6 6 0 0 0-6 6v1a1 1 0 1 1-2 0v-1a8 8 0 0 1 8-8h3.586l-.793-.793a1 1 0 0 1 1.414-1.414" />
-                </g>
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="star-full" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="m3.1 11.3l3.6 3.3l-1 4.6c-.1.6.1 1.2.6 1.5c.2.2.5.3.8.3c.2 0 .4 0 .6-.1c0 0 .1 0 .1-.1l4.1-2.3l4.1 2.3s.1 0 .1.1c.5.2 1.1.2 1.5-.1c.5-.3.7-.9.6-1.5l-1-4.6c.4-.3 1-.9 1.6-1.5l1.9-1.7l.1-.1c.4-.4.5-1 .3-1.5s-.6-.9-1.2-1h-.1l-4.7-.5l-1.9-4.3s0-.1-.1-.1c-.1-.7-.6-1-1.1-1c-.5 0-1 .3-1.3.8c0 0 0 .1-.1.1L8.7 8.2L4 8.7h-.1c-.5.1-1 .5-1.2 1c-.1.6 0 1.2.4 1.6" />
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="star-half" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="m3.1 11.3l3.6 3.3l-1 4.6c-.1.6.1 1.2.6 1.5c.2.2.5.3.8.3c.2 0 .4 0 .6-.1c0 0 .1 0 .1-.1l4.1-2.3l4.1 2.3s.1 0 .1.1c.5.2 1.1.2 1.5-.1c.5-.3.7-.9.6-1.5l-1-4.6c.4-.3 1-.9 1.6-1.5l1.9-1.7l.1-.1c.4-.4.5-1 .3-1.5s-.6-.9-1.2-1h-.1l-4.7-.5l-1.9-4.3s0-.1-.1-.1c-.1-.7-.6-1-1.1-1c-.5 0-1 .3-1.3.8c0 0 0 .1-.1.1L8.7 8.2L4 8.7h-.1c-.5.1-1 .5-1.2 1c-.1.6 0 1.2.4 1.6m8.9 5V5.8l1.7 3.8c.1.3.5.5.8.6l4.2.5l-3.1 2.8c-.3.2-.4.6-.3 1c0 .2.5 2.2.8 4.1l-3.6-2.1c-.2-.2-.3-.2-.5-.2" />
             </symbol>
             <symbol xmlns="http://www.w3.org/2000/svg" id="user" viewBox="0 0 24 24">
                 <g fill="none" stroke="currentColor" stroke-width="1.5">
@@ -101,31 +79,16 @@
                     <path stroke-linecap="round" d="M17.97 20c-.16-2.892-1.045-5-5.97-5s-5.81 2.108-5.97 5" />
                 </g>
             </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="wishlist" viewBox="0 0 24 24">
+            <symbol xmlns="http://www.w3.org/2000/svg" id="detail" viewBox="0 0 24 24">
                 <g fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
                     <path
-                        d="M21 16.09v-4.992c0-4.29 0-6.433-1.318-7.766C18.364 2 16.242 2 12 2C7.757 2 5.636 2 4.318 3.332C3 4.665 3 6.81 3 11.098v4.993c0 3.096 0 4.645.734 5.321c.35.323.792.526 1.263.58c.987.113 2.14-.907 4.445-2.946c1.02-.901 1.529-1.352 2.118-1.47c.29-.06.59-.06.88 0c.59.118 1.099.569 2.118 1.47c2.305 2.039 3.458 3.059 4.445 2.945c.47-.053.913-.256 1.263-.579c.734-.676.734-2.224.734-5.321Z" />
-                    <path stroke-linecap="round" d="M15 6H9" />
+                        d="M1 12C2.7 7.6 6.9 4.5 12 4.5C17.1 4.5 21.3 7.6 23 12C21.3 16.4 17.1 19.5 12 19.5C6.9 19.5 2.7 16.4 1 12Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </g>
             </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="shopping-bag" viewBox="0 0 24 24">
-                <g fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path
-                        d="M3.864 16.455c-.858-3.432-1.287-5.147-.386-6.301C4.378 9 6.148 9 9.685 9h4.63c3.538 0 5.306 0 6.207 1.154c.901 1.153.472 2.87-.386 6.301c-.546 2.183-.818 3.274-1.632 3.91c-.814.635-1.939.635-4.189.635h-4.63c-2.25 0-3.375 0-4.189-.635c-.814-.636-1.087-1.727-1.632-3.91Z" />
-                    <path
-                        d="m19.5 9.5l-.71-2.605c-.274-1.005-.411-1.507-.692-1.886A2.5 2.5 0 0 0 17 4.172C16.56 4 16.04 4 15 4M4.5 9.5l.71-2.605c.274-1.005.411-1.507.692-1.886A2.5 2.5 0 0 1 7 4.172C7.44 4 7.96 4 9 4" />
-                    <path d="M9 4a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 13v4m8-4v4m-4-4v4" />
-                </g>
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="seafood" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M13.497 4.564c1.649-.906 3.859-1.137 6.669-.694c.119.685.221 1.711.147 2.86c-.102 1.572-.53 3.278-1.602 4.656l-.165.212l-.036.263v.002l-.002.014l-.013.074a9.298 9.298 0 0 1-1.294 3.217l-.84-1.688l-.96.72C13.65 15.513 10.903 16 9 16H8v1c0 .77-.004 1.293-.106 1.804a3.722 3.722 0 0 1-.147.53l-4.011-4.012a8.2 8.2 0 0 1 .978-.209A10.285 10.285 0 0 1 5.985 15H7v-1c0-2.697.864-3.993 1.83-5.442L9.202 8L7.428 5.339a9.688 9.688 0 0 1 1.765-.411c.609-.088 1.228-.13 1.773-.123c.202.002.385.012.548.026c.09.768.373 1.643.861 2.475c.725 1.236 1.938 2.442 3.774 3.13l.936.351l.703-1.872l-.937-.351c-1.364-.512-2.234-1.39-2.75-2.27c-.385-.655-.557-1.28-.604-1.73m6.947 7.845c1.285-1.759 1.752-3.81 1.865-5.55c.117-1.806-.14-3.371-.344-4.121l-.164-.605l-.616-.116c-3.425-.643-6.471-.492-8.855.91a7.649 7.649 0 0 0-1.338-.122c-.66-.009-1.383.042-2.083.143c-.698.1-1.397.252-2.004.455c-.575.193-1.193.471-1.612.89l-.58.58L6.8 8.003c-.813 1.256-1.6 2.711-1.767 5.054c-.19.02-.4.045-.622.08c-.857.131-2.032.409-2.965 1.03l-1.015.678l7.725 7.725l.676-1.015c.563-.845.87-1.59 1.024-2.359c.083-.413.118-.823.133-1.231c1.704-.117 3.837-.545 5.612-1.523l1.12 2.25l.983-.983c1.188-1.189 1.88-2.582 2.273-3.653a11.298 11.298 0 0 0 .467-1.646M17.5 4.58l1.417 1.417L17.5 7.414l-1.417-1.417z" />
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="beverages" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M4 2h3.323l1.2 3H3v2h2.118l.827 14.059a1 1 0 0 0 .998.941h10.114a1 1 0 0 0 .998-.941L18.882 7H21V5H10.677l-2-5H4zm3.3 8.025L7.12 7h9.758l-.292 4.967c-2.307-.114-3.164-.475-4.216-.896c-1.092-.436-2.4-.936-5.072-1.046m.117 2.008c2.304.114 3.172.48 4.223.9c1.06.424 2.316.905 4.83 1.031L16.113 20H7.886z" />
-            </symbol>
+
         </defs>
     </svg>
 
@@ -134,7 +97,7 @@
         </div>
     </div>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
+    {{-- <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
 
         <div class="offcanvas-header justify-content-between">
             <h4 class="fw-normal text-uppercase fs-6">Menu</h4>
@@ -284,126 +247,125 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+            <a class="logo d-flex align-items-center me-auto me-xl-0">
+                <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="">
+            </a>
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="#beranda" class="active">Beranda<br></a></li>
+                    <li><a href="#komoditas">Komoditas</a></li>
+                    <li><a href="#budidaya">Budidaya</a></li>
+                    <li><a href="#peta">Peta Budidaya</a></li>
+                    <li><a href="#kami">Tentang Kami</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas"
+                    data-bs-target="#mobileNav"></i>
+            </nav>
+            <div class="dropdown d-inline-block d-none d-xl-block">
+                <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#" id="loginDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Log In
+                </a>
+                <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
+                    aria-labelledby="loginDropdown">
+                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
+                    <li><a class="dropdown-item py-1 px-3 small" href="login-pembudidaya.html">Log In
+                            Pembudidaya</a></li>
+                    <li>
+                        <hr class="dropdown-divider my-1">
+                    </li>
+                    <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
+                </ul>
             </div>
         </div>
-
     </header>
 
-    <section
-        style="background-image: url('{{ asset('images/tambak-ikan.jpg') }}');background-repeat: no-repeat;background-size: cover;">
-        <div class="container-lg">
+    <!-- Mobile Menu (Offcanvas) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="mobileNavLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li><a class="nav-link" href="#beranda">Beranda</a></li>
+                <li><a class="nav-link" href="#komoditas">Komoditas</a></li>
+                <li><a class="nav-link" href="#budidaya">Budidaya</a></li>
+                <li><a class="nav-link" href="#peta">Peta Budidaya</a></li>
+                <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
+
+                <!-- Log In dropdown di mobile -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Log In
+                    </a>
+                    <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
+                        aria-labelledby="mobileLoginDropdown">
+                        <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
+                        <li><a class="dropdown-item py-2" href="login-pembudidaya.html">Log In Pembudidaya</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item py-2" href="signup.html">📝Gabung Investor</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <section id="beranda"
+        style="background-image: url('{{ asset('apk_gis/public/images/tambak-ikan.jpg') }}');background-repeat: no-repeat;background-size: cover;">
+        <div class="container-lg mt-3">
             <div class="row">
-                <div class="col-lg-6 pt-4 mt-5">
-                    <h2 class="display-1 ls-1"><span class="fw-bold text-primary">Inkubator</span> Bisnis <span
-                            class="fw-bold">Perikanan</span></h2>
-                    <p class="fs-4">Temukan informasi lengkap tentang budidaya ikan unggulan di Indramayu.</p>
-                    <div class="d-flex gap-3">
-                        <a href="{{ url('register') }}" class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
+                <div class="col-lg-6">
+                    <h2 class="display-1 ls-1">
+                        <span class="fw-bold text-primary">Inkubator</span>
+                        Bisnis
+                        <span class="fw-bold">Perikanan</span>
+                    </h2>
+                    <p class="fs-5">Temukan informasi lengkap tentang budidaya ikan unggulan di Indramayu.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="{{ url('register') }}"
+                            class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
                             Investor</a>
                     </div>
-                    <div class="row my-5" style="margin-bottom: 2rem!important;">
-                        <div class="col">
-                            <div class="row text-dark">
-                                <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">6+</p>
-                                </div>
-                                <div class="col">
-                                    <p class="text-uppercase lh-sm mb-0">Komoditas Unggulan</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row text-dark">
-                                <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">100+</p>
-                                </div>
-                                <div class="col">
-                                    <p class="text-uppercase lh-sm mb-0">Mitra Binaan</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row text-dark">
-                                <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">10+</p>
-                                </div>
-                                <div class="col">
-                                    <p class="text-uppercase lh-sm mb-0">Lokasi Budidaya</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-
-            <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center">
-                <div class="col">
-                    <div class="card border-0 bg-primary rounded-0 p-4 text-light">
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <svg width="60" height="60">
-                                    <use xlink:href="#fresh"></use>
-                                </svg>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card-body p-0">
-                                    <h5 class="text-light">Fresh from farm</h5>
-                                    <p class="card-text">Produk segar, langsung dari pembudidaya terpercaya.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border-0 bg-secondary rounded-0 p-4 text-light">
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <svg width="60" height="60">
-                                    <use xlink:href="#organic"></use>
-                                </svg>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card-body p-0">
-                                    <h5 class="text-light">100% Organic</h5>
-                                    <p class="card-text">Hasil budidaya tanpa bahan kimia berbahaya.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border-0 bg-danger rounded-0 p-4 text-light">
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <svg width="60" height="60">
-                                    <use xlink:href="#delivery"></use>
-                                </svg>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card-body p-0">
-                                    <h5 class="text-light">Fast delivery</h5>
-                                    <p class="card-text">Pengiriman cepat dengan packaging khusus dan aman.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
+        <svg class="hero-waves mt-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28"
+            preserveAspectRatio="none">
+            <defs>
+                <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
+                </path>
+            </defs>
+
+            <g class="wave1">
+                <use xlink:href="#wave-path" x="50" y="10" fill="white"></use>
+            </g>
+            <g class="wave2">
+                <use xlink:href="#wave-path" x="50" y="9" fill="white" opacity="0.7"></use>
+            </g>
+            <g class="wave3">
+                <use xlink:href="#wave-path" x="50" y="8" fill="white" opacity="0.3"></use>
+            </g>
+        </svg>
+
     </section>
 
-    <section id="komoditas" class="py-5 overflow-hidden">
+    <section id="komoditas" class="overflow-hidden">
         <div class="container-lg">
             <div class="row">
                 <div class="col-md-12">
 
-                    <div class="section-header d-flex flex-wrap justify-content-between mb-5">
+                    <div class="section-header d-flex flex-wrap justify-content-between">
                         <h2 class="section-title">Komoditas Unggulan</h2>
 
                         <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary me-2">View All</a>
                             <div class="swiper-buttons">
                                 <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
                                 <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
@@ -418,7 +380,7 @@
 
                     <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
-                            <a href="{{ route('katalog', ['komoditas' => 'udang']) }}" class="nav-link swiper-slide text-center">
+                            {{-- <a href="{{ route('katalog', ['komoditas' => 'udang']) }}" class="nav-link swiper-slide text-center">
                                 <img src="{{ asset('images/udang.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
                             </a>
@@ -439,7 +401,35 @@
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
                             </a>
                             <a href="{{ route('katalog', ['komoditas' => 'ikan-nila']) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail">
+                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail"> --}}
+                            <a class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('apk_gis/public/images/udang.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
+                                <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
+                            </a>
+                            <a class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('apk_gis/public/images/rumputlaut.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
+                                <h4 class="fs-6 mt-3 fw-normal category-title">Rumput Laut</h4>
+                            </a>
+                            <a class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('apk_gis/public/images/ikanbandeng.jpg') }}"
+                                    class="rounded-circle" alt="Category Thumbnail">
+                                <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Bandeng</h4>
+                            </a>
+                            <a class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('apk_gis/public/images/ikangurame.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
+                                <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Gurame</h4>
+                            </a>
+                            <a class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('apk_gis/public/images/ikanlele.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
+                                <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
+                            </a>
+                            <a class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('apk_gis/public/images/ikannila.jpeg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Nila</h4>
                             </a>
                         </div>
@@ -451,25 +441,19 @@
 
     <section id="budidaya" class="pb-3">
         <div class="container-lg">
-
             <div class="row">
                 <div class="col-md-12">
-
-                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
-
+                    <div class="section-header d-flex flex-wrap justify-content-between">
                         <h2 class="section-title">Etalase Produk Budidaya</h2>
-
                         <div class="d-flex align-items-center">
                             <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
                         </div>
                     </div>
-
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-12">
-                    <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                    {{-- <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
                         @foreach($recommendedProducts as $product)
                         <div class="col">
                             <div class="product-item">
@@ -489,282 +473,395 @@
                                     <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
             
                                     {{-- Info komoditas dan pembudidaya --}}
-                                    <div class="mb-1">
+                                    {{-- <div class="mb-1">
                                         <div class="fw-semibold fs-6">{{ $product->jenis_komoditas ?? 'Tidak tersedia' }}</div>
-                                        <div class="text-muted small">Pembudidaya: <strong>{{ $product->pembudidaya->name ?? 'Tidak diketahui' }}</strong></div>
+                                        <div class="text-muted small">Pembudidaya: <strong>{{ $product->pembudidaya->name ?? 'Tidak diketahui' }}</strong></div> --}}
+                    <div
+                        class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="{{ url('detail') }}" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-1.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Udang Vaname Super Fresh</h3>
+                                    <div>
                                     </div>
             
                                     {{-- Kisaran harga dari database --}}
                                     <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">
+                                        {{-- <span class="text-dark fw-semibold">
                                             Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} - Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
-                                        </span>
+                                        </span> --}}
+                                        <span class="text-dark fw-semibold">Rp70.000 – Rp75.000</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
                                     </div>
             
                                     {{-- Input jumlah --}}
                                     <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
+                                        {{-- <div class="row g-1 mt-2">
                                             <div class="col-3">
                                                 <input type="number" name="quantity" class="form-control border-dark-subtle input-number quantity" value="1">
+                                            </div> --}}
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            <div class="col-7">
+                                                <a href="#" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+                                                    <svg width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2">
+                                                <a href="#" class="btn btn-outline-dark rounded-1 p-2 fs-6">
+                                                    <svg width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
+
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="index.html" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-2.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Rumput Laut Gracilaria</h3>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">Rp12.000 – Rp14.000</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            <div class="col-7"><a href="#"
+                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2">
+                                                <a href="#" class="btn btn-outline-dark rounded-1 p-2 fs-6">
+                                                    <svg width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="index.html" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-3.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Rumput Laut Siap Olah</h3>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">Rp6.000 – Rp7.500</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            <div class="col-7"><a href="#"
+                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2"><a href="#"
+                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- @endforeach
                     </div>
                 </div>
-            </div>
+            </div> --}}
             
             
             
+
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="index.html" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-6.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Gurame Segar</h3>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">Rp40.000 – Rp43.000</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            
+                                            <div class="col-7"><a href="#"
+                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2"><a href="#"
+                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="index.html" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-7.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Udang Windu Jumbo</h3>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">Rp155.000 – Rp160.000</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            
+                                            <div class="col-7"><a href="#"
+                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2"><a href="#"
+                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="index.html" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-8.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Bandeng Organik Air Payau</h3>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">Rp33.000 – Rp35.000</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            
+                                            <div class="col-7"><a href="#"
+                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2"><a href="#"
+                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="index.html" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-9.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Lele Organik Air Tawar</h3>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">Rp25.000 – Rp30.000</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            
+                                            <div class="col-7"><a href="#"
+                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2"><a href="#"
+                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="index.html" title="Product Title">
+                                        <img src="{{ asset('apk_gis/public/images/product-thumb-10.png') }}"
+                                            alt="Product Thumbnail" class="tab-image">
+                                    </a>
+                                </figure>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">Nila Merah Segar</h3>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <span class="text-dark fw-semibold">Rp28.000 – Rp32.000</span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            
+                                            <div class="col-7"><a href="#"
+                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
+                                            </div>
+                                            <div class="col-2"><a href="#"
+                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
+                                                        width="18" height="18">
+                                                        <use xlink:href="#heart"></use>
+                                                    </svg></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- / product-grid -->
-
-
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="latest-blog" class="pb-4">
+    <!-- Start Map section -->
+    <section id="peta" class="py-5"
+        style="display: flex; justify-content: center; align-items: center; padding-top: 1rem !important;">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9207.358598888495!2d-85.64847801496286!3d30.183918972289003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x2320479d70eb6202!2sDillard&#39;s!5e0!3m2!1sbn!2sbd!4v1462359735720"
+            width="90%" height="500px" frameborder="0"allowfullscreen></iframe>
+    </section>
+    <!-- End Map section -->
+
+    <footer id="kami"
+        style="background: linear-gradient(to top, #d3effa, #ffffff); font-size: 13px; line-height: 1.6; color: #333; padding-top: 3rem;">
+        <!-- Pembatas -->
+        <div style="border-top: 1px solid #bde5f4; margin-bottom: 20px;"></div>
+
         <div class="container-lg">
             <div class="row">
-                <div class="section-header d-flex align-items-center justify-content-between my-4">
-                    <h2 class="section-title">Our Recent Blog</h2>
-                    <a href="#" class="btn btn-primary">View All</a>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    {{-- <img src="{{ asset('apk_gis/public/images/logo1.png') }}" width="160" alt="logo"> --}}
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                            <svg width="14" height="14">
+                                <use xlink:href="#facebook"></use>
+                            </svg>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                            <svg width="14" height="14">
+                                <use xlink:href="#twitter"></use>
+                            </svg>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                            <svg width="14" height="14">
+                                <use xlink:href="#youtube"></use>
+                            </svg>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                            <svg width="14" height="14">
+                                <use xlink:href="#instagram"></use>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <article class="post-item card border-0 shadow-sm p-3">
-                        <div class="image-holder zoom-effect">
-                            <a href="#">
-                                <img src="{{ asset('images/post-thumbnail-1.jpg') }}" alt="post"
-                                    class="card-img-top">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                                <div class="meta-date"><svg width="16" height="16">
-                                        <use xlink:href="#calendar"></use>
-                                    </svg>22 Aug 2021</div>
-                            </div>
-                            <div class="post-header">
-                                <h3 class="post-title">
-                                    <a href="#" class="text-decoration-none">Top 10 casual look ideas to dress
-                                        up your
-                                        kids</a>
-                                </h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim
-                                    tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                            </div>
-                        </div>
-                    </article>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <h6 class="fw-bold mb-2 text-dark">Tentang Kami</h6>
+                    <p class="text-muted mb-1">
+                        Aplikasi Inkubator Bisnis Ikan Indramayu yang menyediakan info komoditas unggulan dan
+                        menghubungkan pembudidaya dengan mitra bisnis.
+                    </p>
                 </div>
-                <div class="col-md-4">
-                    <article class="post-item card border-0 shadow-sm p-3">
-                        <div class="image-holder zoom-effect">
-                            <a href="#">
-                                <img src="{{ asset('images/post-thumbnail-2.jpg') }}" alt="post"
-                                    class="card-img-top">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                                <div class="meta-date"><svg width="16" height="16">
-                                        <use xlink:href="#calendar"></use>
-                                    </svg>25 Aug 2021</div>
-                            </div>
-                            <div class="post-header">
-                                <h3 class="post-title">
-                                    <a href="#" class="text-decoration-none">Latest trends of wearing street
-                                        wears
-                                        supremely</a>
-                                </h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim
-                                    tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                            </div>
-                        </div>
-                    </article>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <h6 class="fw-bold mb-2 text-dark">Waktu Buka</h6>
+                    <ul class="list-unstyled text-muted mb-1">
+                        <li>Senin - Jumat: 08.00 - 16.00</li>
+                        <li>Sabtu - Minggu: Tutup</li>
+                    </ul>
                 </div>
-                <div class="col-md-4">
-                    <article class="post-item card border-0 shadow-sm p-3">
-                        <div class="image-holder zoom-effect">
-                            <a href="#">
-                                <img src="{{ asset('images/post-thumbnail-3.jpg') }}" alt="post"
-                                    class="card-img-top">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                                <div class="meta-date"><svg width="16" height="16">
-                                        <use xlink:href="#calendar"></use>
-                                    </svg>28 Aug 2021</div>
-                            </div>
-                            <div class="post-header">
-                                <h3 class="post-title">
-                                    <a href="#" class="text-decoration-none">10 Different Types of comfortable
-                                        clothes
-                                        ideas</a>
-                                </h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim
-                                    tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                            </div>
-                        </div>
-                    </article>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <h6 class="fw-bold mb-2 text-dark">Lokasi Perusahaan</h6>
+                    <p class="text-muted mb-1">Jl. Raya Pabean Udik No.1, Pabeanudik, Kec. Indramayu, Kabupaten
+                        Indramayu, Jawa Barat 45219.</p>
+                    <a href="https://www.google.com/maps/place/Dinas+Perikanan+dan+Kelautan+Pemerintah+Kabupaten+Indramayu/@-6.3179702,108.3246886,17z/data=!4m6!3m5!1s0x2e6ebc7575d24923:0x3e8a1e67a14c823c!8m2!3d-6.3179702!4d108.3272635!16s%2Fg%2F11bc7p2yjc?entry=ttu&g_ep=EgoyMDI1MDQyOS4wIKXMDSoJLDEwMjExNDU1SAFQAw%3D%3D"target="_blank"
+                        class="text-decoration-none text-primary fw-semibold">
+                        📍 Lihat di Google Maps
+                    </a>
                 </div>
+
             </div>
         </div>
-    </section>
 
-    <section class="py-4">
-        <div class="container-lg">
-            <h2 class="my-4">People are also looking for</h2>
-            <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Sweet Vanilla Yogurt</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Foster Farms Takeout Crispy wings</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Warrior Blend Organic</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chao Cheese Creamy</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
-        </div>
-    </section>
-
-    <footer class="py-4">
-        <div class="container-lg">
-            <div class="row">
-
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer-menu">
-                        <img src="{{ asset('images/logo1.png') }}" width="170" height="auto" alt="logo">
-                        <div class="social-links mt-3">
-                            <ul class="d-flex list-unstyled gap-2">
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#facebook"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#twitter"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#youtube"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="btn btn-outline-light">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#instagram"></use>
-                                        </svg>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-sm-6">
-                    <div class="footer-menu">
-                        <h5 class="widget-title">Sibikanda</h5>
-                        <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">About us</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Conditions </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Our Journals</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Careers</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Affiliate Programme</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Ultras Press</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="footer-menu">
-                        <h5 class="widget-title">Quick Links</h5>
-                        <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Offers</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Discount Coupons</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Stores</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Track Order</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Shop</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Info</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="footer-menu">
-                        <h5 class="widget-title">Customer Service</h5>
-                        <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">FAQ</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Contact</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Privacy Policy</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Returns & Refunds</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Cookie Guidelines</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Delivery Information</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="text-center py-2 mt-2" style="background-color: #c6eaf7;">
+            <small class="text-muted">© 2025 SIBIKANDA. All rights reserved.</small>
         </div>
     </footer>
-    <div id="footer-bottom">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-md-6 copyright">
-                    <p>© 2024 Organic. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
     <script>
         document.getElementById("user-icon").addEventListener("click", function() {
             var dropdown = document.getElementById("user-dropdown");
@@ -778,13 +875,38 @@
             }
         });
     </script>
-    <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('#navmenu a');
+
+            let scrollPos = window.scrollY + 200;
+
+            sections.forEach(section => {
+                if (scrollPos >= section.offsetTop && scrollPos < section.offsetTop + section
+                    .offsetHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + section.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="{{ asset('apk_gis/public/js/jquery-1.11.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('js/plugins.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/plugins.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/script.js') }}"></script>
+
 </body>
 
 </html>
