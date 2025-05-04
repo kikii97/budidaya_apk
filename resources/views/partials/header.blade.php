@@ -7,7 +7,7 @@
             <ul>
                 <li><a href="{{ url('/') }}">Beranda<br></a></li>
                 <li><a href="{{ url('/#komoditas') }}">Komoditas</a></li>
-                <li><a href="{{ url('/#budidaya') }}" class="active">Budidaya</a></li>
+                <li><a href="{{ url('/#budidaya') }}">Budidaya</a></li>
                 <li><a href="{{ url('/#peta') }}">Peta Budidaya</a></li>
                 <li><a href="#kami">Tentang Kami</a></li>
             </ul>
@@ -42,7 +42,7 @@
         <ul class="navbar-nav">
             <li><a class="nav-link" href="{{ url('/') }}">Beranda<br></a></li>
             <li><a class="nav-link" href="{{ url('/#komoditas') }}">Komoditas</a></li>
-            <li><a class="nav-link" href="{{ url('/#budidaya') }}" class="active">Budidaya</a></li>
+            <li><a class="nav-link" href="{{ url('/#budidaya') }}">Budidaya</a></li>
             <li><a class="nav-link" href="{{ url('/#peta') }}">Peta Budidaya</a></li>
             <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
             <!-- Log In dropdown di mobile -->

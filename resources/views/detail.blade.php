@@ -14,8 +14,8 @@
             <div class="col-md-6 mb-4">
                 <div class="card">
                     <img id="mainImage"
-                        src="https://images.unsplash.com/photo-1444881421460-d838c3b98f95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                        class="card-img-top" alt="Product Image">
+                    src="https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                    class="img-thumbnail thumbnail-img" alt="Product-Image">
 
                     <div class="card-body">
                         <div class="row g-2">
@@ -72,9 +72,9 @@
                     <button class="btn btn-success" type="button">
                         <i class="fa-brands fa-whatsapp" style="padding-right: 10px;"></i>Hubungi via Whatsapp
                     </button>
-                    <button class="btn btn-outline-secondary" type="button">
+                    <a href="{{ url('profile') }}" class="btn btn-outline-secondary" type="button">
                         <i class="fa-regular fa-user" style="padding-right: 15px;"></i>Profile Pembudidaya
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Additional Info -->
