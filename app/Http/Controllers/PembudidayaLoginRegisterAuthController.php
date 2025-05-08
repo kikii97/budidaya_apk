@@ -15,7 +15,7 @@ class PembudidayaLoginRegisterAuthController extends Controller
         $pembudidaya = Auth::guard('pembudidaya')->user(); // ambil data pembudidaya yang login
         $produk = $pembudidaya->produk; // ambil semua produk milik pembudidaya ini
     
-        return view('profil_pembudidaya', compact('pembudidaya', 'produk'));
+        return view('detail_usaha', compact('pembudidaya', 'produk'));
     }
     
 
@@ -102,7 +102,7 @@ class PembudidayaLoginRegisterAuthController extends Controller
             // Jika is_approved === 1 (disetujui), lanjutkan
             session(['pembudidaya_id' => $pembudidaya->id]);
     
-            return redirect()->route('pembudidaya.profil')->with('success', 'Login berhasil.');
+            return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Login berhasil.');
         }
     
         return back()->withErrors([

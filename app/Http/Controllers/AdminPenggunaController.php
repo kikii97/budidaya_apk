@@ -9,7 +9,7 @@ class AdminPenggunaController extends Controller
 {
     public function index()
     {
-        $pengguna = User::paginate(10); // Ambil 10 data per halaman
+        $pengguna = User::orderBy('created_at', 'desc')->paginate(10); 
         return view('admin.pengguna.index', compact('pengguna'));
     }
 

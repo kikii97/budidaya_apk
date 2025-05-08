@@ -35,7 +35,7 @@ class ProdukController extends Controller
                         ->where('is_approved', true)
                         ->get();
 
-        return view('profil_pembudidaya', compact('pembudidaya', 'profil', 'produk'));
+        return view('detail_usaha', compact('pembudidaya', 'profil', 'produk'));
     }
 
     public function create()
@@ -87,7 +87,7 @@ class ProdukController extends Controller
 
         Produk::create($data);
 
-        return redirect()->route('pembudidaya.profil')->with('success', 'Komoditas berhasil diunggah dan menunggu persetujuan admin.');
+        return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Komoditas berhasil diunggah dan menunggu persetujuan admin.');
     }
 
     public function edit($id)
@@ -167,7 +167,7 @@ class ProdukController extends Controller
 
         $produk->delete();
 
-        return redirect()->route('pembudidaya.profil')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Produk berhasil dihapus.');
     }
 
     private function validateProduk(Request $request)

@@ -2,7 +2,6 @@
 
 @section('title', 'Detail Usaha - SIBIKANDA')
 
-<!-- Header Navbar -->
 @section('header')
     @include('partials.header')
 @endsection
@@ -14,96 +13,78 @@
                 <div class="col">
 
                     <div class="rounded-top text-white d-flex flex-wrap align-items-center justify-content-between p-3">
-                        <!-- Profile Info -->
                         <div class="d-flex align-items-center" style="gap: 15px;">
-                            <div style="width: 120
-                            px;">
-                                <img src="{{ asset('apk_gis/public/images/akun.jpg') }}" alt="profile"
-                                    class="img-fluid img-thumbnail" style="width: 100px; z-index: 1;">
+                            <div style="width: 120px;">
+                                <img src="{{ asset('images/akun.jpg') }}" alt="profile"
+                                     class="img-fluid img-thumbnail" style="width: 100px; z-index: 1;">
                             </div>
                             <div>
-                                <h5 class="mb-1 text-dark">Andy Horwitz</h5>
-                                <p class="mb-0" style="color:#005a8e;">New York</p>
+                                <h5 class="mb-1 text-dark">{{ auth()->user()->nama ?? 'Nama Pengguna' }}</h5>
+                                <p class="mb-0" style="color:#005a8e;">{{ auth()->user()->alamat ?? 'Alamat' }}</p>
                             </div>
                         </div>
-                    
-                        <!-- Action Buttons -->
+
                         <div class="d-flex gap-2 mt-2 mt-md-0">
-                            <button type="button" class="btn btn-outline-secondary text-body">
+                            <a href="#" class="btn btn-outline-secondary text-body">
                                 Edit Profile
-                            </button>
-                            <button type="button" class="btn btn-outline-primary text-body">
+                            </a>
+                            <a href="{{ route('pembudidaya.unggah') }}" class="btn btn-outline-primary text-body">
                                 Unggah Produk
-                            </button>
+                            </a>
                         </div>
                     </div>
 
-
                     <div class="mt-0 p-4 text-black" style="font-size: 50%;">
-
                         <div class="d-flex flex-row gap-3">
-
-                            <!-- Recent Photos -->
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-center mb-2 text-body">
-                                    <p class="lead fw-normal mb-0">Produk Saya
-
-                                    </p>
+                                    <p class="lead fw-normal mb-0">Produk Saya</p>
                                     <p class="mb-0">
                                         <a href="#!" class="text-muted" style="font-size: 12px;">Pilih Semua</a>
                                     </p>
                                 </div>
 
                                 <div class="d-flex overflow-auto gap-2">
-                                    <!-- Photo Item -->
-                                    <div class="position-relative mt-2 me-3" style="width: 100px;">
-                                        <img src="{{ asset('apk_gis/public/images/rumputlaut.jpg') }}" alt="image 1"
-                                            class="rounded-3 img-fluid" style="height: auto;">
-
-                                        <!-- Tombol silang kecil di luar foto -->
-                                        <button type="button" class="btn-close position-absolute top-0 end-0 m-1"
-                                            aria-label="Close"
-                                            style="font-size: 13px; background-color: rgba(0, 0, 0, 0.203); border-radius: 50%; border: 2px solid white; transform: translate(50%, -50%);"></button>
-
-                                        <!-- Tombol Detail & Edit -->
-                                        <div class="d-flex justify-content-center gap-1 mt-3">
-                                            <button class="btn btn-sm btn-outline-primary"
-                                                style="font-size: 12px;">Detail</button>
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                style="font-size: 12px;">Edit</button>
+                                    @foreach ($produk as $item)
+                                        <div class="position-relative mt-2 me-3" style="width: 100px;">
+                                            <!-- Menampilkan gambar dengan pengecekan gambar utama -->
+                                            <img src="{{ asset('storage/images/' . ($item->gambar_utama ?? 'default.jpg')) }}" 
+                                                 alt="image" 
+                                                 class="rounded-3 img-fluid" 
+                                                 style="height: auto;">
+                                
+                                            <!-- Tombol Hapus -->
+                                            <form action="{{ route('pembudidaya.produk.destroy', $item->id) }}" method="POST" 
+                                                  class="position-absolute top-0 end-0 m-1" 
+                                                  onsubmit="return confirm('Yakin ingin menghapus produk ini?');" 
+                                                  style="transform: translate(50%, -50%);">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-close"
+                                                        style="font-size: 13px; background-color: rgba(0, 0, 0, 0.203); border-radius: 50%; border: 2px solid white;"
+                                                        aria-label="Close">
+                                                </button>
+                                            </form>
+                                
+                                            <div class="d-flex justify-content-center gap-1 mt-3">
+                                                <a href="{{ route('pembudidaya.produk.detail', $item->id) }}" 
+                                                   class="btn btn-sm btn-outline-primary" 
+                                                   style="font-size: 12px;">Detail</a>
+                                                <a href="{{ route('pembudidaya.produk.edit', $item->id) }}" 
+                                                   class="btn btn-sm btn-outline-secondary" 
+                                                   style="font-size: 12px;">Edit</a>
+                                            </div>
                                         </div>
-                                    </div>
-
-
-                                    <!-- Photo Item 2 -->
-                                    <div class="position-relative mt-2 me-3" style="width: 100px;">
-                                        <img src="{{ asset('apk_gis/public/images/udang.jpg') }}" alt="image 2"
-                                            class="rounded-3 img-fluid" style="height: auto;">
-
-                                        <button type="button" class="btn-close position-absolute top-0 end-0 m-1"
-                                            aria-label="Close"
-                                            style="font-size: 13px; background-color:  rgba(0, 0, 0, 0.203); border-radius: 50%; border: 2px solid white; transform: translate(50%, -50%);"></button>
-
-                                        <div class="d-flex justify-content-center gap-1 mt-3">
-                                            <button class="btn btn-sm btn-outline-primary"
-                                                style="font-size: 12px;">Detail</button>
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                style="font-size: 12px;">Edit</button>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
+                                
+
                             </div>
-
-
                         </div>
-
                     </div>
-
 
                 </div>
             </div>
         </div>
     </section>
-
-
 @endsection

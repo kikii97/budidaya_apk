@@ -15,6 +15,7 @@ use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminPenggunaController;
 use App\Http\Controllers\AdminPembudidayaController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DetailUsahaController;
 
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -22,12 +23,8 @@ Route::get('/welcome', fn () => view('welcome'));
 
 // Halaman informasi publik
 Route::view('/tentangkami', 'tentangkami')->name('tentangkami');
-Route::view('/daftar_pembudidaya', 'daftar_pembudidaya')->name('daftar_pembudidaya');
-Route::view('/detail_pembudidaya', 'detail_pembudidaya')->name('detail_pembudidaya');
 Route::get('/katalog', [ProdukController::class, 'katalog'])->name('katalog');
 Route::view('/detail', 'detail')->name('detail');
-Route::view('/profil_pembudidaya', 'profil_pembudidaya')->name('profil_pembudidaya');
-Route::view('/detail_usaha', 'detail_usaha')->name('detail_usaha');
 Route::view('/profile', 'profile')->name('profile');
 Route::view('/registrasi', 'registrasi')->name('registrasi');
 
@@ -104,9 +101,9 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
         Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
         Route::get('/profil', [ProdukController::class, 'index'])->name('profil');
-        Route::get('/profil_pembudidaya', [PembudidayaLoginRegisterAuthController::class, 'index'])->name('profil_pembudidaya');
-
+        Route::get('/detail_usaha', [DetailUsahaController::class, 'index'])->name('detail_usaha');
         // CRUD produk tambahan
+        Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
         Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
         Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
         Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
