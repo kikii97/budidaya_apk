@@ -8,14 +8,14 @@
 @endsection
 
 @section('content')
-    <div class="container" style="padding-top: 5rem; padding-bottom: 7rem;">
-        <div class="row">
+    <div class="container" >
+        <div class="row justify-content-center">
             <!-- Product Images -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-4 mb-4">
                 <div class="card">
                     <img id="mainImage"
-                    src="https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                    class="img-thumbnail thumbnail-img" alt="Product-Image">
+                        src="https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                        class="img-thumbnail thumbnail-img" alt="Product-Image">
 
                     <div class="card-body">
                         <div class="row g-2">
@@ -42,29 +42,30 @@
 
             <!-- Product Details -->
             <div class="col-md-6">
-                <h1 class="h2 mb-3">Whole Wheat Sandwich Bread</h1>
+                <h1 class="h4 mb-0">Udang Vaname Super Fresh</h1>
                 <div class="mb-3">
-                    <span class="h4 me-2">$18.00</span>
-                    <span class="text-muted text-decoration-line-through">$24.00</span>
-                    <span class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                        OFF</span>
+                    {{-- <span class="text-dark fw-semibold">
+                        Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} - Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
+                    </span> --}}
+                    <span class="h6 text-dark fw-semibold">Rp70.000 – Rp75.000</span>
+                    <span class="text-warning fw-semibold fs-6">/kg</span>
                 </div>
 
-                <p class="mb-4">Timeless elegance meets modern functionality in this classic timepiece. Features
-                    premium
-                    materials, water resistance, and sophisticated design.</p>
-
-                <!-- Color Selection -->
-                <div class="mb-4">
-                    <h6 class="mb-2">Ukuran</h6>
-                    <div class="btn-group" role="group">
-                        <input type="radio" class="btn-check" name="uk" id="kecil" checked>
-                        <label class="btn btn-outline-secondary" for="kecil">Kecil</label>
-                        <input type="radio" class="btn-check" name="uk" id="sedang">
-                        <label class="btn btn-outline-secondary" for="sedang">Sedang</label>
-                        <input type="radio" class="btn-check" name="uk" id="besar">
-                        <label class="btn btn-outline-secondary" for="besar">Besar</label>
-                    </div>
+                <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div style="width: 110px;"><strong>Tanggal Tanam</strong> </div>
+                    <div>: 12 Februari 2025</div>
+                </div>
+                <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div style="width: 110px;"><strong>Kapasitas</strong> </div>
+                    <div>: 500 ekor</div>
+                </div>
+                <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div style="width: 110px;"><strong>Lokasi</strong> </div>
+                    <div>: Desa Karangsong, Indramayu</div>
+                </div>
+                <div class="mb-4 d-flex" style="font-size: 0.85rem;">
+                    <div style="width: 110px;"><strong>Ukuran</strong> </div>
+                    <div>: 8-10 cm</div>
                 </div>
 
                 <!-- Actions -->
@@ -78,17 +79,14 @@
                 </div>
 
                 <!-- Additional Info -->
-                <div class="mt-4">
-                    <div class="d-flex align-items-center mb-2">
+                <div class="mt-3">
+                    <div class="d-flex align-items-center mb-1">
                         <i class="fas fa-truck text-primary me-2"></i>
-                        <span>Free shipping on orders over $50</span>
-                    </div>
-                    <div class="d-flex align-items-center mb-2">
-                        <i class="fas fa-undo text-primary me-2"></i>
-                        <span>30-day return policy</span>
+                        <span style="font-size: 0.775rem;">Gratis ongkos kirim untuk pesanan lebih dari 10 kg</span>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection

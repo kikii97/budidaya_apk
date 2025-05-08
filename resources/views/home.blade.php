@@ -65,9 +65,10 @@
                     d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z" />
             </symbol>
             <symbol xmlns="http://www.w3.org/2000/svg" id="detail" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                <path fill="currentColor"
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
             </symbol>
-            
+
             <symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M8.5 19a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 8.5 19ZM19 16H7a1 1 0 0 1 0-2h8.491a3.013 3.013 0 0 0 2.885-2.176l1.585-5.55A1 1 0 0 0 19 5H6.74a3.007 3.007 0 0 0-2.82-2H3a1 1 0 0 0 0 2h.921a1.005 1.005 0 0 1 .962.725l.155.545v.005l1.641 5.742A3 3 0 0 0 7 18h12a1 1 0 0 0 0-2Zm-1.326-9l-1.22 4.274a1.005 1.005 0 0 1-.963.726H8.754l-.255-.892L7.326 7ZM16.5 19a1.5 1.5 0 1 0 1.5 1.5a1.5 1.5 0 0 0-1.5-1.5Z" />
@@ -191,7 +192,7 @@
                     class="user-dropdown position-absolute end-0 mt-2 bg-white border rounded shadow-sm"
                     style="display: none; min-width: 180px;">
                     
-                    @if(Auth::guard('pembudidaya')->check())
+                    @if (Auth::guard('pembudidaya')->check())
                         <div class="px-3 py-2 border-bottom">
                             <strong>{{ Auth::guard('pembudidaya')->user()->name }}</strong><br>
                             <small>{{ Auth::guard('pembudidaya')->user()->email }}</small>
@@ -264,7 +265,7 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas"
                     data-bs-target="#mobileNav"></i>
             </nav>
-            <div class="dropdown d-inline-block d-none d-xl-block">
+            {{-- <div class="dropdown d-inline-block d-none d-xl-block">
                 <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#" id="loginDropdown"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Log In
@@ -279,7 +280,44 @@
                     </li>
                     <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
                 </ul>
+            </div> --}}
+            <div class="dropdown d-inline-block d-none d-xl-block">
+                @if (Auth::check())
+                    <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
+                        id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ Auth::user()->name }}
+                    </a>
+                    <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
+                        aria-labelledby="accountDropdown">
+                        <li><a class="dropdown-item py-1 px-3 small" href="#">Account Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider my-1">
+                        </li>
+                        <li>
+                            <form action="{{ url('logout') }}" method="POST">
+                                @csrf
+                                <button class="dropdown-item py-1 px-3 small" type="submit">🚪 Log Out</button>
+                            </form>
+                        </li>
+                    </ul>
+                @else
+                    <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
+                        id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Log In
+                    </a>
+                    <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
+                        aria-labelledby="loginDropdown">
+                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
+                        <li><a class="dropdown-item py-1 px-3 small" href="login-pembudidaya.html">Log In
+                                Pembudidaya</a></li>
+                        <li>
+                            <hr class="dropdown-divider my-1">
+                        </li>
+                        <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
+                    </ul>
+                @endif
             </div>
+
         </div>
     </header>
 
@@ -298,22 +336,32 @@
                 <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
 
                 <!-- Log In dropdown di mobile -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Log In
-                    </a>
-                    <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
-                        aria-labelledby="mobileLoginDropdown">
-                        <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                        <li><a class="dropdown-item py-2" href="login-pembudidaya.html">Log In Pembudidaya</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item py-2" href="signup.html">📝Gabung Investor</a></li>
-                    </ul>
-                </li>
-
+                @if (Auth::check())
+                    <li><a class="nav-link" href="#">Account Settings</a></li>
+                    <li>
+                        <form action="{{ url('logout') }}" method="POST">
+                            @csrf
+                            <button class="dropdown-item py-2" type="submit">🚪 Log Out</button>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Log In
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
+                            aria-labelledby="mobileLoginDropdown">
+                            <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
+                            <li><a class="dropdown-item py-2" href="login-pembudidaya.html">Log In Pembudidaya</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item py-2" href="signup.html">📝Gabung Investor</a></li>
+                        </ul>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
@@ -329,11 +377,94 @@
                         <span class="fw-bold">Perikanan</span>
                     </h2>
                     <p class="fs-5">Temukan informasi lengkap tentang budidaya ikan unggulan di Indramayu.</p>
-                    <div class="d-flex gap-3 mt-3">
+                    {{-- <div class="d-flex gap-3 mt-3">
                         <a href="{{ url('register') }}"
                             class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
                             Investor</a>
+                    </div> --}}
+                    <div class="d-flex gap-3 mt-3">
+                        @if (Auth::check() && Auth::user()->role == 'user')
+                            <button class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3 mt-3"
+                                data-bs-toggle="modal" data-bs-target="#modalCari">Form Cari</button>
+                        @else
+                            <a href="{{ url('register') }}"
+                                class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
+                                Investor</a>
+                        @endif
                     </div>
+                    <div class="modal fade" id="modalCari" tabindex="-1" aria-labelledby="modalCariLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 450px; font-size: 0.75rem;">
+                            <div class="modal-content">
+                                <div class="modal-header py-2">
+                                    <h5 class="modal-title" id="modalCariLabel">Cari Komoditas</h5>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-3">
+                                    <form>
+                                        <!-- Jenis Komoditas -->
+                                        <div class="mb-2">
+                                            <label class="form-label mb-1">Jenis Komoditas</label>
+                                            <select class="form-select form-select-sm">
+                                                <option>Udang</option>
+                                                <option>Rumput Laut</option>
+                                                <option>Ikan Bandeng</option>
+                                                <option>Ikan Gurame</option>
+                                                <option>Ikan Lele</option>
+                                                <option>Ikan Nila</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Harga -->
+                                        <div class="mb-2">
+                                            <label class="form-label mb-1">Harga (Rp)</label>
+                                            <div class="d-flex gap-2">
+                                                <input type="number" class="form-control form-control-sm"
+                                                    placeholder="Min">
+                                                <input type="number" class="form-control form-control-sm"
+                                                    placeholder="Max">
+                                            </div>
+                                        </div>
+
+                                        <!-- Kapasitas Produksi -->
+                                        <div class="mb-2">
+                                            <label class="form-label mb-1">Kapasitas Produksi (kg/bulan)</label>
+                                            <input type="number" class="form-control form-control-sm"
+                                                placeholder="Cth: 1000">
+                                        </div>
+
+                                        <!-- Kecamatan -->
+                                        <div class="mb-2">
+                                            <label class="form-label mb-1">Kecamatan</label>
+                                            <select class="form-select form-select-sm">
+                                                <option>Indramayu</option>
+                                                <option>Juntinyuat</option>
+                                                <option>Losarang</option>
+                                                <option>Balongan</option>
+                                                <option>Karangampel</option>
+                                                <option>Kertasemaya</option>
+                                                <option>Haurgeulis</option>
+                                                <option>Anjatan</option>
+                                                <option>Gantar</option>
+                                                <!-- Tambah sesuai kebutuhan -->
+                                            </select>
+                                        </div>
+
+                                        <!-- Prediksi Panen -->
+                                        <div class="mb-2">
+                                            <label class="form-label mb-1">Prediksi Panen</label>
+                                            <input type="date" class="form-control form-control-sm">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer py-2">
+                                    <button type="button" class="btn btn-primary btn-sm">Cari</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -343,7 +474,6 @@
                 <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
                 </path>
             </defs>
-
             <g class="wave1">
                 <use xlink:href="#wave-path" x="50" y="10" fill="white"></use>
             </g>
@@ -454,7 +584,7 @@
             <div class="row">
                 <div class="col-md-12">
                     {{-- <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-                        @foreach($recommendedProducts as $product)
+                        @foreach ($recommendedProducts as $product)
                         <div class="col">
                             <div class="product-item">
                                 <figure>
@@ -473,7 +603,7 @@
                                     <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
             
                                     {{-- Info komoditas dan pembudidaya --}}
-                                    {{-- <div class="mb-1">
+                    {{-- <div class="mb-1">
                                         <div class="fw-semibold fs-6">{{ $product->jenis_komoditas ?? 'Tidak tersedia' }}</div>
                                         <div class="text-muted small">Pembudidaya: <strong>{{ $product->pembudidaya->name ?? 'Tidak diketahui' }}</strong></div> --}}
                     <div
@@ -490,7 +620,7 @@
                                     <h3 class="fs-6 fw-normal">Udang Vaname Super Fresh</h3>
                                     <div>
                                     </div>
-            
+
                                     {{-- Kisaran harga dari database --}}
                                     <div class="d-flex justify-content-center align-items-center gap-2">
                                         {{-- <span class="text-dark fw-semibold">
@@ -499,7 +629,7 @@
                                         <span class="text-dark fw-semibold">Rp70.000 – Rp75.000</span>
                                         <span class="text-warning fw-semibold fs-6">/kg</span>
                                     </div>
-            
+
                                     {{-- Input jumlah --}}
                                     <div class="button-area p-3 pt-0">
                                         {{-- <div class="row g-1 mt-2">
@@ -600,9 +730,9 @@
                     </div>
                 </div>
             </div> --}}
-            
-            
-            
+
+
+
 
                         <div class="col">
                             <div class="product-item">
@@ -620,7 +750,7 @@
                                     </div>
                                     <div class="button-area p-3 pt-0">
                                         <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            
+
                                             <div class="col-7"><a href="#"
                                                     class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
                                                         width="18" height="18">
@@ -655,7 +785,7 @@
                                     </div>
                                     <div class="button-area p-3 pt-0">
                                         <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            
+
                                             <div class="col-7"><a href="#"
                                                     class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
                                                         width="18" height="18">
@@ -690,7 +820,7 @@
                                     </div>
                                     <div class="button-area p-3 pt-0">
                                         <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            
+
                                             <div class="col-7"><a href="#"
                                                     class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
                                                         width="18" height="18">
@@ -725,7 +855,7 @@
                                     </div>
                                     <div class="button-area p-3 pt-0">
                                         <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            
+
                                             <div class="col-7"><a href="#"
                                                     class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
                                                         width="18" height="18">
@@ -760,7 +890,7 @@
                                     </div>
                                     <div class="button-area p-3 pt-0">
                                         <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            
+
                                             <div class="col-7"><a href="#"
                                                     class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
                                                         width="18" height="18">

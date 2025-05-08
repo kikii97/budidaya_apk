@@ -2,7 +2,7 @@
 
 @section('title', 'Katalog - SIBIKANDA')
 
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet"
@@ -222,7 +222,7 @@
                     class="user-dropdown position-absolute end-0 mt-2 bg-white border rounded shadow-sm"
                     style="display: none; min-width: 180px;">
                     
-                    @if(Auth::guard('pembudidaya')->check())
+                    @if (Auth::guard('pembudidaya')->check())
                         <div class="px-3 py-2 border-bottom">
                             <strong>{{ Auth::guard('pembudidaya')->user()->name }}</strong><br>
                             <small>{{ Auth::guard('pembudidaya')->user()->email }}</small>
@@ -289,7 +289,7 @@
 @endsection
 
 @section('content')
-    <div class="container" style="padding-top: 2rem; padding-bottom: 10rem;">
+    <div class="container" style="padding-top: 0rem; padding-bottom: 10rem; font-size: 0.7rem;">
         <!-- Top Bar -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0">Produk Budidaya</h4>
@@ -303,7 +303,8 @@
 
         <div class="row g-4">
             <!-- Filters Sidebar -->
-            <div class="col-lg-3">
+            <div class="col-lg-3" style="line-height: 0.5;">
+
                 <div class="filter-sidebar p-4 shadow-sm">
                     <div class="filter-group">
                         <h6 class="mb-3">Jenis Komoditas</h6>
@@ -353,39 +354,12 @@
                             <span class="text-muted">$1000</span>
                         </div>
                     </div>
-
-                    <div class="filter-group">
-                        <h6 class="mb-3">Colors</h6>
-                        <div class="d-flex gap-2">
-                            <div class="color-option selected" style="background: #000000;"></div>
-                            <div class="color-option" style="background: #dc2626;"></div>
-                            <div class="color-option" style="background: #2563eb;"></div>
-                            <div class="color-option" style="background: #16a34a;"></div>
-                        </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <h6 class="mb-3">Rating</h6>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="rating" id="rating4">
-                            <label class="form-check-label" for="rating4">
-                                <i class="bi bi-star-fill text-warning"></i> 4 & above
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="rating" id="rating3">
-                            <label class="form-check-label" for="rating3">
-                                <i class="bi bi-star-fill text-warning"></i> 3 & above
-                            </label>
-                        </div>
-                    </div>
-
                     <button class="btn btn-outline-primary w-100">Apply Filters</button>
                 </div>
             </div>
 
             <!-- Product Grid -->
-            <div class="col-lg-9">
+            <div class="col-lg-9" style="font-size: 0.7rem; line-height: 0.5;">
                 <div class="row g-4">
                     <!-- Product Card 1 -->
                     <div class="col-md-4">
@@ -393,158 +367,19 @@
                             <div class="product-card shadow-sm">
                                 <div class="position-relative">
                                     <img src="{{ asset('images/udang.jpg') }}" class="product-image w-100" alt="Product">
-                                    <span class="discount-badge">-20%</span>
-                                    <button class="wishlist-btn">
-                                        <i class="bi bi-heart"></i>
-                                    </button>
                                 </div>
                                 <div class="p-3">
-                                    <span class="category-badge mb-2 d-inline-block">Electronics</span>
-                                    <h6 class="mb-1">Wireless Headphones</h6>
-                                    <div class="rating-stars mb-2">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-half"></i>
-                                        <span class="text-muted ms-2">(4.5)</span>
-                                    </div>
+                                    <span class="category-badge mb-2 d-inline-block">Udang</span>
+                                    <h6 class="mb-1">Udang Vaname Super Fresh</h6>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="price">$129.99</span>
+                                        <span class="price text-dark fw-semibold">Rp12.000 – Rp14.000/kg</span>
                                         <button class="btn cart-btn">
-                                            <i class="bi bi-cart-plus"></i>
+                                            <i class="bi bi-heart"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </a>
-                    </div>
-
-                    <!-- Product Card 2 -->
-                    <div class="col-md-4">
-                        <div class="product-card shadow-sm">
-                            <div class="position-relative">
-                                <img src="{{ asset('images/rumputlaut.jpg') }}" class="product-image w-100"
-                                    alt="Product">
-                                <button class="wishlist-btn">
-                                    <i class="bi bi-heart"></i>
-                                </button>
-                            </div>
-                            <div class="p-3">
-                                <span class="category-badge mb-2 d-inline-block">Electronics</span>
-                                <h6 class="mb-1">Smart Watch Pro</h6>
-                                <div class="rating-stars mb-2">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star"></i>
-                                    <span class="text-muted ms-2">(4.0)</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="price">$299.99</span>
-                                    <button class="btn cart-btn">
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product Card 3 -->
-                    <div class="col-md-4">
-                        <div class="product-card shadow-sm">
-                            <div class="position-relative">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="product-image w-100"
-                                    alt="Product">
-                                <span class="discount-badge">-15%</span>
-                                <button class="wishlist-btn">
-                                    <i class="bi bi-heart"></i>
-                                </button>
-                            </div>
-                            <div class="p-3">
-                                <span class="category-badge mb-2 d-inline-block">Accessories</span>
-                                <h6 class="mb-1">Leather Wallet</h6>
-                                <div class="rating-stars mb-2">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <span class="text-muted ms-2">(5.0)</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="price">$59.99</span>
-                                    <button class="btn cart-btn">
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product Card 3 -->
-                    <div class="col-md-4">
-                        <div class="product-card shadow-sm">
-                            <div class="position-relative">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="product-image w-100"
-                                    alt="Product">
-                                <span class="discount-badge">-15%</span>
-                                <button class="wishlist-btn">
-                                    <i class="bi bi-heart"></i>
-                                </button>
-                            </div>
-                            <div class="p-3">
-                                <span class="category-badge mb-2 d-inline-block">Accessories</span>
-                                <h6 class="mb-1">Leather Wallet</h6>
-                                <div class="rating-stars mb-2">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <span class="text-muted ms-2">(5.0)</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="price">$59.99</span>
-                                    <button class="btn cart-btn">
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product Card 3 -->
-                    <div class="col-md-4">
-                        <div class="product-card shadow-sm">
-                            <div class="position-relative">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="product-image w-100"
-                                    alt="Product">
-                                <span class="discount-badge">-15%</span>
-                                <button class="wishlist-btn">
-                                    <i class="bi bi-heart"></i>
-                                </button>
-                            </div>
-                            <div class="p-3">
-                                <span class="category-badge mb-2 d-inline-block">Accessories</span>
-                                <h6 class="mb-1">Leather Wallet</h6>
-                                <div class="rating-stars mb-2">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <span class="text-muted ms-2">(5.0)</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="price">$59.99</span>
-                                    <button class="btn cart-btn">
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profile - SIBIKANDA')
+@section('title', 'Detail Usaha - SIBIKANDA')
 
 <!-- Header Navbar -->
 @section('header')

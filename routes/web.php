@@ -27,7 +27,9 @@ Route::view('/detail_pembudidaya', 'detail_pembudidaya')->name('detail_pembudida
 Route::get('/katalog', [ProdukController::class, 'katalog'])->name('katalog');
 Route::view('/detail', 'detail')->name('detail');
 Route::view('/profil_pembudidaya', 'profil_pembudidaya')->name('profil_pembudidaya');
+Route::view('/detail_usaha', 'detail_usaha')->name('detail_usaha');
 Route::view('/profile', 'profile')->name('profile');
+Route::view('/registrasi', 'registrasi')->name('registrasi');
 
 // Lokasi
 Route::get('/lokasi', [LocationController::class, 'showLocations']);
