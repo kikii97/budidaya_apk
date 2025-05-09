@@ -1,7 +1,7 @@
 <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
         <a class="logo d-flex align-items-center me-auto me-xl-0">
-            <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="">
+            <img src="{{ asset('images/logo.png') }}" alt="">
         </a>
         <nav id="navmenu" class="navmenu">
             <ul>

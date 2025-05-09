@@ -16,13 +16,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/vendor.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 
-    <link href="{{ asset('apk_gis/public/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
     <!-- Main CSS File -->
-    <link href="{{ asset('apk_gis/public/css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -252,7 +252,7 @@
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a class="logo d-flex align-items-center me-auto me-xl-0">
-                <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="">
+                <img src="{{ asset('images/logo.png') }}" alt="">
             </a>
             <nav id="navmenu" class="navmenu">
                 <ul>
@@ -292,7 +292,7 @@
                     </a>
                     <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                         aria-labelledby="accountDropdown">
-                        <li><a class="dropdown-item py-1 px-3 small" href="#">Account Settings</a></li>
+                        <li><a href="{{ url('profile') }}" class="dropdown-item py-1 px-3 small" href="#">Account Settings</a></li>
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
@@ -311,12 +311,12 @@
                     <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                         aria-labelledby="loginDropdown">
                         <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                        <li><a class="dropdown-item py-1 px-3 small" href="login-pembudidaya.html">Log In
+                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('pembudidaya/login') }}">Log In
                                 Pembudidaya</a></li>
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
-                        <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
+                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('register') }}">📝 Gabung Investor</a></li>
                     </ul>
                 @endif
             </div>
@@ -356,12 +356,12 @@
                         <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                             aria-labelledby="mobileLoginDropdown">
                             <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                            <li><a class="dropdown-item py-2" href="login-pembudidaya.html">Log In Pembudidaya</a>
+                            <li><a class="dropdown-item py-2" href="{{ url('pembudidaya/login') }}">Log In Pembudidaya</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item py-2" href="signup.html">📝Gabung Investor</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url('register') }}">📝Gabung Investor</a></li>
                         </ul>
                     </li>
                 @endif
@@ -370,7 +370,7 @@
     </div>
 
     <section id="beranda"
-        style="background-image: url('{{ asset('apk_gis/public/images/tambak-ikan.jpg') }}');background-repeat: no-repeat;background-size: cover;">
+        style="background-image: url('{{ asset('images/tambak-ikan.jpg') }}');background-repeat: no-repeat;background-size: cover;">
         <div class="container-lg mt-3">
             <div class="row">
                 <div class="col-lg-6">
@@ -536,32 +536,32 @@
                             <a href="{{ route('katalog', ['komoditas' => 'ikan-nila']) }}" class="nav-link swiper-slide text-center">
                                 <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail"> --}}
                             <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('apk_gis/public/images/udang.jpg') }}" class="rounded-circle"
+                                <img src="{{ asset('images/udang.jpg') }}" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
                             </a>
                             <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('apk_gis/public/images/rumputlaut.jpg') }}" class="rounded-circle"
+                                <img src="{{ asset('images/rumputlaut.jpg') }}" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Rumput Laut</h4>
                             </a>
                             <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('apk_gis/public/images/ikanbandeng.jpg') }}"
+                                <img src="{{ asset('images/ikanbandeng.jpg') }}"
                                     class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Bandeng</h4>
                             </a>
                             <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('apk_gis/public/images/ikangurame.jpg') }}" class="rounded-circle"
+                                <img src="{{ asset('images/ikangurame.jpg') }}" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Gurame</h4>
                             </a>
                             <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('apk_gis/public/images/ikanlele.jpg') }}" class="rounded-circle"
+                                <img src="{{ asset('images/ikanlele.jpg') }}" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
                             </a>
                             <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('apk_gis/public/images/ikannila.jpeg') }}" class="rounded-circle"
+                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle"
                                     alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Nila</h4>
                             </a>
@@ -615,7 +615,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="{{ url('detail') }}" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-1.png') }}"
+                                        <img src="{{ asset('images/product-thumb-1.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -664,7 +664,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-2.png') }}"
+                                        <img src="{{ asset('images/product-thumb-2.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -700,7 +700,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-3.png') }}"
+                                        <img src="{{ asset('images/product-thumb-3.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -741,7 +741,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-6.png') }}"
+                                        <img src="{{ asset('images/product-thumb-6.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -776,7 +776,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-7.png') }}"
+                                        <img src="{{ asset('images/product-thumb-7.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -811,7 +811,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-8.png') }}"
+                                        <img src="{{ asset('images/product-thumb-8.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -846,7 +846,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-9.png') }}"
+                                        <img src="{{ asset('images/product-thumb-9.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -881,7 +881,7 @@
                             <div class="product-item">
                                 <figure>
                                     <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('apk_gis/public/images/product-thumb-10.png') }}"
+                                        <img src="{{ asset('images/product-thumb-10.png') }}"
                                             alt="Product Thumbnail" class="tab-image">
                                     </a>
                                 </figure>
@@ -935,7 +935,7 @@
             <div class="row">
 
                 <div class="col-lg-3 col-md-6 mb-3">
-                    {{-- <img src="{{ asset('apk_gis/public/images/logo1.png') }}" width="160" alt="logo"> --}}
+                    {{-- <img src="{{ asset('images/logo1.png') }}" width="160" alt="logo"> --}}
                     <div class="d-flex gap-2 mt-2">
                         <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
@@ -1031,14 +1031,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="{{ asset('apk_gis/public/js/jquery-1.11.0.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('apk_gis/public/js/plugins.js') }}"></script>
-    <script src="{{ asset('apk_gis/public/js/script.js') }}"></script>
+    <script src="{{ asset('js/plugins.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 
 </body>
 

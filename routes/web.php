@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginRegisterUserController;
 use App\Http\Controllers\PembudidayaLoginRegisterAuthController;
 use App\Http\Controllers\AdminLoginAuthController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminPenggunaController;
@@ -58,6 +59,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
     Route::get('/preferensi', [PreferenceController::class, 'create'])->name('preferensi.form');
     Route::post('/preferensi', [PreferenceController::class, 'store'])->name('preferensi.store');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/settings', [ProfileController::class, 'settings'])->name('profile.settings');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 // ─── Logout (untuk semua guard) ───────────────────────────────────────────────

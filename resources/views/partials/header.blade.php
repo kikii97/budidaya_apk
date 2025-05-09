@@ -1,7 +1,7 @@
 <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
         <a class="logo d-flex align-items-center me-auto me-xl-0">
-            <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="">
+            <img src="{{ asset('images/logo.png') }}" alt="">
         </a>
         <nav id="navmenu" class="navmenu">
             <ul>
@@ -56,12 +56,12 @@
                 <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                     aria-labelledby="loginDropdown">
                     <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="login-pembudidaya.html">Log In
+                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('pembudidaya/login') }}">Log In
                             Pembudidaya</a></li>
                     <li>
                         <hr class="dropdown-divider my-1">
                     </li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
+                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('register') }}">📝 Gabung Investor</a></li>
                 </ul>
             @endif
         </div>
@@ -115,12 +115,12 @@
                 <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                     aria-labelledby="mobileLoginDropdown">
                     <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-2" href="login-pembudidaya.html">Log In Pembudidaya</a>
+                    <li><a class="dropdown-item py-2" href="{{ url('pembudidaya/login') }}">Log In Pembudidaya</a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item py-2" href="signup.html">📝Gabung Investor</a></li>
+                    <li><a class="dropdown-item py-2" href="{{ url('register') }}">📝Gabung Investor</a></li>
                 </ul>
             </li>
         @endif

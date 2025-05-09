@@ -40,7 +40,7 @@ class LoginRegisterUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('preferensi.form')->with('success', 'Registrasi berhasil!');
+        return redirect()->route('home')->with('success', 'Registrasi berhasil!');
     }
 
     // Proses login (user atau admin)

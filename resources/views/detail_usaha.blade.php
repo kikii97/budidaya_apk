@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Usaha - SIBIKANDA')
-
-@section('header')
+@section('title', 'Detail Usaha - SIBIKANDA')@section('header')
     @include('partials.header')
 @endsection
 
