@@ -361,18 +361,25 @@
             <!-- Product Grid -->
             <div class="col-lg-9" style="font-size: 0.7rem; line-height: 0.5;">
                 <div class="row g-4">
-                    <!-- Product Card 1 -->
+                    @forelse ($produkList as $produk)
                     <div class="col-md-4">
-                        <a href="{{ url('detail') }}">
+                        <a href="{{ route('produk.detail', $produk->id) }}">
                             <div class="product-card shadow-sm">
                                 <div class="position-relative">
-                                    <img src="{{ asset('images/udang.jpg') }}" class="product-image w-100" alt="Product">
+                                    @php
+                                        $gambar = json_decode($produk->gambar, true);
+                                        $gambarUtama = $gambar[0] ?? 'default.jpg';
+                                    @endphp
+                                    <img src="{{ asset('storage/images/' . $gambarUtama) }}" class="product-image w-100" alt="Product">
                                 </div>
                                 <div class="p-3">
-                                    <span class="category-badge mb-2 d-inline-block">Udang</span>
-                                    <h6 class="mb-1">Udang Vaname Super Fresh</h6>
+                                    <span class="category-badge mb-2 d-inline-block">{{ $produk->jenis_komoditas }}</span>
+                                    <h6 class="mb-1">{{ $produk->jenis_spesifik_komoditas ?? '-' }}</h6>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="price text-dark fw-semibold">Rp12.000 – Rp14.000/kg</span>
+                                        <span class="price text-dark fw-semibold">
+                                            Rp{{ number_format($produk->kisaran_harga_min, 0, ',', '.') }} – 
+                                            Rp{{ number_format($produk->kisaran_harga_max, 0, ',', '.') }}/kg
+                                        </span>
                                         <button class="btn cart-btn">
                                             <i class="bi bi-heart"></i>
                                         </button>
@@ -381,6 +388,9 @@
                             </div>
                         </a>
                     </div>
+                    @empty
+                    <p class="text-muted">Belum ada produk yang tersedia.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

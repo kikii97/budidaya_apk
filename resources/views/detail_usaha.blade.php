@@ -7,6 +7,12 @@
 @endsection
 
 @section('content')
+    @php
+        use Illuminate\Support\Facades\Auth;
+        $user = Auth::guard('pembudidaya')->user();
+        $isOwner = $isOwner ?? false;
+    @endphp
+
     <section style="padding-top: 0px;">
         <div class="container py-2">
             <div class="row d-flex justify-content-center">
@@ -19,19 +25,21 @@
                                      class="img-fluid img-thumbnail" style="width: 100px; z-index: 1;">
                             </div>
                             <div>
-                                <h5 class="mb-1 text-dark">{{ auth()->user()->nama ?? 'Nama Pengguna' }}</h5>
-                                <p class="mb-0" style="color:#005a8e;">{{ auth()->user()->alamat ?? 'Alamat' }}</p>
+                                <h5 class="mb-1 text-dark">{{ $pembudidaya->name ?? 'Nama Pengguna' }}</h5>
+                                <p class="mb-0" style="color:#005a8e;">{{ $pembudidaya->address ?? 'Alamat' }}</p>
                             </div>
                         </div>
 
-                        <div class="d-flex gap-2 mt-2 mt-md-0">
-                            <a href="#" class="btn btn-outline-secondary text-body">
-                                Edit Profile
-                            </a>
-                            <a href="{{ route('pembudidaya.unggah') }}" class="btn btn-outline-primary text-body">
-                                Unggah Produk
-                            </a>
-                        </div>
+                        @if ($isOwner)
+                            <div class="d-flex gap-2 mt-2 mt-md-0">
+                                <a href="#" class="btn btn-outline-secondary text-body">
+                                    Edit Profile
+                                </a>
+                                <a href="{{ route('pembudidaya.unggah') }}" class="btn btn-outline-primary text-body">
+                                    Unggah Produk
+                                </a>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="mt-0 p-4 text-black" style="font-size: 50%;">
@@ -52,32 +60,36 @@
                                                  alt="image" 
                                                  class="rounded-3 img-fluid" 
                                                  style="height: auto;">
-                                
-                                            <!-- Tombol Hapus -->
-                                            <form action="{{ route('pembudidaya.produk.destroy', $item->id) }}" method="POST" 
-                                                  class="position-absolute top-0 end-0 m-1" 
-                                                  onsubmit="return confirm('Yakin ingin menghapus produk ini?');" 
-                                                  style="transform: translate(50%, -50%);">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn-close"
-                                                        style="font-size: 13px; background-color: rgba(0, 0, 0, 0.203); border-radius: 50%; border: 2px solid white;"
-                                                        aria-label="Close">
-                                                </button>
-                                            </form>
-                                
+                                                
+                                            @if ($isOwner)
+                                                <!-- Tombol Hapus -->
+                                                <form action="{{ route('pembudidaya.produk.destroy', $item->id) }}" method="POST" 
+                                                      class="position-absolute top-0 end-0 m-1" 
+                                                      onsubmit="return confirm('Yakin ingin menghapus produk ini?');" 
+                                                      style="transform: translate(50%, -50%);">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-close"
+                                                            style="font-size: 13px; background-color: rgba(0, 0, 0, 0.203); border-radius: 50%; border: 2px solid white;"
+                                                            aria-label="Close">
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            
                                             <div class="d-flex justify-content-center gap-1 mt-3">
                                                 <a href="{{ route('pembudidaya.produk.detail', $item->id) }}" 
                                                    class="btn btn-sm btn-outline-primary" 
                                                    style="font-size: 12px;">Detail</a>
-                                                <a href="{{ route('pembudidaya.produk.edit', $item->id) }}" 
-                                                   class="btn btn-sm btn-outline-secondary" 
-                                                   style="font-size: 12px;">Edit</a>
+                                                
+                                                @if ($isOwner)
+                                                    <a href="{{ route('pembudidaya.produk.edit', $item->id) }}" 
+                                                       class="btn btn-sm btn-outline-secondary" 
+                                                       style="font-size: 12px;">Edit</a>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
                                 </div>
-                                
 
                             </div>
                         </div>

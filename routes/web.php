@@ -24,9 +24,18 @@ Route::get('/welcome', fn () => view('welcome'));
 // Halaman informasi publik
 Route::view('/tentangkami', 'tentangkami')->name('tentangkami');
 Route::get('/katalog', [ProdukController::class, 'katalog'])->name('katalog');
-Route::view('/detail', 'detail')->name('detail');
 Route::view('/profile', 'profile')->name('profile');
 Route::view('/registrasi', 'registrasi')->name('registrasi');
+Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
+
+// Rute untuk melihat detail usaha pembudidaya
+Route::get('/detail_usaha/{id}', [DetailUsahaController::class, 'show'])->name('usaha.detail');
+
+// Rute tambahan jika ingin otomatis mengarahkan ke detail usaha pembudidaya yang sedang login
+Route::get('/detail_usaha', function () {
+    $id = Auth::guard('pembudidaya')->id();
+    return redirect()->route('usaha.detail', $id);
+})->middleware('auth:pembudidaya')->name('pembudidaya.detail_usaha');
 
 // Lokasi
 Route::get('/lokasi', [LocationController::class, 'showLocations']);
@@ -56,8 +65,6 @@ Route::post('/logout', function () {
     if (Auth::guard('admin')->check()) {
         Auth::guard('admin')->logout();
     } elseif (Auth::guard('pembudidaya')->check()) {
-        Auth::guard('pembudidaya')->logout();
-    } else {
         Auth::logout(); // default guard
     }
 
@@ -96,12 +103,19 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
     Route::get('/register', [PembudidayaLoginRegisterAuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [PembudidayaLoginRegisterAuthController::class, 'register'])->name('register.post');
 
+    Route::post('/logout', function () {
+    Auth::guard('pembudidaya')->logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect()->route('home');
+})->name('logout');
+
+
     Route::middleware(['auth:pembudidaya'])->group(function () {
         Route::get('/waiting', fn () => view('pembudidaya.waiting-approval'))->name('waiting');
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
         Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
         Route::get('/profil', [ProdukController::class, 'index'])->name('profil');
-        Route::get('/detail_usaha', [DetailUsahaController::class, 'index'])->name('detail_usaha');
         // CRUD produk tambahan
         Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
         Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');

@@ -23,7 +23,7 @@ class ProdukController extends Controller
                     ->where('is_approved', true)
                     ->firstOrFail();
 
-        return view('produk.detail', compact('produk'));
+        return view('detail', compact('produk'));
     }
 
     // ✅ Tampilkan hanya produk yang sudah disetujui admin

@@ -30,10 +30,10 @@
             </ul>
         </div> --}}
         <div class="dropdown d-inline-block d-none d-xl-block">
-            @if (Auth::check())
+            @if (Auth::check() || Auth::guard('pembudidaya')->check())
                 <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
                     id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ Auth::user()->name }}
+                {{ Auth::user()->name ?? Auth::guard('pembudidaya')->user()->name }}
                 </a>
                 <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                     aria-labelledby="accountDropdown">
@@ -42,7 +42,7 @@
                         <hr class="dropdown-divider my-1">
                     </li>
                     <li>
-                        <form action="{{ url('logout') }}" method="POST">
+                        <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button class="dropdown-item py-1 px-3 small" type="submit">🚪 Log Out</button>
                         </form>
@@ -98,7 +98,7 @@
             </li> --}}
 
             <!-- Log In dropdown di mobile -->
-            @if (Auth::check())
+            @if (Auth::check() || Auth::guard('pembudidaya')->check())
             <li><a class="nav-link" href="#">Account Settings</a></li>
             <li>
                 <form action="{{ url('logout') }}" method="POST">
