@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\PreferenceController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KomoditasController;
 use App\Http\Controllers\BudidayaController;
@@ -57,8 +56,6 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
-    Route::get('/preferensi', [PreferenceController::class, 'create'])->name('preferensi.form');
-    Route::post('/preferensi', [PreferenceController::class, 'store'])->name('preferensi.store');
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

@@ -409,7 +409,8 @@
                                         <!-- Jenis Komoditas -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Jenis Komoditas</label>
-                                            <select class="form-select form-select-sm">
+                                            <select class="form-select form-select-sm" name="jenis_komoditas">
+                                                <option value="">-- Pilih Komoditas --</option>
                                                 <option>Udang</option>
                                                 <option>Rumput Laut</option>
                                                 <option>Ikan Bandeng</option>
@@ -423,46 +424,64 @@
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Harga (Rp)</label>
                                             <div class="d-flex gap-2">
-                                                <input type="number" class="form-control form-control-sm"
-                                                    placeholder="Min">
-                                                <input type="number" class="form-control form-control-sm"
-                                                    placeholder="Max">
+                                                <input type="number" class="form-control form-control-sm" name="harga_min" placeholder="Min">
+                                                <input type="number" class="form-control form-control-sm" name="harga_max" placeholder="Max">
                                             </div>
                                         </div>
 
                                         <!-- Kapasitas Produksi -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Kapasitas Produksi (kg/bulan)</label>
-                                            <input type="number" class="form-control form-control-sm"
-                                                placeholder="Cth: 1000">
+                                            <input type="number" class="form-control form-control-sm" name="kapasitas" placeholder="Cth: 1000">
                                         </div>
 
                                         <!-- Kecamatan -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Kecamatan</label>
-                                            <select class="form-select form-select-sm">
-                                                <option>Indramayu</option>
-                                                <option>Juntinyuat</option>
-                                                <option>Losarang</option>
-                                                <option>Balongan</option>
-                                                <option>Karangampel</option>
-                                                <option>Kertasemaya</option>
-                                                <option>Haurgeulis</option>
+                                            <select class="form-select form-select-sm" name="kecamatan">
+                                                <option value="">-- Pilih Kecamatan --</option>
                                                 <option>Anjatan</option>
+                                                <option>Balongan</option>
+                                                <option>Bongas</option>
+                                                <option>Cadangpinggan</option>
+                                                <option>Gabuswetan</option>
                                                 <option>Gantar</option>
-                                                <!-- Tambah sesuai kebutuhan -->
+                                                <option>Haurgeulis</option>
+                                                <option>Indramayu</option>
+                                                <option>Jatibarang</option>
+                                                <option>Juntinyuat</option>
+                                                <option>Kandanghaur</option>
+                                                <option>Karangampel</option>
+                                                <option>Kedokanbunder</option>
+                                                <option>Kertasemaya</option>
+                                                <option>Krangkeng</option>
+                                                <option>Kroya</option>
+                                                <option>Lelea</option>
+                                                <option>Losarang</option>
+                                                <option>Lohbener</option>
+                                                <option>Pasekan</option>
+                                                <option>Patrol</option>
+                                                <option>Sindang</option>
+                                                <option>Sliyeg</option>
+                                                <option>Sukagumiwang</option>
+                                                <option>Sukra</option>
+                                                <option>Terisi</option>
+                                                <option>Tukdana</option>
+                                                <option>Widasari</option>
                                             </select>
                                         </div>
 
                                         <!-- Prediksi Panen -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Prediksi Panen</label>
-                                            <input type="date" class="form-control form-control-sm">
+                                            <input type="date" class="form-control form-control-sm" name="prediksi_panen">
+                                        </div>
+
+                                        <!-- Tombol Cari -->
+                                        <div class="modal-footer py-2 px-0">
+                                            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
                                         </div>
                                     </form>
-                                </div>
-                                <div class="modal-footer py-2">
-                                    <button type="button" class="btn btn-primary btn-sm">Cari</button>
                                 </div>
                             </div>
                         </div>
