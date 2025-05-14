@@ -50,7 +50,7 @@
                 </div>
                 <div class="mb-1 d-flex" style="font-size: 0.85rem;">
                     <div style="width: 110px;"><strong>Kapasitas</strong> </div>
-                    <div>: {{ $produk->kapasitas_produksi ?? '-' }} ekor</div>
+                    <div>: {{ $produk->kapasitas_produksi ?? '-' }} kg</div>
                 </div>
                 <div class="mb-1 d-flex" style="font-size: 0.85rem;">
                     <div style="width: 110px;"><strong>Lokasi</strong> </div>

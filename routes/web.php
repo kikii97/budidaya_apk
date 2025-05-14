@@ -18,7 +18,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DetailUsahaController;
 
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'rekomendasi'])->name('produk.rekomendasi');
 Route::get('/welcome', fn () => view('welcome'));
 
 // Halaman informasi publik

@@ -10,7 +10,7 @@ class PembudidayaSeeder extends Seeder
 {
     public function run(): void
     {
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             Pembudidaya::create([
                 'name' => "Pembudidaya $i",
                 'email' => "pembudidaya$i@example.com",

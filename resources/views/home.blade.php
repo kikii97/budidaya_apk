@@ -405,7 +405,7 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3">
-                                    <form>
+                                    <form method="GET" action="{{ route('produk.rekomendasi') }}">
                                         <!-- Jenis Komoditas -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Jenis Komoditas</label>
@@ -441,9 +441,12 @@
                                             <select class="form-select form-select-sm" name="kecamatan">
                                                 <option value="">-- Pilih Kecamatan --</option>
                                                 <option>Anjatan</option>
+                                                <option>Arahan</option>
                                                 <option>Balongan</option>
+                                                <option>Bangodua</option>
                                                 <option>Bongas</option>
-                                                <option>Cadangpinggan</option>
+                                                <option>Cantigi</option>
+                                                <option>Cikedung</option>
                                                 <option>Gabuswetan</option>
                                                 <option>Gantar</option>
                                                 <option>Haurgeulis</option>
@@ -452,13 +455,13 @@
                                                 <option>Juntinyuat</option>
                                                 <option>Kandanghaur</option>
                                                 <option>Karangampel</option>
-                                                <option>Kedokanbunder</option>
+                                                <option>Kedokan Bunder</option>
                                                 <option>Kertasemaya</option>
                                                 <option>Krangkeng</option>
                                                 <option>Kroya</option>
                                                 <option>Lelea</option>
-                                                <option>Losarang</option>
                                                 <option>Lohbener</option>
+                                                <option>Losarang</option>
                                                 <option>Pasekan</option>
                                                 <option>Patrol</option>
                                                 <option>Sindang</option>
@@ -591,76 +594,56 @@
         </div>
     </section>
 
-    <section id="budidaya" class="pb-3">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-header d-flex flex-wrap justify-content-between">
-                        <h2 class="section-title">Etalase Produk Budidaya</h2>
-                        <div class="d-flex align-items-center">
-                            <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
-                        </div>
+<section id="budidaya" class="pb-3">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header d-flex flex-wrap justify-content-between">
+                    <h2 class="section-title">Etalase Produk Budidaya</h2>
+                    <div class="d-flex align-items-center">
+                        <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    {{-- <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-                        @foreach ($recommendedProducts as $product)
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                    @foreach ($recommendedProducts as $product)
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ route('detail', $product->id) }}" title="{{ $product->nama }}">
+                                    <a href="{{ route('produk.detail', $product->id) }}" title="{{ $product->nama }}">
                                         @php
                                             $gambarList = json_decode($product->gambar, true);
                                             $thumbnail = $gambarList[0] ?? 'default.jpg';
                                         @endphp
                                         <img src="{{ asset('storage/images/' . $thumbnail) }}"
-                                             alt="Thumbnail {{ $product->nama }}"
-                                             class="tab-image"
-                                             style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
+                                            alt="Thumbnail {{ $product->nama }}"
+                                            class="tab-image"
+                                            style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
                                     </a>
                                 </figure>
                                 <div class="d-flex flex-column text-center">
                                     <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
-            
-                                    {{-- Info komoditas dan pembudidaya --}}
-                    {{-- <div class="mb-1">
+
+                                    {{-- Jenis Komoditas --}}
+                                    <div class="mb-1">
                                         <div class="fw-semibold fs-6">{{ $product->jenis_komoditas ?? 'Tidak tersedia' }}</div>
-                                        <div class="text-muted small">Pembudidaya: <strong>{{ $product->pembudidaya->name ?? 'Tidak diketahui' }}</strong></div> --}}
-                    <div
-                        class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('detail') }}" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-1.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Udang Vaname Super Fresh</h3>
-                                    <div>
                                     </div>
 
-                                    {{-- Kisaran harga dari database --}}
+                                    {{-- Kisaran Harga --}}
                                     <div class="d-flex justify-content-center align-items-center gap-2">
-                                        {{-- <span class="text-dark fw-semibold">
-                                            Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} - Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
-                                        </span> --}}
-                                        <span class="text-dark fw-semibold">Rp70.000 – Rp75.000</span>
+                                        <span class="text-dark fw-semibold">
+                                            Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} – Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
+                                        </span>
                                         <span class="text-warning fw-semibold fs-6">/kg</span>
                                     </div>
 
-                                    {{-- Input jumlah --}}
                                     <div class="button-area p-3 pt-0">
-                                        {{-- <div class="row g-1 mt-2">
-                                            <div class="col-3">
-                                                <input type="number" name="quantity" class="form-control border-dark-subtle input-number quantity" value="1">
-                                            </div> --}}
                                         <div class="row g-1 mt-2 d-flex justify-content-center">
                                             <div class="col-7">
-                                                <a href="#" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+                                                <a href="{{ route('produk.detail', $product->id) }}" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
                                                     <svg width="18" height="18">
                                                         <use xlink:href="#detail"></use>
                                                     </svg> Detail
@@ -678,263 +661,13 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-2.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Rumput Laut Gracilaria</h3>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">Rp12.000 – Rp14.000</span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2">
-                                                <a href="#" class="btn btn-outline-dark rounded-1 p-2 fs-6">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-3.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Rumput Laut Siap Olah</h3>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">Rp6.000 – Rp7.500</span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- @endforeach
-                    </div>
-                </div>
-            </div> --}}
-
-
-
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-6.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Gurame Segar</h3>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">Rp40.000 – Rp43.000</span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-7.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Udang Windu Jumbo</h3>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">Rp155.000 – Rp160.000</span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-8.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Bandeng Organik Air Payau</h3>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">Rp33.000 – Rp35.000</span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-9.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Lele Organik Air Tawar</h3>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">Rp25.000 – Rp30.000</span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="index.html" title="Product Title">
-                                        <img src="{{ asset('images/product-thumb-10.png') }}"
-                                            alt="Product Thumbnail" class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Nila Merah Segar</h3>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">Rp28.000 – Rp32.000</span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- Start Map section -->
     <section id="peta" class="py-5"

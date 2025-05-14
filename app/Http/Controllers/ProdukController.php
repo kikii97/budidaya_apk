@@ -226,7 +226,7 @@ class ProdukController extends Controller
             'Jatibarang', 'Juntinyuat', 'Kandanghaur', 'Karangampel', 'Kedokan Bunder',
             'Kertasemaya', 'Krangkeng', 'Kroya', 'Lelea', 'Lohbener', 'Losarang',
             'Pasekan', 'Patrol', 'Sindang', 'Sliyeg', 'Sukagumiwang', 'Sukra',
-            'Trisi', 'Tukdana', 'Widasari'
+            'Terisi', 'Tukdana', 'Widasari'
         ];
     }
 }

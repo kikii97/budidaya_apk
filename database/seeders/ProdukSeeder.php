@@ -16,14 +16,33 @@ class ProdukSeeder extends Seeder
             'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
         ];
 
+        $kecamatanIndramayu = [
+            'Anjatan', 'Arahan', 'Balongan', 'Bangodua', 'Bongas', 'Cantigi',
+            'Cikedung', 'Gabuswetan', 'Gantar', 'Haurgeulis', 'Indramayu',
+            'Jatibarang', 'Juntinyuat', 'Kandanghaur', 'Karangampel', 'Kedokan Bunder',
+            'Kertasemaya', 'Krangkeng', 'Kroya', 'Lelea', 'Lohbener', 'Losarang',
+            'Pasekan', 'Patrol', 'Sindang', 'Sliyeg', 'Sukagumiwang', 'Sukra',
+            'Terisi', 'Tukdana', 'Widasari'
+        ];
+
+        $komoditas = [
+            'Udang',
+            'Rumput Laut',
+            'Ikan Bandeng',
+            'Ikan Gurame',
+            'Ikan Lele',
+            'Ikan Nila'
+        ];
+
         foreach ($pembudidayas as $pembudidaya) {
-            for ($i = 1; $i <= 3; $i++) {
+            for ($i = 1; $i <= 4; $i++) {
+                $komoditasTerpilih = $komoditas[array_rand($komoditas)];
                 Produk::create([
                     'gambar' => json_encode(['img1.jpg', 'img2.jpg']),
                     'telepon' => '08123456789',
                     'alamat_lengkap' => "Jl. Mawar No. $i",
-                    'kecamatan' => "Kecamatan $i",
-                    'jenis_komoditas' => "Komoditas $i",
+                    'kecamatan' => $kecamatanIndramayu[array_rand($kecamatanIndramayu)], // Mengambil nama kecamatan secara acak dari Indramayu
+                    'jenis_komoditas' => $komoditasTerpilih,
                     'jenis_spesifik_komoditas' => "Spesifik $i",
                     'kapasitas_produksi' => rand(100, 500),
                     'masa_produksi_puncak' => $bulan[array_rand($bulan)],
