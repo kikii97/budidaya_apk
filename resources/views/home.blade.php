@@ -29,9 +29,16 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
-    <style>
-    </style>
 </head>
+
+<style>
+    body,
+    input,
+    textarea,
+    button {
+        font-family: 'Inter', sans-serif;
+    }
+</style>
 
 <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -97,158 +104,6 @@
         <div class="preloader">
         </div>
     </div>
-
-    {{-- <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
-
-        <div class="offcanvas-header justify-content-between">
-            <h4 class="fw-normal text-uppercase fs-6">Menu</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <div class="offcanvas-body">
-
-            <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-                <li class="nav-item border-dashed">
-                    <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#seafood"></use>
-                        </svg>
-                        <span>Seafood</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <button
-                        class="btn btn-toggle dropdown-toggle position-relative w-100 d-flex justify-content-between align-items-center text-dark p-2"
-                        data-bs-toggle="collapse" data-bs-target="#beverages-collapse" aria-expanded="false">
-                        <div class="d-flex gap-3">
-                            <svg width="24" height="24" viewBox="0 0 24 24">
-                                <use xlink:href="#beverages"></use>
-                            </svg>
-                            <span>Beverages</span>
-                        </div>
-                    </button>
-                    <div class="collapse" id="beverages-collapse">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal ps-5 pb-1">
-                            <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Water</a></li>
-                            <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Juice</a></li>
-                            <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Soda</a></li>
-                            <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Tea</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-
-        </div>
-
-    </div>
-
-    <header>
-        <div class="container-fluid">
-            <div class="d-flex align-items-center py-1 border-bottom flex-wrap">
-
-                <!-- Logo & Toggler -->
-                <div class="d-flex align-items-center gap-4">
-                    <a href="index.html">
-                        <img src="{{ asset('images/logo.png') }}" alt="logo" class="img-fluid"
-                            style="width: 75px;">
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#menu"></use>
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Navbar Menu -->
-                <div class="d-flex align-items-center justify-content-center flex-grow-1">
-                    <ul
-                        class="navbar-nav list-unstyled d-flex flex-row gap-4 mb-0 fw-semibold fs-20 text-uppercase text-dark">
-                        <li class="nav-item">
-                            <a href="{{ url('home') }}" class="nav-link">Beranda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#komoditas" class="nav-link">Komoditas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('location') }}" class="nav-link">Peta Budidaya</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#budidaya" class="nav-link">Budidaya</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- User Icon -->
-                <div class="d-flex align-items-center ms-auto position-relative">
-                    <a href="#" class="mx-2" id="user-icon">
-                        <svg width="28" height="28">
-                            <use xlink:href="#user"></use>
-                        </svg>
-                    </a>
-
-                    <!-- Dropdown menu -->
-                    <div id="user-dropdown"
-                    class="user-dropdown position-absolute end-0 mt-2 bg-white border rounded shadow-sm"
-                    style="display: none; min-width: 180px;">
-                    
-                    @if (Auth::guard('pembudidaya')->check())
-                        <div class="px-3 py-2 border-bottom">
-                            <strong>{{ Auth::guard('pembudidaya')->user()->name }}</strong><br>
-                            <small>{{ Auth::guard('pembudidaya')->user()->email }}</small>
-                        </div>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="d-block w-100 text-start px-3 py-2 text-dark bg-white border-0"
-                                style="transition: 0.2s; font-weight: 500;">Logout</button>
-                        </form>
-                
-                    @elseif(Auth::check())
-                        <div class="px-3 py-2 border-bottom">
-                            <strong>{{ Auth::user()->name }}</strong><br>
-                            <small>{{ Auth::user()->email }}</small>
-                        </div>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="d-block w-100 text-start px-3 py-2 text-dark bg-white border-0"
-                                style="transition: 0.2s; font-weight: 500;">Logout</button>
-                        </form>
-                
-                    @else
-                        <a href="{{ route('login') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
-                            style="transition: 0.2s; font-weight: 500;">Masuk</a>
-                        <a href="{{ route('register') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
-                            style="transition: 0.2s; font-weight: 500;">Daftar</a>
-                        <a href="{{ route('pembudidaya.login') }}" class="d-block px-3 py-2 text-dark text-decoration-none"
-                            style="transition: 0.2s; font-weight: 500;">Masuk Sebagai Pembudidaya</a>
-                    @endif
-                </div>
-                </div>
-                <!-- Offcanvas Mobile Menu -->
-                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <ul class="navbar-nav list-unstyled gap-3">
-                            <li class="nav-item">
-                                <a href="{{ url('home') }}" class="nav-link">Beranda</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#komoditas" class="nav-link">Komoditas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="index.html" class="nav-link">Peta Budidaya</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#mitra" class="nav-link">Mitra</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div> --}}
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a class="logo d-flex align-items-center me-auto me-xl-0">
@@ -292,7 +147,8 @@
                     </a>
                     <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                         aria-labelledby="accountDropdown">
-                        <li><a href="{{ url('profile') }}" class="dropdown-item py-1 px-3 small" href="#">Account Settings</a></li>
+                        <li><a href="{{ url('profile') }}" class="dropdown-item py-1 px-3 small"
+                                href="#">Account Settings</a></li>
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
@@ -316,7 +172,8 @@
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
-                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('register') }}">📝 Gabung Investor</a></li>
+                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('register') }}">📝 Gabung
+                                Investor</a></li>
                     </ul>
                 @endif
             </div>
@@ -356,7 +213,8 @@
                         <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                             aria-labelledby="mobileLoginDropdown">
                             <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                            <li><a class="dropdown-item py-2" href="{{ url('pembudidaya/login') }}">Log In Pembudidaya</a>
+                            <li><a class="dropdown-item py-2" href="{{ url('pembudidaya/login') }}">Log In
+                                    Pembudidaya</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -388,28 +246,30 @@
                     <div class="d-flex gap-3 mt-3">
                         @if (Auth::check() && Auth::user()->role == 'user')
                             <button class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3 mt-3"
-                                data-bs-toggle="modal" data-bs-target="#modalCari">Form Cari</button>
+                                data-bs-toggle="modal" data-bs-target="#modalCari">Form Rekomendasi</button>
                         @else
                             <a href="{{ url('register') }}"
                                 class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
                                 Investor</a>
                         @endif
                     </div>
-                    <div class="modal fade" id="modalCari" tabindex="-1" aria-labelledby="modalCariLabel"
+                    {{-- <div class="modal fade" id="modalCari" tabindex="-1" aria-labelledby="modalCariLabel"
                         aria-hidden="true">
-                        <div class="modal-dialog" style="max-width: 450px; font-size: 0.75rem;">
-                            <div class="modal-content">
-                                <div class="modal-header py-2">
-                                    <h5 class="modal-title" id="modalCariLabel">Cari Komoditas</h5>
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+                            <div class="modal-content rounded-3 border-0">
+                                <div class="modal-header border-0 py-2">
+                                    <h6 class="modal-title fw-semibold" id="modalCariLabel">Form Cari</h6>
                                     <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body p-3">
-                                    <form method="GET" action="{{ route('produk.rekomendasi') }}">
+                                <div class="modal-body pt-2 pb-0">
+                                    <form method="GET" action="{{ route('produk.rekomendasi') }}"
+                                        style="font-size: 0.75rem;">
                                         <!-- Jenis Komoditas -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Jenis Komoditas</label>
-                                            <select class="form-select form-select-sm" name="jenis_komoditas">
+                                            <select class="form-select form-select-sm rounded-2"
+                                                name="jenis_komoditas">
                                                 <option value="">-- Pilih Komoditas --</option>
                                                 <option>Udang</option>
                                                 <option>Rumput Laut</option>
@@ -424,21 +284,24 @@
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Harga (Rp)</label>
                                             <div class="d-flex gap-2">
-                                                <input type="number" class="form-control form-control-sm" name="harga_min" placeholder="Min">
-                                                <input type="number" class="form-control form-control-sm" name="harga_max" placeholder="Max">
+                                                <input type="number" class="form-control form-control-sm rounded-2"
+                                                    name="harga_min" placeholder="Min">
+                                                <input type="number" class="form-control form-control-sm rounded-2"
+                                                    name="harga_max" placeholder="Max">
                                             </div>
                                         </div>
 
                                         <!-- Kapasitas Produksi -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Kapasitas Produksi (kg/bulan)</label>
-                                            <input type="number" class="form-control form-control-sm" name="kapasitas" placeholder="Cth: 1000">
+                                            <input type="number" class="form-control form-control-sm rounded-2"
+                                                name="kapasitas" placeholder="Cth: 1000">
                                         </div>
 
                                         <!-- Kecamatan -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Kecamatan</label>
-                                            <select class="form-select form-select-sm" name="kecamatan">
+                                            <select class="form-select form-select-sm rounded-2" name="kecamatan">
                                                 <option value="">-- Pilih Kecamatan --</option>
                                                 <option>Anjatan</option>
                                                 <option>Arahan</option>
@@ -477,15 +340,125 @@
                                         <!-- Prediksi Panen -->
                                         <div class="mb-2">
                                             <label class="form-label mb-1">Prediksi Panen</label>
-                                            <input type="date" class="form-control form-control-sm" name="prediksi_panen">
+                                            <input type="date" class="form-control form-control-sm rounded-2"
+                                                name="prediksi_panen">
                                         </div>
 
                                         <!-- Tombol Cari -->
-                                        <div class="modal-footer py-2 px-0">
-                                            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                                        <div class="text-end pt-1">
+                                            <button type="submit"
+                                                class="btn btn-primary btn-sm rounded-pill px-3">Cari</button>
                                         </div>
                                     </form>
                                 </div>
+                            </div>
+                        </div>
+                    </div> --}}
+                    <!-- Modal Input Order -->
+                    <div class="modal fade" id="modalCari" tabindex="-1" aria-labelledby="modalCariLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 500px;">
+                            <div class="modal-content">
+                                <div class="modal-header py-2">
+                                    <h5 class="modal-title" id="modalCariLabel">Form Rekomendasi</h5>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+                                <form class="modal-body p-3 pb-0" method="GET" action="{{ route('produk.rekomendasi') }}"
+                                    style="font-size: 0.8rem; padding: 15px;">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <label class="form-label mb-1">Jenis Komoditas</label>
+                                            <select class="form-select form-select-sm rounded-2"
+                                                name="jenis_komoditas">
+                                                <option value="">-- Pilih Komoditas --</option>
+                                                <option>Udang</option>
+                                                <option>Rumput Laut</option>
+                                                <option>Ikan Bandeng</option>
+                                                <option>Ikan Gurame</option>
+                                                <option>Ikan Lele</option>
+                                                <option>Ikan Nila</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <label class="form-label mb-1">Harga (Rp)</label>
+                                        <div class="col-6 mb-1">
+                                            <input type="number" class="form-control form-control-sm rounded-2"
+                                                name="harga_min" placeholder="Min">
+                                        </div>
+                                        <div class="col-6 mb-1">
+                                            <input type="number" class="form-control form-control-sm rounded-2"
+                                                name="harga_max" placeholder="Max">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <label class="form-label mb-1">Kapasitas Produksi (kg/bulan)</label>
+                                            <input type="number" class="form-control form-control-sm rounded-2"
+                                                name="kapasitas" placeholder="Cth: 1000">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <label class="form-label mb-1">Kecamatan</label>
+                                            <select class="form-select form-select-sm rounded-2" name="kecamatan">
+                                                <option value="">-- Pilih Kecamatan --</option>
+                                                <option>Anjatan</option>
+                                                <option>Arahan</option>
+                                                <option>Balongan</option>
+                                                <option>Bangodua</option>
+                                                <option>Bongas</option>
+                                                <option>Cantigi</option>
+                                                <option>Cikedung</option>
+                                                <option>Gabuswetan</option>
+                                                <option>Gantar</option>
+                                                <option>Haurgeulis</option>
+                                                <option>Indramayu</option>
+                                                <option>Jatibarang</option>
+                                                <option>Juntinyuat</option>
+                                                <option>Kandanghaur</option>
+                                                <option>Karangampel</option>
+                                                <option>Kedokan Bunder</option>
+                                                <option>Kertasemaya</option>
+                                                <option>Krangkeng</option>
+                                                <option>Kroya</option>
+                                                <option>Lelea</option>
+                                                <option>Lohbener</option>
+                                                <option>Losarang</option>
+                                                <option>Pasekan</option>
+                                                <option>Patrol</option>
+                                                <option>Sindang</option>
+                                                <option>Sliyeg</option>
+                                                <option>Sukagumiwang</option>
+                                                <option>Sukra</option>
+                                                <option>Terisi</option>
+                                                <option>Tukdana</option>
+                                                <option>Widasari</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label class="form-label mb-1">Prediksi Panen</label>
+                                            <input type="date" class="form-control form-control-sm rounded-2"
+                                                name="prediksi_panen">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer py-2">
+                                        <button type="submit"
+                                            class="btn btn-primary btn-sm rounded-pill px-3">Cari</button>
+                                    </div>
+
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -594,79 +567,83 @@
         </div>
     </section>
 
-<section id="budidaya" class="pb-3">
-    <div class="container-lg">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-header d-flex flex-wrap justify-content-between">
-                    <h2 class="section-title">Etalase Produk Budidaya</h2>
-                    <div class="d-flex align-items-center">
-                        <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
+    <section id="budidaya" style="padding-bottom: 5rem;">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-header d-flex flex-wrap justify-content-between">
+                        <h2 class="section-title">Etalase Produk Budidaya</h2>
+                        <div class="d-flex align-items-center">
+                            <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-                    @foreach ($recommendedProducts as $product)
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ route('produk.detail', $product->id) }}" title="{{ $product->nama }}">
-                                        @php
-                                            $gambarList = json_decode($product->gambar, true);
-                                            $thumbnail = $gambarList[0] ?? 'default.jpg';
-                                        @endphp
-                                        <img src="{{ asset('storage/images/' . $thumbnail) }}"
-                                            alt="Thumbnail {{ $product->nama }}"
-                                            class="tab-image"
-                                            style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div
+                        class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                        @foreach ($recommendedProducts as $product)
+                            <div class="col">
+                                <div class="product-item">
+                                    <figure>
+                                        <a href="{{ route('produk.detail', $product->id) }}"
+                                            title="{{ $product->nama }}">
+                                            @php
+                                                $gambarList = json_decode($product->gambar, true);
+                                                $thumbnail = $gambarList[0] ?? 'default.jpg';
+                                            @endphp
+                                            <img src="{{ asset('storage/images/' . $thumbnail) }}"
+                                                alt="Thumbnail {{ $product->nama }}" class="tab-image"
+                                                style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
+                                        </a>
+                                    </figure>
+                                    <div class="d-flex flex-column text-center">
+                                        <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
 
-                                    {{-- Jenis Komoditas --}}
-                                    <div class="mb-1">
-                                        <div class="fw-semibold fs-6">{{ $product->jenis_komoditas ?? 'Tidak tersedia' }}</div>
-                                    </div>
+                                        {{-- Jenis Komoditas --}}
+                                        <div class="mb-1">
+                                            <div class="fw-semibold fs-6">
+                                                {{ $product->jenis_komoditas ?? 'Tidak tersedia' }}</div>
+                                        </div>
 
-                                    {{-- Kisaran Harga --}}
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <span class="text-dark fw-semibold">
-                                            Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} – Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
-                                        </span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
+                                        {{-- Kisaran Harga --}}
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+                                            <span class="text-dark fw-semibold">
+                                                Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} –
+                                                Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
+                                            </span>
+                                            <span class="text-warning fw-semibold fs-6">/kg</span>
+                                        </div>
 
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            <div class="col-7">
-                                                <a href="{{ route('produk.detail', $product->id) }}" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
-                                            </div>
-                                            <div class="col-2">
-                                                <a href="#" class="btn btn-outline-dark rounded-1 p-2 fs-6">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg>
-                                                </a>
+                                        <div class="button-area p-3 pt-0">
+                                            <div class="row g-1 mt-2 d-flex justify-content-center">
+                                                <div class="col-7">
+                                                    <a href="{{ route('produk.detail', $product->id) }}"
+                                                        class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#detail"></use>
+                                                        </svg> Detail
+                                                    </a>
+                                                </div>
+                                                <div class="col-2">
+                                                    <a href="#" class="btn btn-outline-dark rounded-1 p-2 fs-6">
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#heart"></use>
+                                                        </svg>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
     <!-- Start Map section -->
@@ -715,7 +692,7 @@
                 <div class="col-lg-3 col-md-6 mb-3">
                     <h6 class="fw-bold mb-2 text-dark">Tentang Kami</h6>
                     <p class="text-muted mb-1">
-                        Aplikasi Inkubator Bisnis Ikan Indramayu yang menyediakan info komoditas unggulan dan
+                        Sistem Inkubasi Bisnis Ikan Daerah Indramayu yang menyediakan info komoditas unggulan dan
                         menghubungkan pembudidaya dengan mitra bisnis.
                     </p>
                 </div>

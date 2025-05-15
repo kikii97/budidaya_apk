@@ -117,23 +117,23 @@
 
                 <!-- Pilihan Registrasi -->
                 <div class="mb-3">
-                    <label for="registrasiTipe" class="form-label text">Pilih Tipe Registrasi</label>
+                    <label for="registrasiTipe" class="form-label text">Pilih Tipe</label>
                     <select id="registrasiTipe" class="form-select" onchange="tampilkanForm()">
-                        <option value="investor">Registrasi Investor</option>
-                        <option value="usaha">Registrasi Usaha</option>
+                        <option value="investor">Daftar Investor</option>
+                        <option value="usaha">Daftar Usaha</option>
                     </select>
                 </div>
             </div>
             <div class="text-center">
                 <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                    class="btn btn-white btn-rounded back-button">Go back</button>
+                    class="btn btn-white btn-rounded back-button">Kembali</button>
             </div>
         </div>
         <div class="col-md-9 justify-content-center">
             <div class="card card-custom pb-4">
                 <div class="card-body mt-0 mx-5">
                     <div class="text-center mb-3 pb-2 mt-3">
-                        <h4 style="color: #495057;">Registrasi</h4>
+                        <h4 style="color: #495057;">Daftar</h4>
                     </div>
 
                     <form id="formRegistrasi" class="mb-0">
@@ -143,7 +143,7 @@
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline">
                                         <input type="text" id="form9Example1" class="form-control input-custom" />
-                                        <label class="form-label" for="form9Example1">First name</label>
+                                        <label class="form-label" for="form9Example1">Nama</label>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -226,8 +226,7 @@
                         <div class="float-end">
                             <!-- Submit button -->
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-rounded" style="background-color: #0062CC;">Place
-                                order</button>
+                                class="btn btn-primary btn-rounded" style="background-color: #0062CC;">Daftar</button>
                         </div>
                     </form>
                 </div>

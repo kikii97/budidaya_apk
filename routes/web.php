@@ -20,6 +20,7 @@ use App\Http\Controllers\DetailUsahaController;
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'rekomendasi'])->name('produk.rekomendasi');
 Route::get('/welcome', fn () => view('welcome'));
+Route::get('/login1', fn () => view('login1'));
 
 // Halaman informasi publik
 Route::view('/tentangkami', 'tentangkami')->name('tentangkami');

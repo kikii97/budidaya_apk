@@ -32,6 +32,15 @@
         rel="stylesheet">
 </head>
 
+<style>
+    body,
+    input,
+    textarea,
+    button {
+        font-family: 'Inter', sans-serif;
+    }
+</style>
+
 <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <defs>
@@ -180,7 +189,7 @@
                 <div class="col-lg-3 col-md-6 mb-3">
                     <h6 class="fw-bold mb-2 text-dark">Tentang Kami</h6>
                     <p class="text-muted mb-1">
-                        Aplikasi Inkubator Bisnis Ikan Indramayu yang menyediakan info komoditas unggulan dan
+                        Sistem Inkubasi Bisnis Ikan Daerah Indramayu yang menyediakan info komoditas unggulan dan
                         menghubungkan pembudidaya dengan mitra bisnis.
                     </p>
                 </div>
