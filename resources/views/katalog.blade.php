@@ -8,73 +8,241 @@
 @endsection
 
 @section('content')
+<!-- Modal Filter untuk layar kecil -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-slideout modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Produk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+            <form action="{{ route('katalog') }}" method="GET" class="filter-sidebar p-4">
+                <!-- Filter Jenis Komoditas -->
+                    <div class="filter-group">
+                        <h6 class="mb-3">Jenis Komoditas</h6>
+                        @php
+                        $selectedKomoditas = request('jenis_komoditas', []);
+                        @endphp
+                        @foreach (['Udang', 'Rumput Laut', 'Ikan Bandeng', 'Ikan Gurame', 'Ikan Lele', 'Ikan Nila'] as $komoditas)
+                        <div class="form-check mb-2">
+                            <input 
+                                class="form-check-input" 
+                                type="checkbox" 
+                                id="{{ Str::slug($komoditas) }}" 
+                                name="jenis_komoditas[]" 
+                                value="{{ $komoditas }}"
+                                {{ in_array($komoditas, $selectedKomoditas) ? 'checked' : '' }}
+                                >
+                                <label class="mt-1 ps-2 form-check-label" for="{{ Str::slug($komoditas) }}">
+                                    {{ $komoditas }}
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Filter Price Range -->
+                        <div class="filter-group">
+                            <h6 class="mb-3">Kisaran Harga (Rp)</h6>
+                            @php
+                                $priceMin = request('price_min', '');
+                                $priceMax = request('price_max', '');
+                            @endphp
+                            <div class="mb-3">
+                                <label for="price_min" class="form-label">Min:</label>
+                                <input 
+                                    type="number" 
+                                    id="price_min" 
+                                    name="price_min" 
+                                    class="form-control" 
+                                    placeholder="5000" 
+                                    min="0"
+                                    value="{{ $priceMin }}"
+                                >
+                            </div>
+                            <div>
+                                <label for="price_max" class="form-label">Max:</label>
+                                <input 
+                                    type="number" 
+                                    id="price_max" 
+                                    name="price_max" 
+                                    class="form-control" 
+                                    placeholder="10000" 
+                                    min="0"
+                                    value="{{ $priceMax }}"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Filter Kecamatan -->
+                        <div class="filter-group mt-4">
+                            <h6 class="mb-3">Kecamatan</h6>
+                            @php
+                                $selectedKecamatan = request('kecamatan', []);
+                                $kecamatanList = [
+                                    'Anjatan', 'Arahan', 'Balongan', 'Bangodua', 'Bongas', 'Cantigi',
+                                    'Cikedung', 'Gabuswetan', 'Gantar', 'Haurgeulis', 'Indramayu',
+                                    'Jatibarang', 'Juntinyuat', 'Kandanghaur', 'Karangampel', 'Kedokan Bunder',
+                                    'Kertasemaya', 'Krangkeng', 'Kroya', 'Lelea', 'Lohbener', 'Losarang',
+                                    'Pasekan', 'Patrol', 'Sindang', 'Sliyeg', 'Sukagumiwang', 'Sukra',
+                                    'Terisi', 'Tukdana', 'Widasari'
+                                ];
+                                $visibleCount = 5; // jumlah kecamatan yang tampil awalnya
+                            @endphp
+                            @foreach ($kecamatanList as $index => $kecamatan)
+                            <div 
+                                class="form-check mb-2 kecamatan-item" 
+                                style="{{ $index >= $visibleCount ? 'display:none;' : '' }}"
+                            >
+                                <input 
+                                    class="form-check-input" 
+                                    type="checkbox" 
+                                    id="{{ Str::slug($kecamatan) }}" 
+                                    name="kecamatan[]" 
+                                    value="{{ $kecamatan }}"
+                                    {{ in_array($kecamatan, $selectedKecamatan) ? 'checked' : '' }}
+                                >
+                                <label class="mt-1 ps-2 form-check-label" for="{{ Str::slug($kecamatan) }}">
+                                    {{ $kecamatan }}
+                                </label>
+                            </div>
+                            @endforeach
+                            <button type="button" id="toggleKecamatanBtnMobile" class="toggle-kecamatan-btn">
+                                Lihat lainnya <i class="bi bi-chevron-down"></i>
+                            </button>
+                        </div>
+
+                        <button type="submit" class="btn btn-outline-primary w-100 mt-4">Apply Filters</button>
+                    </form>
+                </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <div class="container" style="padding-top: 0rem; padding-bottom: 0rem; font-size: 0.7rem;">
         <!-- Top Bar -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0">Produk Budidaya</h4>
             <div class="d-flex gap-2 align-items-center">
                 <span class="text-muted">Sort by:</span>
-                <button class="sort-btn">
-                    Terbaru <i class="bi bi-chevron-down ms-2"></i>
-                </button>
+                <form method="GET" action="{{ route('katalog') }}">
+                <select name="sort_by" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="terbaru" {{ request('sort_by') == 'terbaru' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="terlama" {{ request('sort_by') == 'terlama' ? 'selected' : '' }}>Terlama</option>
+                </select>
+                </form>
             </div>
         </div>
 
         <div class="row g-4">
-            <!-- Filters Sidebar -->
-            <div class="col-lg-3" style="line-height: 0.5;">
+            <!-- Tombol Filter untuk layar kecil -->
+            <div class="col-12 d-lg-none mb-3 d-flex justify-content-end">
+                <button id="openFilterBtn" class="btn btn-primary w-5">
+                    Filter Produk <i class="bi bi-filter ms-2"></i>
+                </button>
+            </div>
 
-                <div class="filter-sidebar p-4 shadow-sm">
+            <!-- Sidebar Filter -->
+            <div class="col-lg-3 d-none d-lg-block" style="line-height: 0.5;">
+                <form action="{{ route('katalog') }}" method="GET" class="filter-sidebar p-4 shadow-sm">
+
+                    <!-- Filter Jenis Komoditas -->
                     <div class="filter-group">
                         <h6 class="mb-3">Jenis Komoditas</h6>
+                        @php
+                            $selectedKomoditas = request('jenis_komoditas', []);
+                        @endphp
+                        @foreach (['Udang', 'Rumput Laut', 'Ikan Bandeng', 'Ikan Gurame', 'Ikan Lele', 'Ikan Nila'] as $komoditas)
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="electronics">
-                            <label class="mt-1 ps-2 form-check-label" for="udang">
-                                Udang
+                            <input 
+                                class="form-check-input" 
+                                type="checkbox" 
+                                id="{{ Str::slug($komoditas) }}" 
+                                name="jenis_komoditas[]" 
+                                value="{{ $komoditas }}"
+                                {{ in_array($komoditas, $selectedKomoditas) ? 'checked' : '' }}
+                            >
+                            <label class="mt-1 ps-2 form-check-label" for="{{ Str::slug($komoditas) }}">
+                                {{ $komoditas }}
                             </label>
                         </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="clothing">
-                            <label class="mt-1 ps-2 form-check-label" for="rumput-laut">
-                                Rumput Laut
-                            </label>
+                        @endforeach
+                    </div>
+
+                    <!-- Filter Price Range -->
+                    <div class="filter-group">
+                        <h6 class="mb-3">Kisaran Harga (Rp)</h6>
+                        @php
+                            $priceMin = request('price_min', '');
+                            $priceMax = request('price_max', '');
+                        @endphp
+                        <div class="mb-3">
+                            <label for="price_min" class="form-label">Min:</label>
+                            <input 
+                                type="number" 
+                                id="price_min" 
+                                name="price_min" 
+                                class="form-control" 
+                                placeholder="5000" 
+                                min="0"
+                                value="{{ $priceMin }}"
+                            >
                         </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="accessories">
-                            <label class="mt-1 ps-2 form-check-label" for="ikan-bandeng">
-                                Ikan Bandeng
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="accessories">
-                            <label class="mt-1 ps-2 form-check-label" for="ikan-gurame">
-                                Ikan Gurame
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="accessories">
-                            <label class="mt-1 ps-2 form-check-label" for="ikan-lele">
-                                Ikan Lele
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="accessories">
-                            <label class="mt-1 ps-2 form-check-label" for="ikan-nila">
-                                Ikan Nila
-                            </label>
+                        <div>
+                            <label for="price_max" class="form-label">Max:</label>
+                            <input 
+                                type="number" 
+                                id="price_max" 
+                                name="price_max" 
+                                class="form-control" 
+                                placeholder="10000" 
+                                min="0"
+                                value="{{ $priceMax }}"
+                            >
                         </div>
                     </div>
 
-                    <div class="filter-group">
-                        <h6 class="mb-3">Price Range</h6>
-                        <input type="range" class="form-range" min="0" max="1000" value="500">
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">$0</span>
-                            <span class="text-muted">$1000</span>
+                    <!-- Filter Kecamatan -->
+                    <div class="filter-group mt-4">
+                        <h6 class="mb-3">Kecamatan</h6>
+                        @php
+                            $selectedKecamatan = request('kecamatan', []);
+                            $kecamatanList = [
+                                'Anjatan', 'Arahan', 'Balongan', 'Bangodua', 'Bongas', 'Cantigi',
+                                'Cikedung', 'Gabuswetan', 'Gantar', 'Haurgeulis', 'Indramayu',
+                                'Jatibarang', 'Juntinyuat', 'Kandanghaur', 'Karangampel', 'Kedokan Bunder',
+                                'Kertasemaya', 'Krangkeng', 'Kroya', 'Lelea', 'Lohbener', 'Losarang',
+                                'Pasekan', 'Patrol', 'Sindang', 'Sliyeg', 'Sukagumiwang', 'Sukra',
+                                'Terisi', 'Tukdana', 'Widasari'
+                            ];
+                            $visibleCount = 5; // jumlah kecamatan yang tampil awalnya
+                        @endphp
+                        @foreach ($kecamatanList as $index => $kecamatan)
+                        <div 
+                            class="form-check mb-2 kecamatan-item" 
+                            style="{{ $index >= $visibleCount ? 'display:none;' : '' }}"
+                        >
+                            <input 
+                                class="form-check-input" 
+                                type="checkbox" 
+                                id="{{ Str::slug($kecamatan) }}" 
+                                name="kecamatan[]" 
+                                value="{{ $kecamatan }}"
+                                {{ in_array($kecamatan, $selectedKecamatan) ? 'checked' : '' }}
+                            >
+                            <label class="mt-1 ps-2 form-check-label" for="{{ Str::slug($kecamatan) }}">
+                                {{ $kecamatan }}
+                            </label>
                         </div>
+                        @endforeach
+                        <button type="button" id="toggleKecamatanBtnDesktop" class="toggle-kecamatan-btn">
+                            Lihat lainnya <i class="bi bi-chevron-down"></i>
+                        </button>
                     </div>
-                    <button class="btn btn-outline-primary w-100">Apply Filters</button>
-                </div>
+
+                    <button type="submit" class="btn btn-outline-primary w-100 mt-4">Apply Filters</button>
+                </form>
             </div>
 
             <!-- Product Grid -->
@@ -100,7 +268,7 @@
                                             Rp{{ number_format($produk->kisaran_harga_max, 0, ',', '.') }}/kg
                                         </span>
                                         <button class="btn cart-btn">
-                                            <i class="bi bi-heart"></i>
+                                            <i class="bi bi-chevron-right"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -114,4 +282,108 @@
             </div>
         </div>
     </div>
+<style>
+    .toggle-kecamatan-btn {
+        font-size: 0.85rem !important;
+        color: #0d6efd !important;
+        background: none;
+        border: none;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        text-decoration: none;
+    }
+
+    .toggle-kecamatan-btn i {
+        font-size: 0.85rem;
+        transition: transform 0.3s ease;
+        color: #0d6efd;
+    }
+
+    .modal-dialog-slideout {
+        position: fixed;
+        margin: 0;
+        height: 100%;
+        right: 0;
+        max-width: 320px;
+        width: 100%;
+        transition: transform 0.3s ease-out;
+        transform: translateX(100%);
+    }
+
+    .modal.show .modal-dialog-slideout {
+        transform: translateX(0);
+    }
+
+    .modal-content {
+        height: 100%;
+        overflow-y: auto;
+        border-radius: 0;
+    }
+
+    .btn.btn-sm-custom {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.75rem;
+    line-height: 1;
+    border-radius: 0.3rem;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const openFilterBtn = document.getElementById('openFilterBtn');
+    const filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
+
+    // Tombol Filter untuk mobile
+    if (openFilterBtn) {
+        openFilterBtn.addEventListener('click', () => {
+            filterModal.show();
+        });
+    }
+
+    // Fungsi toggle kecamatan
+    function setupToggle(btnId, itemSelector) {
+        const toggleBtn = document.getElementById(btnId);
+        const kecamatanItems = document.querySelectorAll(itemSelector);
+        const visibleCount = {{ $visibleCount }}; // Harus digantikan dengan nilai PHP sebelum dikirim ke browser
+        let expanded = false;
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                expanded = !expanded;
+
+                if (expanded) {
+                    kecamatanItems.forEach(item => item.style.display = 'block');
+                    toggleBtn.innerHTML = 'Sembunyikan <i class="bi bi-chevron-up"></i>';
+                } else {
+                    kecamatanItems.forEach((item, index) => {
+                        item.style.display = index < visibleCount ? 'block' : 'none';
+                    });
+                    toggleBtn.innerHTML = 'Lihat lainnya <i class="bi bi-chevron-down"></i>';
+                }
+            });
+        }
+    }
+
+    // Panggil fungsi untuk dua tombol
+    setupToggle('toggleKecamatanBtnMobile', '#filterModal .kecamatan-item');
+    setupToggle('toggleKecamatanBtnDesktop', '.col-lg-3 .kecamatan-item');
+
+    // Format angka sebagai Rupiah dan validasi sebelum submit
+    const form = document.querySelector('form');
+    const priceMinInput = document.getElementById('price_min');
+    const priceMaxInput = document.getElementById('price_max');
+
+    form.addEventListener('submit', function(e) {
+        let min = parseInt(priceMinInput.value.replace(/\D/g, '')) || 0;
+        let max = parseInt(priceMaxInput.value.replace(/\D/g, '')) || 0;
+
+        if (min > max && max !== 0) {
+            e.preventDefault();
+            alert('Harga minimum tidak boleh lebih besar dari harga maksimum.');
+            return;
+        }
+    });
+});
+</script>
 @endsection

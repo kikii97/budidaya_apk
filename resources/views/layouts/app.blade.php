@@ -41,7 +41,7 @@
     }
 </style>
 
-<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80" tabindex="0">
+<body class="d-flex flex-column min-vh-100" data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <defs>
             <symbol xmlns="http://www.w3.org/2000/svg" id="facebook" viewBox="0 0 24 24">
@@ -147,7 +147,7 @@
     {{-- Header --}}
     @yield('header')
 
-    <div class="container mt-4">
+    <div class="container mt-4 flex-fill">
         @yield('content')
     </div>
 

@@ -36,8 +36,11 @@
 
             <!-- Product Details -->
             <div class="col-md-6">
-                <h1 class="h4 mb-0">{{ $produk->jenis_spesifik_komoditas ?? $produk->jenis_komoditas }}</h1>
-                <div class="mb-3">
+                {{-- Jenis Komoditas --}}
+                <h1 class="h4 mb-0">{{ $produk->jenis_komoditas }}</h1>
+
+                {{-- Kisaran Harga --}}
+                <div class="mb-2">
                     <span class="h6 text-dark fw-semibold">
                         Rp{{ number_format($produk->kisaran_harga_min, 0, ',', '.') }} –
                         Rp{{ number_format($produk->kisaran_harga_max, 0, ',', '.') }}
@@ -45,26 +48,66 @@
                     <span class="text-warning fw-semibold fs-6">/kg</span>
                 </div>
 
+                {{-- Ringkasan awal --}}
+                <div id="produk-summary">
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 110px;"><strong>Pembudidaya</strong></div>
+                        <div>: {{ $produk->pembudidaya->name ?? '-' }}</div>
+                    </div>
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 110px;"><strong>Telepon</strong></div>
+                        <div>: {{ $produk->telepon ?? $produk->pembudidaya->telepon ?? '-' }}</div>
+                    </div>
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 110px;"><strong>Kapasitas</strong></div>
+                        <div>: {{ $produk->kapasitas_produksi ?? '-' }} kg</div>
+                    </div>
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 110px;"><strong>Spesifik Komoditas</strong></div>
+                        <div>: {{ $produk->jenis_spesifik_komoditas ?? '-' }}</div>
+                    </div>
+                </div>
+
+                {{-- Detail lengkap --}}
                 <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                    <div style="width: 110px;"><strong>Tanggal Tanam</strong> </div>
-                    <div>: {{ \Carbon\Carbon::parse($produk->created_at)->translatedFormat('d F Y') }}</div>
+                    <div style="width: 110px;"><strong>Alamat</strong></div>
+                    <div>: {{ $produk->alamat_lengkap ?? '-' }}{{ $produk->kecamatan ? ', ' . $produk->kecamatan : '' }}</div>
                 </div>
-                <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                    <div style="width: 110px;"><strong>Kapasitas</strong> </div>
-                    <div>: {{ $produk->kapasitas_produksi ?? '-' }} kg</div>
+                <div id="produk-detail" style="display: none;">
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 110px;"><strong>Prediksi Panen</strong></div>
+                        <div>: {{ $produk->prediksi_panen ? \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d F Y') : '-' }}</div>
+                    </div>
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 110px;"><strong>Masa Produksi Puncak</strong></div>
+                        <div>: {{ $produk->masa_produksi_puncak ?? '-' }}</div>
+                    </div>
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 110px;"><strong>Detail</strong></div>
+                        <div>: {{ $produk->detail ?? '-' }}</div>
+                    </div>
                 </div>
-                <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                    <div style="width: 110px;"><strong>Lokasi</strong> </div>
-                    <div>: {{ $produk->alamat_lengkap ?? '-' }}</div>
-                </div>
-                <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                    <div style="width: 110px;"><strong>Ukuran</strong> </div>
-                    <div>: {{ $produk->detail ?? '-' }}</div>
-                </div>
-                <div class="mb-4 d-flex" style="font-size: 0.85rem;">
-                    <div style="width: 110px;"><strong>Kontak</strong> </div>
-                    <div>: </div>
-                </div>
+
+                {{-- Tombol toggle --}}
+                <button class="btn btn-sm btn-link p-0" onclick="toggleDetail()">Lihat selengkapnya</button>
+
+            {{-- Script untuk toggle detail --}}
+            @push('scripts')
+            <script>
+                function toggleDetail() {
+                    const detail = document.getElementById('produk-detail');
+                    const toggleBtn = event.target;
+
+                    if (detail.style.display === 'none' || detail.style.display === '') {
+                        detail.style.display = 'block';
+                        toggleBtn.textContent = 'Sembunyikan';
+                    } else {
+                        detail.style.display = 'none';
+                        toggleBtn.textContent = 'Lihat selengkapnya';
+                    }
+                }
+            </script>
+            @endpush
 
                 <!-- Actions -->
                 <div class="row d-grid gap-2">
@@ -163,5 +206,6 @@
                 </div>
             </div>
         </div>
+        @stack('scripts')
     </div>
 @endsection

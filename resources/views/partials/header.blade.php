@@ -115,12 +115,12 @@
                 <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                     aria-labelledby="mobileLoginDropdown">
                     <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-2" href="{{ url('pembudidaya/login') }}">Log In Pembudidaya</a>
+                    <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In Pembudidaya</a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item py-2" href="{{ url('register') }}">📝Gabung Investor</a></li>
+                    <li><a class="dropdown-item py-2" href="{{ url('login') }}">📝Gabung Investor</a></li>
                 </ul>
             </li>
         @endif

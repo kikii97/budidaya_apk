@@ -19,12 +19,14 @@ class ProdukController extends Controller
 
     public function show($id)
     {
-        $produk = Produk::where('id', $id)
-                    ->where('is_approved', true)
-                    ->firstOrFail();
+        $produk = Produk::with('pembudidaya')
+                        ->where('id', $id)
+                        ->where('is_approved', true)
+                        ->firstOrFail();
 
         return view('detail', compact('produk'));
     }
+
 
     // ✅ Tampilkan hanya produk yang sudah disetujui admin
     public function index()
@@ -229,4 +231,5 @@ class ProdukController extends Controller
             'Terisi', 'Tukdana', 'Widasari'
         ];
     }
+    
 }
