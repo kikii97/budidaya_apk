@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminPenggunaController;
 use App\Http\Controllers\AdminPembudidayaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DetailUsahaController;
+use App\Http\Controllers\GoogleController;
 
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'rekomendasi'])->name('produk.rekomendasi');
@@ -44,6 +45,8 @@ Route::resource('budidaya', BudidayaController::class);
 
 // ─── Auth Pengguna Umum ───────────────────────────────────────────────────────
 // Asumsikan controller untuk login/register user umum adalah LoginRegisterController
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 Route::middleware(['guest:web', 'no.cache'])->group(function () {
     Route::get('/login', [LoginRegisterController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginRegisterController::class, 'login'])->name('login.post');
