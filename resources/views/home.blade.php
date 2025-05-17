@@ -172,7 +172,7 @@
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
-                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">📝 Gabung
+                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung
                                 Investor</a></li>
                     </ul>
                 @endif
@@ -213,13 +213,13 @@
                         <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                             aria-labelledby="mobileLoginDropdown">
                             <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                            <li><a class="dropdown-item py-2" href="{{ url('pembudidaya/login') }}">Log In
+                            <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In
                                     Pembudidaya</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item py-2" href="{{ url('register') }}">📝Gabung Investor</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li>
                         </ul>
                     </li>
                 @endif

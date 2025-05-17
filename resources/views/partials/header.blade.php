@@ -56,12 +56,12 @@
                 <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                     aria-labelledby="loginDropdown">
                     <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('pembudidaya/login') }}">Log In
+                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In
                             Pembudidaya</a></li>
                     <li>
                         <hr class="dropdown-divider my-1">
                     </li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('register') }}">📝 Gabung Investor</a></li>
+                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
                 </ul>
             @endif
         </div>
@@ -120,7 +120,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item py-2" href="{{ url('login') }}">📝Gabung Investor</a></li>
+                    <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li>
                 </ul>
             </li>
         @endif

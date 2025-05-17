@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique(); // pastikan email unik
             $table->string('password');
-            $table->text('address');
             $table->enum('role', ['pembudidaya', 'admin'])->default('pembudidaya'); // Kolom role, enum terbatas
             $table->json('documents')->nullable(); // JSON array untuk dokumen
             $table->tinyInteger('is_approved')->nullable()->default(null);

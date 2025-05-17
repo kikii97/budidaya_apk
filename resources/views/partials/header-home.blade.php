@@ -21,13 +21,13 @@
             </a>
             <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                 aria-labelledby="loginDropdown">
-                <li><a class="dropdown-item py-1 px-3 small" href="login.html">Log In</a></li>
-                <li><a class="dropdown-item py-1 px-3 small" href="login-pembudidaya.html">Log In
+                <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
+                <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In
                         Pembudidaya</a></li>
                 <li>
                     <hr class="dropdown-divider my-1">
                 </li>
-                <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
+                <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
             </ul>
         </div>
     </div>
@@ -55,12 +55,12 @@
                 </a>
                 <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                     aria-labelledby="mobileLoginDropdown">
-                    <li><a class="dropdown-item py-2" href="login.html">Log In</a></li>
-                    <li><a class="dropdown-item py-2" href="login-pembudidaya.html">Log In Pembudidaya</a></li>
+                    <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
+                    <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In Pembudidaya</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item py-2" href="signup.html">📝Gabung Investor</a></li>
+                    <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li>
                 </ul>
             </li>
 
