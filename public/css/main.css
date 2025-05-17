@@ -342,6 +342,52 @@ h6 {
   }
 }
 
+.toggle-btn {
+  font-size: 0.85rem !important;
+  color: #0d6efd !important;
+  background: none;
+  border: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+}
+
+.toggle-btn i {
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
+  color: #0d6efd;
+}
+
+.modal-dialog-slideout {
+  position: fixed;
+  margin: 0;
+  height: 100%;
+  right: 0;
+  max-width: 320px;
+  width: 100%;
+  transition: transform 0.3s ease-out;
+  transform: translateX(100%);
+}
+
+.modal.show .modal-dialog-slideout {
+  transform: translateX(0);
+}
+
+.modal-content {
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 0;
+}
+
+.btn.btn-sm-custom {
+  font-size: 0.7rem;
+  padding: 0.3rem 0.75rem;
+  line-height: 1;
+  border-radius: 0.3rem;
+}
+
 /*--------------------------------------------------------------
 # Global Header
 --------------------------------------------------------------*/

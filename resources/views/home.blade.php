@@ -120,22 +120,6 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas"
                     data-bs-target="#mobileNav"></i>
             </nav>
-            {{-- <div class="dropdown d-inline-block d-none d-xl-block">
-                <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#" id="loginDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Log In
-                </a>
-                <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
-                    aria-labelledby="loginDropdown">
-                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="login-pembudidaya.html">Log In
-                            Pembudidaya</a></li>
-                    <li>
-                        <hr class="dropdown-divider my-1">
-                    </li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
-                </ul>
-            </div> --}}
             <div class="dropdown d-inline-block d-none d-xl-block">
                 @if (Auth::check() || Auth::guard('pembudidaya')->check())
                     @php
@@ -167,8 +151,6 @@
                     <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                         aria-labelledby="loginDropdown">
                         <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In
-                                Pembudidaya</a></li>
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
@@ -213,13 +195,14 @@
                         <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                             aria-labelledby="mobileLoginDropdown">
                             <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                            <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In
+                            {{-- <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In
                                     Pembudidaya</a>
-                            </li>
+                            </li> --}}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li>
+                            {{-- <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li> --}}
+                            <li><a class="dropdown-item py-2" href="{{ url('login') }}">📝Gabung Investor</a></li>
                         </ul>
                     </li>
                 @endif
@@ -238,129 +221,23 @@
                         <span class="fw-bold">Perikanan</span>
                     </h2>
                     <p class="fs-5">Temukan informasi lengkap tentang budidaya ikan unggulan di Indramayu.</p>
-                    {{-- <div class="d-flex gap-3 mt-3">
-                        <a href="{{ url('register') }}"
-                            class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
-                            Investor</a>
-                    </div> --}}
                     <div class="d-flex gap-3 mt-3">
                         @if (Auth::check() && Auth::user()->role == 'user')
                             <button class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3 mt-3"
                                 data-bs-toggle="modal" data-bs-target="#modalCari">Form Rekomendasi</button>
                         @else
-                            <a href="{{ url('register') }}"
+                            <a href="{{ url('login') }}"
                                 class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Gabung
                                 Investor</a>
                         @endif
                     </div>
-                    {{-- <div class="modal fade" id="modalCari" tabindex="-1" aria-labelledby="modalCariLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
-                            <div class="modal-content rounded-3 border-0">
-                                <div class="modal-header border-0 py-2">
-                                    <h6 class="modal-title fw-semibold" id="modalCariLabel">Form Cari</h6>
-                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body pt-2 pb-0">
-                                    <form method="GET" action="{{ route('produk.rekomendasi') }}"
-                                        style="font-size: 0.75rem;">
-                                        <!-- Jenis Komoditas -->
-                                        <div class="mb-2">
-                                            <label class="form-label mb-1">Jenis Komoditas</label>
-                                            <select class="form-select form-select-sm rounded-2"
-                                                name="jenis_komoditas">
-                                                <option value="">-- Pilih Komoditas --</option>
-                                                <option>Udang</option>
-                                                <option>Rumput Laut</option>
-                                                <option>Ikan Bandeng</option>
-                                                <option>Ikan Gurame</option>
-                                                <option>Ikan Lele</option>
-                                                <option>Ikan Nila</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Harga -->
-                                        <div class="mb-2">
-                                            <label class="form-label mb-1">Harga (Rp)</label>
-                                            <div class="d-flex gap-2">
-                                                <input type="number" class="form-control form-control-sm rounded-2"
-                                                    name="harga_min" placeholder="Min">
-                                                <input type="number" class="form-control form-control-sm rounded-2"
-                                                    name="harga_max" placeholder="Max">
-                                            </div>
-                                        </div>
-
-                                        <!-- Kapasitas Produksi -->
-                                        <div class="mb-2">
-                                            <label class="form-label mb-1">Kapasitas Produksi (kg/bulan)</label>
-                                            <input type="number" class="form-control form-control-sm rounded-2"
-                                                name="kapasitas" placeholder="Cth: 1000">
-                                        </div>
-
-                                        <!-- Kecamatan -->
-                                        <div class="mb-2">
-                                            <label class="form-label mb-1">Kecamatan</label>
-                                            <select class="form-select form-select-sm rounded-2" name="kecamatan">
-                                                <option value="">-- Pilih Kecamatan --</option>
-                                                <option>Anjatan</option>
-                                                <option>Arahan</option>
-                                                <option>Balongan</option>
-                                                <option>Bangodua</option>
-                                                <option>Bongas</option>
-                                                <option>Cantigi</option>
-                                                <option>Cikedung</option>
-                                                <option>Gabuswetan</option>
-                                                <option>Gantar</option>
-                                                <option>Haurgeulis</option>
-                                                <option>Indramayu</option>
-                                                <option>Jatibarang</option>
-                                                <option>Juntinyuat</option>
-                                                <option>Kandanghaur</option>
-                                                <option>Karangampel</option>
-                                                <option>Kedokan Bunder</option>
-                                                <option>Kertasemaya</option>
-                                                <option>Krangkeng</option>
-                                                <option>Kroya</option>
-                                                <option>Lelea</option>
-                                                <option>Lohbener</option>
-                                                <option>Losarang</option>
-                                                <option>Pasekan</option>
-                                                <option>Patrol</option>
-                                                <option>Sindang</option>
-                                                <option>Sliyeg</option>
-                                                <option>Sukagumiwang</option>
-                                                <option>Sukra</option>
-                                                <option>Terisi</option>
-                                                <option>Tukdana</option>
-                                                <option>Widasari</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Prediksi Panen -->
-                                        <div class="mb-2">
-                                            <label class="form-label mb-1">Prediksi Panen</label>
-                                            <input type="date" class="form-control form-control-sm rounded-2"
-                                                name="prediksi_panen">
-                                        </div>
-
-                                        <!-- Tombol Cari -->
-                                        <div class="text-end pt-1">
-                                            <button type="submit"
-                                                class="btn btn-primary btn-sm rounded-pill px-3">Cari</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <!-- Modal Input Order -->
+                    <!-- Modal -->
                     <div class="modal fade" id="modalCari" tabindex="-1" aria-labelledby="modalCariLabel"
                         aria-hidden="true">
                         <div class="modal-dialog" style="max-width: 500px;">
-                            <div class="modal-content">
+                            <div class="modal-content" style="border-radius: 1rem;">
                                 <div class="modal-header py-2">
-                                    <h5 class="modal-title" id="modalCariLabel">Form Rekomendasi</h5>
+                                    <h5 class="modal-title" id="modalCariLabel" style="font-weight: 500;">Form Rekomendasi</h5>
                                     <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -664,9 +541,8 @@
             <div class="row">
 
                 <div class="col-lg-3 col-md-6 mb-3">
-                    {{-- <img src="{{ asset('images/logo1.png') }}" width="160" alt="logo"> --}}
                     <div class="d-flex gap-2 mt-2">
-                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.facebook.com/diskanla.indramayu/?locale=id_ID" class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#facebook"></use>
                             </svg>
@@ -681,7 +557,7 @@
                                 <use xlink:href="#youtube"></use>
                             </svg>
                         </a>
-                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.instagram.com/diskanla.indramayu/" class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#instagram"></use>
                             </svg>

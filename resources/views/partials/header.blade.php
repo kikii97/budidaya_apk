@@ -14,21 +14,6 @@
             <i class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas"
                 data-bs-target="#mobileNav"></i>
         </nav>
-        {{-- <div class="dropdown d-inline-block d-none d-xl-block">
-            <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#" id="loginDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Log In
-            </a>
-            <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown" aria-labelledby="loginDropdown">
-                <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                <li><a class="dropdown-item py-1 px-3 small" href="login-pembudidaya.html">Log In
-                        Pembudidaya</a></li>
-                <li>
-                    <hr class="dropdown-divider my-1">
-                </li>
-                <li><a class="dropdown-item py-1 px-3 small" href="signup.html">📝 Gabung Investor</a></li>
-            </ul>
-        </div> --}}
         <div class="dropdown d-inline-block d-none d-xl-block">
             @if (Auth::check() || Auth::guard('pembudidaya')->check())
                 <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
@@ -56,12 +41,16 @@
                 <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                     aria-labelledby="loginDropdown">
                     <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In
+                    {{-- <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In
                             Pembudidaya</a></li>
                     <li>
                         <hr class="dropdown-divider my-1">
                     </li>
-                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
+                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li> --}}
+                    <li>
+                        <hr class="dropdown-divider my-1">
+                    </li>
+                    <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">📝 Gabung Investor</a></li>
                 </ul>
             @endif
         </div>
@@ -81,21 +70,6 @@
             <li><a class="nav-link" href="{{ url('/#budidaya') }}">Budidaya</a></li>
             <li><a class="nav-link" href="{{ url('/#peta') }}">Peta Budidaya</a></li>
             <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
-            <!-- Log In dropdown di mobile -->
-            {{-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Log In
-                </a>
-                <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0" aria-labelledby="mobileLoginDropdown">
-                    <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-2" href="login-pembudidaya.html">Log In Pembudidaya</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item py-2" href="signup.html">📝Gabung Investor</a></li>
-                </ul>
-            </li> --}}
 
             <!-- Log In dropdown di mobile -->
             @if (Auth::check() || Auth::guard('pembudidaya')->check())
@@ -115,8 +89,6 @@
                 <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
                     aria-labelledby="mobileLoginDropdown">
                     <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                    <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In Pembudidaya</a>
-                    </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

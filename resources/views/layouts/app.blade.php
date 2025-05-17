@@ -161,9 +161,8 @@
             <div class="row">
 
                 <div class="col-lg-3 col-md-6 mb-3">
-                    {{-- <img src="{{ asset('images/logo1.png') }}" width="160" alt="logo"> --}}
                     <div class="d-flex gap-2 mt-2">
-                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.facebook.com/diskanla.indramayu/?locale=id_ID" class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#facebook"></use>
                             </svg>
@@ -178,7 +177,7 @@
                                 <use xlink:href="#youtube"></use>
                             </svg>
                         </a>
-                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.instagram.com/diskanla.indramayu/" class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#instagram"></use>
                             </svg>

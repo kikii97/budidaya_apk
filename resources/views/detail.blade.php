@@ -51,63 +51,73 @@
                 {{-- Ringkasan awal --}}
                 <div id="produk-summary">
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 110px;"><strong>Pembudidaya</strong></div>
+                        <div style="width: 170px;"><strong>Pembudidaya</strong></div>
                         <div>: {{ $produk->pembudidaya->name ?? '-' }}</div>
                     </div>
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 110px;"><strong>Telepon</strong></div>
-                        <div>: {{ $produk->telepon ?? $produk->pembudidaya->telepon ?? '-' }}</div>
+                        <div style="width: 170px;"><strong>Telepon</strong></div>
+                        <div>: {{ $produk->telepon ?? ($produk->pembudidaya->telepon ?? '-') }}</div>
                     </div>
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 110px;"><strong>Kapasitas</strong></div>
+                        <div style="width: 170px;"><strong>Kapasitas</strong></div>
                         <div>: {{ $produk->kapasitas_produksi ?? '-' }} kg</div>
                     </div>
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 110px;"><strong>Spesifik Komoditas</strong></div>
+                        <div style="width: 170px;"><strong>Spesifik Komoditas</strong></div>
                         <div>: {{ $produk->jenis_spesifik_komoditas ?? '-' }}</div>
                     </div>
                 </div>
 
                 {{-- Detail lengkap --}}
                 <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                    <div style="width: 110px;"><strong>Alamat</strong></div>
-                    <div>: {{ $produk->alamat_lengkap ?? '-' }}{{ $produk->kecamatan ? ', ' . $produk->kecamatan : '' }}</div>
+                    <div style="width: 170px;"><strong>Alamat</strong></div>
+                    <div>: {{ $produk->alamat_lengkap ?? '-' }}{{ $produk->kecamatan ? ', ' . $produk->kecamatan : '' }}
+                    </div>
                 </div>
                 <div id="produk-detail" style="display: none;">
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 110px;"><strong>Prediksi Panen</strong></div>
-                        <div>: {{ $produk->prediksi_panen ? \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d F Y') : '-' }}</div>
+                        <div style="width: 170px;"><strong>Prediksi Panen</strong></div>
+                        <div>:
+                            {{ $produk->prediksi_panen ? \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d F Y') : '-' }}
+                        </div>
                     </div>
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 110px;"><strong>Masa Produksi Puncak</strong></div>
+                        <div style="width: 170px;"><strong>Masa Produksi Puncak</strong></div>
                         <div>: {{ $produk->masa_produksi_puncak ?? '-' }}</div>
                     </div>
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 110px;"><strong>Detail</strong></div>
+                        <div style="width: 170px;"><strong>Detail</strong></div>
                         <div>: {{ $produk->detail ?? '-' }}</div>
                     </div>
                 </div>
 
                 {{-- Tombol toggle --}}
-                <button class="btn btn-sm btn-link p-0" onclick="toggleDetail()">Lihat selengkapnya</button>
+                <button class="toggle-btn" onclick="toggleDetail(event)">
+                    <span class="btn-text">Lihat selengkapnya</span>
+                    <i class="bi bi-chevron-down"></i>
+                </button>
 
-            {{-- Script untuk toggle detail --}}
-            @push('scripts')
-            <script>
-                function toggleDetail() {
-                    const detail = document.getElementById('produk-detail');
-                    const toggleBtn = event.target;
+                {{-- Script untuk toggle detail --}}
+                @push('scripts')
+                    <script>
+                        function toggleDetail(event) {
+                            const detail = document.getElementById('produk-detail');
+                            const toggleBtn = event.currentTarget;
+                            const btnText = toggleBtn.querySelector('.btn-text');
+                            const icon = toggleBtn.querySelector('i');
 
-                    if (detail.style.display === 'none' || detail.style.display === '') {
-                        detail.style.display = 'block';
-                        toggleBtn.textContent = 'Sembunyikan';
-                    } else {
-                        detail.style.display = 'none';
-                        toggleBtn.textContent = 'Lihat selengkapnya';
-                    }
-                }
-            </script>
-            @endpush
+                            if (detail.style.display === 'none' || detail.style.display === '') {
+                                detail.style.display = 'block';
+                                btnText.textContent = 'Sembunyikan';
+                                icon.className = 'bi bi-chevron-up';
+                            } else {
+                                detail.style.display = 'none';
+                                btnText.textContent = 'Lihat selengkapnya';
+                                icon.className = 'bi bi-chevron-down';
+                            }
+                        }
+                    </script>
+                @endpush
 
                 <!-- Actions -->
                 <div class="row d-grid gap-2">
@@ -135,9 +145,9 @@
                     <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog" style="max-width: 500px;">
-                            <div class="modal-content">
+                            <div class="modal-content" style="border-radius: 1rem;">
                                 <div class="modal-header py-2">
-                                    <h5 class="modal-title" id="orderModalLabel">Form Order</h5>
+                                    <h5 class="modal-title" id="orderModalLabel" style="font-weight: 500;">Form Order</h5>
                                     <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>

@@ -1,121 +1,3 @@
-{{-- <!DOCTYPE html>
-<html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css">
-
-    <style>
-        .text-primary {
-            color: #003f63 !important;
-        }
-
-        .gradient-custom {
-            background: linear-gradient(to bottom, #e9f8ff 0%, #b5e3fb 35%, #6fc7f2 70%, #41a9e1 100%);
-            background-repeat: no-repeat;
-            background-size: cover;
-            color: #003366;
-        }
-
-        .card-custom {
-            border-bottom-left-radius: 10% 50%;
-            border-top-left-radius: 10% 50%;
-            background-color: #f8f9fa;
-        }
-
-
-        .input-custom {
-            background-color: white;
-        }
-
-        .text {
-            color: #003f63;
-            font-weight: 100;
-            font-size: 14px;
-        }
-
-        .back-button {
-            background-color: hsl(52, 0%, 98%);
-            font-weight: 700;
-            color: black;
-            margin-top: 50px;
-        }
-    </style>
-</head>
-
-<body class="d-flex justify-content-center align-items-center bg-light gradient-custom" style="min-height: 100vh;">
-    <div class="row mt-3 mx-3" style="margin-top:25px;">
-        <div class="col-md-3">
-            <div class="text-center">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 70px;">
-                <h3 class="mt-3 text-primary">Selamat Datang</h3>
-                <p class="mt-2 text">Gunakan email dan kata sandi yang sudah terdaftar untuk mengakses akun Anda!</p>
-            </div>
-            <div class="text-center">
-                <button type="button" class="btn btn-white btn-rounded back-button"
-                    onclick="window.history.back();">Kembali</button>
-            </div>
-        </div>
-        <div class="col-md-9 justify-content-center">
-            <div class="card card-custom pb-4">
-                <div class="card-body mt-0 mx-5">
-                    <div class="text-center mb-3 pb-2 mt-3">
-                        <h4 style="color: #495057;">Login</h4>
-                    </div>
-
-                    <form action="{{ route('login.post') }}" method="POST" class="mb-0" novalidate>
-                        @csrf
-                        <div style="display: block;">
-                            <div class="row mb-4">
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <input type="email" id="form9Example1" name="email"
-                                            class="form-control input-custom @error('email') is-invalid @enderror"
-                                            placeholder="Masukkan email" value="{{ old('email') }}" required />
-                                        <label class="form-label" for="form9Example1">Email</label>
-                                        @error('email')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <input type="password" id="form9Example3" name="password"
-                                            class="form-control input-custom @error('password') is-invalid @enderror"
-                                            placeholder="Masukkan kata sandi" required />
-                                        <label class="form-label" for="form9Example3">Kata Sandi</label>
-                                        @error('password')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="float-end">
-                            <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-rounded" style="background-color: #0062CC;">
-                                Login
-                            </button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
-
-</body>
-
-</html> --}}
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -142,6 +24,12 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+        }
+
+        input,
+        textarea,
+        button {
+            font-family: 'Inter', sans-serif;
         }
 
         .card-custom {
@@ -217,8 +105,24 @@
                 <p class="text-small">Silakan login atau daftar akun terlebih dahulu!</p>
 
                 <div class="mb-3">
-                    <a href="{{ url('login') }}?form=login" id="btn-login-left" class="btn btn-primary btn-sm me-2 btn-rounded">Login</a>
-                    <a href="{{ url('login') }}?form=register&tipe=investor" class="btn btn-outline-primary btn-sm btn-rounded" id="btn-register-left">Daftar</a>
+                    {{-- <a href="{{ url('login') }}?form=login" id="btn-login-left" class="btn btn-primary btn-sm me-2 btn-rounded">Login</a>
+                    <a href="{{ url('login') }}?form=register&tipe=investor" class="btn btn-outline-primary btn-sm btn-rounded" id="btn-register-left">Daftar</a> --}}
+                    <button type="button" id="btn-login" class="btn btn-primary btn-sm me-2 btn-rounded"
+                        onclick="showForm('login')">Login</button>
+                    <div class="dropdown d-inline-block">
+                        <button type="button" id="btn-register"
+                            style="padding-right: 0.8rem; background-color: #0062CC"
+                            class="btn btn-outline-primary btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false" onclick="activateRegisterButton()">
+                            Daftar
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#"
+                                onclick="showForm('register'); showRegisterForm('investor');">Investor</a>
+                            <a class="dropdown-item" href="#"
+                                onclick="showForm('register'); showRegisterForm('usaha');">Usaha</a>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Pilih Tipe untuk Register -->
@@ -238,8 +142,10 @@
             <!-- Kanan: Form -->
             <div class="col-12 col-md-6">
                 <div class="card card-custom p-4">
-                    <!-- LOGIN FORM -->
-                    <div id="login-form">
+                    {{-- <!-- LOGIN FORM -->
+                    <div id="login-form"> --}}
+                    <!-- Login Form -->
+                    <div id="form-login" style="display: block;"> <!-- langsung tampil -->
                         <h4 class="text-center mb-4" style="color: #495057;">Login</h4>
                         <form action="{{ route('login.post') }}" method="POST" class="px-3" novalidate>
                             @csrf
@@ -250,38 +156,71 @@
                                     @error('email') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
                             </div>
-                            <div class="mb-4 position-relative">
+                            {{-- <div class="mb-4 position-relative">
                                 <div class="form-outline">
                                     <input type="password" id="loginPassword" name="password" class="form-control input-custom @error('password') is-invalid @enderror" placeholder="Masukkan kata sandi" required />
                                     <label class="form-label">Kata Sandi</label>
                                     <i class="fa fa-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="togglePassword('loginPassword', this)"></i>
-                                    @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                    @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror --}}
+
+                            <div class="mb-4">
+                                <div data-mdb-input-init class="form-outline">
+                                    <input type="password" id="katasandi" name="password"
+                                        class="form-control input-custom @error('password') is-invalid @enderror"
+                                        placeholder="Masukkan kata sandi" required />
+                                    <label class="form-label" for="katasandi">Kata Sandi</label>
+                                    <i class="fa fa-eye position-absolute"
+                                        style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                        onclick="togglePassword('katasandi', this)"></i>
+                                    @error('password')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="text-end">
-                                <button type="submit" class="btn btn-primary btn-rounded" style="background-color: #0062CC;">Login</button>
+                                {{-- <button type="submit" class="btn btn-primary btn-rounded" style="background-color: #0062CC;">Login</button> --}}
+                                <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                    class="btn btn-primary btn-rounded d-md-none" onclick="window.history.back();"
+                                    style="padding-left: 1.4rem; background-color: #868686; border-color: #495057;">
+                                    <i class="fa fa-arrow-left me-2"></i>Kembali
+                                </button>
+                                <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                                    class="btn btn-primary btn-rounded">
+                                    Masuk
+                                </button>
                             </div>
                         </form>
                     </div>
 
                     <!-- REGISTER FORM -->
-                    <div id="register-form" style="display: none;">
+                    {{-- <div id="register-form" style="display: none;">
                         <h4 class="text-center mb-4" style="color: #495057;">Daftar Akun</h4>
-                        <form id="registerForm" action="{{ route('register.post') }}" method="POST" class="px-3" novalidate>
+                        <form id="registerForm" action="{{ route('register.post') }}" method="POST" class="px-3" novalidate> --}}
+                    <!-- Register Form -->
+                    <div id="form-register" style="display: none;">
+                        <h4 class="text-center mb-4" style="color: #495057;">Daftar</h4>
+                        <form id="form-inves" action="{{ route('register.post') }}" method="POST"
+                            style="display: none; padding-right: 15px; padding-left: 20px;" novalidate>
                             @csrf
                             <input type="hidden" name="tipe" id="tipeInput" value="{{ old('tipe') }}"> <!-- Diisi dari JS -->
 
                             <div class="row mb-4">
                                 <div class="col">
-                                    <div class="form-outline">
-                                        <input type="text" name="name" class="form-control input-custom @error('name') is-invalid @enderror" required value="{{ old('name') }}" />
+                                    {{-- <div class="form-outline">
+                                        <input type="text" name="name" class="form-control input-custom @error('name') is-invalid @enderror" required value="{{ old('name') }}" /> --}}
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="text" name="name-inves" class="form-control input-custom"
+                                            required />
                                         <label class="form-label">Nama Lengkap</label>
                                         @error('name') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="form-outline">
-                                        <input type="email" name="email" class="form-control input-custom @error('email') is-invalid @enderror" required value="{{ old('email') }}" />
+                                    {{-- <div class="form-outline">
+                                        <input type="email" name="email" class="form-control input-custom @error('email') is-invalid @enderror" required value="{{ old('email') }}" /> --}}
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="email" name="email-inves" class="form-control input-custom"
+                                            required />
                                         <label class="form-label">Email</label>
                                         @error('email') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                     </div>
@@ -290,11 +229,18 @@
 
                             <div class="row mb-4">
                                 <div class="col">
-                                    <div class="form-outline position-relative">
+                                    {{-- <div class="form-outline position-relative">
                                         <input type="password" id="regPassword" name="password" class="form-control input-custom @error('password') is-invalid @enderror" required />
                                         <label class="form-label">Password</label>
                                         <i class="fa fa-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="togglePassword('regPassword', this)"></i>
-                                        @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror --}}
+                                    <div data-mdb-input-init class="form-outline position-relative">
+                                        <input type="password" id="pass-inves" name="pass"
+                                            class="form-control input-custom" required />
+                                        <label class="form-label">Password</label>
+                                        <i class="fa fa-eye position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                            onclick="togglePassword('pass-inves', this)"></i>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -306,18 +252,72 @@
                                 </div>
                             </div>
 
-                            <div class="text-end">
+                            {{-- <div class="text-end">
                                 <button type="submit" class="btn btn-primary btn-rounded" style="background-color: #0062CC;">Daftar</button>
                             </div>
+                        </form> --}}
                         </form>
+                        <form id="form-usaha" action="" method="POST"
+                            style="display: none; padding-right: 15px; padding-left: 20px;" novalidate>
+                            @csrf
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="text" name="name-usaha" class="form-control input-custom"
+                                            required />
+                                        <label class="form-label">Nama</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="email" name="email-usaha" class="form-control input-custom"
+                                            required />
+                                        <label class="form-label">Email</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div data-mdb-input-init class="form-outline position-relative">
+                                        <input type="password" id="pass-usaha" name="pass-usaha"
+                                            class="form-control input-custom" required />
+                                        <label class="form-label">Password</label>
+                                        <i class="fa fa-eye position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                            onclick="togglePassword('pass-usaha', this)"></i>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div data-mdb-input-init class="form-outline position-relative">
+                                        <input type="password" id="konfirm-pass" name="konfirm-pass"
+                                            class="form-control input-custom" required />
+                                        <label class="form-label">Konfirm Password</label>
+                                        <i class="fa fa-eye position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                            onclick="togglePassword('konfirm-pass', this)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="text-end">
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-primary btn-rounded d-md-none" onclick="window.history.back();"
+                                style="padding-left: 1.4rem; background-color: #868686; border-color: #495057;">
+                                <i class="fa fa-arrow-left me-2"></i>Kembali
+                            </button>
+                            <button type="submit" form="form-inves" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-primary btn-rounded"
+                                style="padding-left: 1.4rem; padding-right: 1.4rem; margin-right: 15px;">
+                                Daftar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
     <!-- SCRIPT -->
-<script>
+{{-- <script>
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const formType = urlParams.get('form');    // 'login' atau 'register'
@@ -379,10 +379,97 @@ function togglePassword(fieldId, icon) {
 
 
 
-</body>
+</body> --}}
+            <script>
+                function showForm(type) {
+                    const loginForm = document.getElementById('form-login');
+                    const registerForm = document.getElementById('form-register');
+                    const dropdown = document.querySelector('.dropdown');
+                    const loginBtn = document.getElementById('btn-login');
+                    const registerBtn = document.getElementById('btn-register');
 
-    <!-- MDB UI Kit JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+                    if (type === 'login') {
+                        loginForm.style.display = 'block';
+                        registerForm.style.display = 'none';
+                        dropdown.classList.remove('show');
+
+                        // Aktifkan tombol login
+                        loginBtn.classList.remove('btn-outline-primary');
+                        loginBtn.classList.add('btn-primary');
+                        loginBtn.style.backgroundColor = '#0062CC';
+
+                        // Nonaktifkan tombol register
+                        registerBtn.classList.remove('btn-primary');
+                        registerBtn.classList.add('btn-outline-primary');
+                        registerBtn.style.backgroundColor = '';
+
+                    } else if (type === 'register') {
+                        loginForm.style.display = 'none';
+                        registerForm.style.display = 'block';
+
+                        // Aktifkan tombol register
+                        registerBtn.classList.remove('btn-outline-primary');
+                        registerBtn.classList.add('btn-primary');
+                        registerBtn.style.backgroundColor = '#0062CC';
+
+                        // Nonaktifkan tombol login
+                        loginBtn.classList.remove('btn-primary');
+                        loginBtn.classList.add('btn-outline-primary');
+                        loginBtn.style.backgroundColor = '';
+                    }
+                }
+
+                function activateRegisterButton() {
+                    const loginBtn = document.getElementById('btn-login');
+                    const registerBtn = document.getElementById('btn-register');
+
+                    // Aktifkan tombol register
+                    registerBtn.classList.remove('btn-outline-primary');
+                    registerBtn.classList.add('btn-primary');
+                    registerBtn.style.backgroundColor = '#0062CC';
+
+                    // Nonaktifkan tombol login
+                    loginBtn.classList.remove('btn-primary');
+                    loginBtn.classList.add('btn-outline-primary');
+                    loginBtn.style.backgroundColor = '';
+                }
+
+                function showRegisterForm(type) {
+                    const formInves = document.getElementById('form-inves');
+                    const formUsaha = document.getElementById('form-usaha');
+
+                    if (type === 'investor') {
+                        formInves.style.display = 'block';
+                        formUsaha.style.display = 'none';
+                    } else if (type === 'usaha') {
+                        formInves.style.display = 'none';
+                        formUsaha.style.display = 'block';
+                    }
+                }
+
+                // Toggle password visibility icon and input type
+                function togglePassword(inputId, icon) {
+                    const input = document.getElementById(inputId);
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = "password";
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                }
+
+                // Set default view on page load
+                document.addEventListener('DOMContentLoaded', () => {
+                    showForm('login');
+                });
+            </script>
+
+            <!-- MDB UI Kit JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
 </body>
 
 </html>
