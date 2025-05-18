@@ -128,7 +128,7 @@
                 <form method="GET" action="{{ route('katalog') }}">
                     <select name="sort_by" class="form-select form-select-sm" onchange="this.form.submit()">
                         <option value="terbaru" {{ request('sort_by') == 'terbaru' ? 'selected' : '' }}>Terbaru</option>
-                        <option value="terlama" {{ request('sort_by') == 'terlama' ? 'selected' : '' }}>Terlama</option>
+                        <option value="termurah" {{ request('sort_by') == 'termurah' ? 'selected' : '' }}>Termurah</option>
                     </select>
                 </form>
             </div>
@@ -247,7 +247,7 @@
             <div class="col-lg-9" style="font-size: 0.7rem; line-height: 0.5;">
                 <div class="row g-4">
                     @forelse ($produkList as $produk)
-                        <div class="col-md-4">
+                        <div class="col-6 col-md-4">
                             <a href="{{ route('produk.detail', $produk->id) }}">
                                 <div class="product-card shadow-sm">
                                     <div class="position-relative">
@@ -282,9 +282,6 @@
             </div>
         </div>
     </div>
-    <style>
-        
-    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const openFilterBtn = document.getElementById('openFilterBtn');

@@ -444,8 +444,8 @@
         <div class="container-lg">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="section-header d-flex flex-wrap justify-content-between">
-                        <h2 class="section-title">Etalase Produk Budidaya</h2>
+                    <div class="section-header d-flex justify-content-between align-items-center flex-wrap gap-2"  style="row-gap: 0.5rem;">
+                        <h2 class="section-title m-0 fs-4">Etalase Produk Budidaya</h2>
                         <div class="d-flex align-items-center">
                             <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
                         </div>
@@ -457,7 +457,7 @@
                     <div
                         class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
                         @foreach ($recommendedProducts as $product)
-                            <div class="col">
+                            <div class="col-6 col-md-4">
                                 <div class="product-item">
                                     <figure>
                                         <a href="{{ route('produk.detail', $product->id) }}"
@@ -481,8 +481,8 @@
                                         </div>
 
                                         {{-- Kisaran Harga --}}
-                                        <div class="d-flex justify-content-center align-items-center gap-2">
-                                            <span class="text-dark fw-semibold">
+                                        <div class="text-center">
+                                            <span class="fw-semibold text-dark fs-6 m-0 p-0">
                                                 Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} –
                                                 Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
                                             </span>
@@ -497,13 +497,6 @@
                                                         <svg width="18" height="18">
                                                             <use xlink:href="#detail"></use>
                                                         </svg> Detail
-                                                    </a>
-                                                </div>
-                                                <div class="col-2">
-                                                    <a href="#" class="btn btn-outline-dark rounded-1 p-2 fs-6">
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#heart"></use>
-                                                        </svg>
                                                     </a>
                                                 </div>
                                             </div>

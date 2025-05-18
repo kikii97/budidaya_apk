@@ -18,19 +18,11 @@ class Pembudidaya extends Authenticatable
         'name',
         'email',
         'password',
-        'address',
         'role',
-        'documents',
-        'is_approved',
-    ];
-
-    protected $casts = [
-        'documents' => 'array',
     ];
 
     protected $attributes = [
         'role' => 'pembudidaya',
-        'is_approved' => null,
     ];
 
     // Relasi ke tabel profil_pembudidaya

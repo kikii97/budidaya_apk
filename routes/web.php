@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KomoditasController;
 use App\Http\Controllers\BudidayaController;
-use App\Http\Controllers\LoginRegisterController;  // Ganti dengan controller baru Anda
+use App\Http\Controllers\LoginRegisterController; 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AdminProdukController;
@@ -43,10 +43,12 @@ Route::get('/location', [LocationController::class, 'showLocations']); // alias
 Route::resource('commodity', KomoditasController::class);
 Route::resource('budidaya', BudidayaController::class);
 
+// Google Auth untuk investor/usaha
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::get('/auth/google/{tipe}', [GoogleController::class, 'redirectToGoogle'])->name('login.google.with.tipe');
+
 // ─── Auth Pengguna Umum ───────────────────────────────────────────────────────
 // Asumsikan controller untuk login/register user umum adalah LoginRegisterController
-Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
-Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 Route::middleware(['guest:web', 'no.cache'])->group(function () {
     Route::get('/login', [LoginRegisterController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginRegisterController::class, 'login'])->name('login.post');
@@ -113,13 +115,6 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
     });
 
     Route::middleware(['auth:pembudidaya'])->group(function () {
-        Route::post('/logout', function () {
-            Auth::guard('pembudidaya')->logout();
-            request()->session()->invalidate();
-            request()->session()->regenerateToken();
-            return redirect()->route('produk.rekomendasi');
-        })->name('logout');
-
         Route::get('/waiting', fn () => view('pembudidaya.waiting-approval'))->name('waiting');
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
         Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
