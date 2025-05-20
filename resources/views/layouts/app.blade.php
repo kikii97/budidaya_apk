@@ -12,6 +12,10 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
@@ -41,7 +45,8 @@
     }
 </style>
 
-<body class="d-flex flex-column min-vh-100" data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80" tabindex="0">
+<body class="d-flex flex-column min-vh-100" data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80"
+    tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <defs>
             <symbol xmlns="http://www.w3.org/2000/svg" id="facebook" viewBox="0 0 24 24">
@@ -162,7 +167,8 @@
 
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="d-flex gap-2 mt-2">
-                        <a href="https://www.facebook.com/diskanla.indramayu/?locale=id_ID" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.facebook.com/diskanla.indramayu/?locale=id_ID"
+                            class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#facebook"></use>
                             </svg>
@@ -177,7 +183,8 @@
                                 <use xlink:href="#youtube"></use>
                             </svg>
                         </a>
-                        <a href="https://www.instagram.com/diskanla.indramayu/" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.instagram.com/diskanla.indramayu/"
+                            class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#instagram"></use>
                             </svg>
@@ -264,6 +271,90 @@
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Tambahkan JavaScript Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Tambahkan Bahasa Indonesia -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+
+
+    <script>
+        flatpickr("#harvest_prediction", {
+            dateFormat: "d-m-Y",
+            locale: "id",
+            allowInput: true // supaya bisa ketik manual
+        });
+    </script>
+    <script>
+        let selectedFiles = [];
+    
+        function previewImages(event) {
+            let preview = document.getElementById('imagePreview');
+            let files = event.target.files;
+    
+            for (let file of files) {
+                // Cek apakah file sudah ada di daftar
+                if (!selectedFiles.some(f => f.name === file.name)) {
+                    selectedFiles.push(file);
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let div = document.createElement('div');
+                        div.classList.add('image-container', 'position-relative', 'm-2');
+                        div.innerHTML = `
+                            <img src="${e.target.result}" width="100" height="100" class="border rounded">
+                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" onclick="removeImage('${file.name}', this)">X</button>
+                        `;
+                        preview.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+    
+            updateFileInput();
+        }
+    
+        function removeImage(fileName, button) {
+            // Hapus file dari daftar
+            selectedFiles = selectedFiles.filter(file => file.name !== fileName);
+            button.parentElement.remove();
+            updateFileInput();
+        }
+    
+        function updateFileInput() {
+            let input = document.getElementById('images');
+            let dataTransfer = new DataTransfer();
+    
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+    
+            input.files = dataTransfer.files;
+        }
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("uploadForm"); // Pastikan ID form benar
+        const minPrice = document.getElementById("price_range_min");
+        const maxPrice = document.getElementById("price_range_max");
+    
+        form.addEventListener("submit", function(event) {
+            let errorMessage = "";
+    
+            // Cek apakah input kosong
+            if (!minPrice.value.trim()) {
+                errorMessage = "Harap isi harga jual minimum.";
+            } else if (!maxPrice.value.trim()) {
+                errorMessage = "Harap isi harga jual maksimum.";
+            }
+            if (errorMessage) {
+                event.preventDefault(); // Batalkan submit
+                alert(errorMessage); // Tampilkan pesan error
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

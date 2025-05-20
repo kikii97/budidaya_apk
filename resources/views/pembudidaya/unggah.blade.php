@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -36,7 +36,7 @@
     <div class="container mt-5">
         <h2>Unggah Komoditas</h2>
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
@@ -96,7 +96,7 @@
                     oninvalid="this.setCustomValidity('Harap pilih kecamatan.')" 
                     oninput="this.setCustomValidity('')">
                     <option value="" disabled selected>Pilih Kecamatan</option>
-                    @foreach($kecamatanList as $kecamatan)
+                    @foreach ($kecamatanList as $kecamatan)
                         <option value="{{ $kecamatan }}" {{ old('kecamatan') == $kecamatan ? 'selected' : '' }}>
                             {{ $kecamatan }}
                         </option>
@@ -287,4 +287,175 @@
     
 
     </body>
-</html>
+</html> --}}
+
+@extends('layouts.app')
+
+@section('title', 'Unggah Komoditas')
+
+@section('header')
+    @include('partials.header')
+@endsection
+
+@section('content')
+    <div class="container py-4" style="padding-top: 1rem !important;">
+        <a href="{{ url('/detail_usaha/' . session('pembudidaya_id')) }}" class="text-muted small">
+            <i class="bi bi-arrow-left-circle"></i> Kembali
+        </a>
+
+        <div class="card p-3 mt-3" style="font-size: 0.85rem;"> <!-- font size kecil -->
+
+            @if (session('success'))
+                <div class="alert alert-success small">{{ session('success') }}</div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger small">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>
+                                {{ str_replace(
+                                    [
+                                        'The phone field must be between 10 and 15 digits.',
+                                        'The address field is required.',
+                                        'The commodity type field is required.',
+                                        'The price range field is required.',
+                                        'The image field is required.',
+                                        'The phone field must not be greater than 20 characters.',
+                                    ],
+                                    [
+                                        'Kolom nomor telepon harus terdiri dari 10 hingga 15 digit.',
+                                        'Kolom alamat wajib diisi.',
+                                        'Kolom jenis Komoditas wajib diisi.',
+                                        'Kolom kisaran harga jual wajib diisi.',
+                                        'Kolom foto Komoditas wajib diunggah.',
+                                        'Kolom nomor telepon harus tidak lebih dari 20 angka.',
+                                    ],
+                                    $error,
+                                ) }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('pembudidaya.unggah.simpan') }}" method="POST" enctype="multipart/form-data"
+                style="font-size: 0.9rem;">
+                @csrf
+                <input type="hidden" name="pembudidaya_id" value="{{ session('pembudidaya_id') }}">
+
+                <div class="mb-3">
+                    <label class="form-label small">Unggah Gambar</label>
+                    <input type="file" id="images" name="images[]" class="form-control form-control-sm" multiple
+                        accept="image/*" onchange="previewImages(event)">
+                    <div id="imagePreview" class="mt-2 d-flex flex-wrap"></div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label small">Nomor Telepon</label>
+                        <input type="text" class="form-control form-control-sm" name="phone" required
+                            oninvalid="this.setCustomValidity('Harap isi nomor telepon yang valid.')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label for="kecamatan" class="form-label small">Kecamatan</label>
+                        <select class="form-select form-select-sm" id="kecamatan" name="kecamatan" required
+                            oninvalid="this.setCustomValidity('Harap pilih kecamatan.')"
+                            oninput="this.setCustomValidity('')">
+                            <option value="" disabled selected>Pilih Kecamatan</option>
+                            @foreach ($kecamatanList as $kecamatan)
+                                <option value="{{ $kecamatan }}" {{ old('kecamatan') == $kecamatan ? 'selected' : '' }}>
+                                    {{ $kecamatan }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address" class="form-label small">Alamat Lengkap</label>
+                    <textarea class="form-control form-control-sm" id="address" name="address" rows="3" required
+                        placeholder="Tuliskan alamat lengkap tanpa kecamatan"
+                        oninvalid="this.setCustomValidity('Harap isi alamat lengkap.')" oninput="this.setCustomValidity('')"></textarea>
+                </div>
+
+                <div class="row g-3">
+                    <div class="mb-3 col-md-6">
+                        <label for="commodity_type" class="form-label small">Jenis Komoditas</label>
+                        <select class="form-select form-select-sm" id="commodity_type" name="commodity_type" required
+                            oninvalid="this.setCustomValidity('Harap pilih jenis komoditas.')"
+                            oninput="this.setCustomValidity('')">
+                            <option value="" disabled selected>Pilih Jenis Komoditas</option>
+                            <option value="Rumput Laut">Rumput Laut</option>
+                            <option value="Udang">Udang</option>
+                            <option value="Ikan Gurame">Ikan Gurame</option>
+                            <option value="Ikan Bandeng">Ikan Bandeng</option>
+                            <option value="Ikan Lele">Ikan Lele</option>
+                            <option value="Ikan Nila">Ikan Nila</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label for="specific_commodity_type" class="form-label small">Jenis Spesifik Komoditas</label>
+                        <input type="text" class="form-control form-control-sm" name="specific_commodity_type"
+                            oninvalid="this.setCustomValidity('Harap isi jenis spesifik Komoditas.')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="mb-3 col-md-6">
+                        <label for="production_capacity" class="form-label small">Kapasitas Produksi per Bulan (kg)</label>
+                        <input type="number" class="form-control form-control-sm" id="production_capacity"
+                            name="production_capacity"
+                            oninvalid="this.setCustomValidity('Harap isi kapasitas produksi per bulan dengan angka yang benar.')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label small">Masa Produksi Puncak</label>
+                        <input type="text" class="form-control form-control-sm" name="peak_production_period"
+                            oninvalid="this.setCustomValidity('Harap isi masa produksi puncak Komoditas.')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="mb-3 col-md-6">
+                        <label for="price_range_min" class="form-label small">Kisaran Harga Jual (Dari Rp)</label>
+                        <input type="number" class="form-control form-control-sm" id="price_range_min"
+                            name="price_range_min" min="0" step="1" required placeholder="1000"
+                            oninvalid="this.setCustomValidity('Harap isi harga jual minimum.')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label for="price_range_max" class="form-label small">Kisaran Harga Jual (Hingga Rp)</label>
+                        <input type="number" class="form-control form-control-sm" id="price_range_max"
+                            name="price_range_max" min="0" step="1" required placeholder="3000"
+                            oninvalid="this.setCustomValidity('Harap isi harga jual maksimum.')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="harvest_prediction" class="form-label small">Prediksi Panen</label>
+                    <input type="text" class="form-control form-control-sm" id="harvest_prediction" name="harvest_prediction"
+                        placeholder="Contoh: 21 April 2025" autocomplete="off">
+                </div>
+
+                <div class="mb-3">
+                    <label for="details" class="form-label small">Detail Komoditas</label>
+                    <textarea class="form-control form-control-sm" id="details" name="details" rows="4" oninvalid="this.setCustomValidity('Harap isi detail Komoditas dengan informasi yang lengkap.')" 
+                oninput="this.setCustomValidity('')"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary btn-sm">Unggah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection

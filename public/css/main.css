@@ -185,6 +185,26 @@ h6 {
   }
 }
 
+/* Memastikan gambar preview tidak terlalu besar */
+.img-thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+/*Custom CSS untuk memastikan input tidak terlihat abu-abu */
+input[type="text"].flatpickr-input {
+  background-color: #fff !important;
+  cursor: text;
+}
+
+/* Tampilan gambar dengan margin di mobile */
+@media (max-width: 576px) {
+  .img-thumbnail {
+    width: 80px;
+    height: 80px;
+  }
+}
 
 /* Nav item di offcanvas */
 .offcanvas .nav-link {

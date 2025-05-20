@@ -19,6 +19,18 @@ class Pembudidaya extends Authenticatable
         'email',
         'password',
         'role',
+        'address',
+        'nomor_telepon',
+        'deskripsi',
+        'foto_profil',
+    ];
+
+    protected $hidden = [
+        'password'
+    ];
+
+    protected $casts = [
+        'documents' => 'array',
     ];
 
     protected $attributes = [

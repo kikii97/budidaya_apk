@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminPembudidayaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DetailUsahaController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\PembudidayaController;
 
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'rekomendasi'])->name('produk.rekomendasi');
@@ -28,6 +29,10 @@ Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('prod
 
 // Rute untuk melihat detail usaha pembudidaya
 Route::get('/detail_usaha/{id}', [DetailUsahaController::class, 'show'])->name('usaha.detail');
+Route::middleware(['auth:pembudidaya'])->group(function () {
+    Route::get('/profil/edit', [PembudidayaController::class, 'edit'])->name('pembudidaya.edit');
+    Route::post('/profil/update', [PembudidayaController::class, 'update'])->name('pembudidaya.update');
+});
 
 // Rute otomatis ke detail usaha pembudidaya yang sedang login
 Route::get('/detail_usaha', function () {

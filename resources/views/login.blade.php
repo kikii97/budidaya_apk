@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login Responsive</title>
+    <title>Login</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -100,18 +100,19 @@
         <div class="row gx-0 justify-content-center align-items-center min-vh-75">
             <!-- Kiri: Sambutan -->
             <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-img" style="height: 70px; max-width: 100%;" />
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-img"
+                    style="height: 70px; max-width: 100%;" />
                 <h3 class="mt-3 text-primary">Selamat Datang</h3>
                 <p class="text-small">Silakan login atau daftar akun terlebih dahulu!</p>
 
                 <div class="mb-3">
-                    <a href="{{ url()->current() }}?form=login" type="button" id="btn-login" class="btn btn-primary btn-sm me-2 btn-rounded"
-                        onclick="showForm('login')">Login</a>
+                    <a href="{{ url()->current() }}?form=login" type="button" id="btn-login"
+                        class="btn btn-primary btn-sm me-2 btn-rounded" onclick="showForm('login')">Login</a>
                     <div class="dropdown d-inline-block">
                         <button type="button" id="btn-register"
                             style="padding-right: 0.8rem; background-color: #0062CC"
                             class="btn btn-outline-primary btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false" onclick="activateRegisterButton()">
+                            aria-expanded="false">
                             Daftar
                         </button>
                         <div class="dropdown-menu">
@@ -137,9 +138,13 @@
                             @csrf
                             <div class="mb-4">
                                 <div class="form-outline">
-                                    <input type="email" name="email" class="form-control input-custom @error('email') is-invalid @enderror" placeholder="Masukkan email" required value="{{ old('email') }}" />
+                                    <input type="email" name="email"
+                                        class="form-control input-custom @error('email') is-invalid @enderror"
+                                        placeholder="Masukkan email" required value="{{ old('email') }}" />
                                     <label class="form-label">Email</label>
-                                    @error('email') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                    @error('email')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -165,14 +170,14 @@
                                 </button>
                                 {{-- Garis Pembatas --}}
                                 <div class="d-flex align-items-center justify-content-center mb-2" style="gap: 8px;">
-                                    <hr class="flex-grow-1" style="border-top: 1px solid #ccc; margin: 0;">
+                                    <hr class="flex-grow-1" style="border-top: 1px solid #919191; margin: 0;">
                                     <span class="text-muted" style="font-size: 13px;">atau</span>
-                                    <hr class="flex-grow-1" style="border-top: 1px solid #ccc; margin: 0;">
+                                    <hr class="flex-grow-1" style="border-top: 1px solid #919191; margin: 0;">
                                 </div>
                                 {{-- Tombol Masuk dengan Google --}}
                                 <a href="{{ route('login.google.with.tipe', ['tipe' => 'investor']) }}"
-                                class="btn d-inline-flex align-items-center justify-content-center shadow-sm"
-                                style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px;">
+                                    class="btn d-inline-flex align-items-center justify-content-center shadow-sm"
+                                    style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px;">
                                     <i class="fab fa-google me-2" style="color: rgba(0,0,0,0.54); font-size: 14px;"></i>
                                     Masuk dengan Google
                                 </a>
@@ -190,16 +195,24 @@
                             <div class="row mb-4">
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="text" name="name" class="form-control input-custom @error('name') is-invalid @enderror" required value="{{ old('name') }}" />
+                                        <input type="text" name="name"
+                                            class="form-control input-custom @error('name') is-invalid @enderror"
+                                            required value="{{ old('name') }}" />
                                         <label class="form-label">Nama Lengkap</label>
-                                        @error('name') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        @error('name')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="email" name="email" class="form-control input-custom @error('email') is-invalid @enderror" required value="{{ old('email') }}" />
+                                        <input type="email" name="email"
+                                            class="form-control input-custom @error('email') is-invalid @enderror"
+                                            required value="{{ old('email') }}" />
                                         <label class="form-label">Email</label>
-                                        @error('email') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        @error('email')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -207,17 +220,25 @@
                             <div class="row mb-4">
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline position-relative">
-                                        <input type="password" id="pass-inves" name="password" class="form-control input-custom pe-5" required />
+                                        <input type="password" id="pass-inves" name="password"
+                                            class="form-control input-custom pe-5" required />
                                         <label class="form-label">Password</label>
-                                        <i class="fa fa-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="togglePassword('pass-inves', this)"></i>
-                                        @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        <i class="fa fa-eye position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                            onclick="togglePassword('pass-inves', this)"></i>
+                                        @error('password')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-outline position-relative">
-                                        <input type="password" id="regPasswordConfirm" name="password_confirmation" class="form-control input-custom pe-5" required />
+                                        <input type="password" id="regPasswordConfirm" name="password_confirmation"
+                                            class="form-control input-custom pe-5" required />
                                         <label class="form-label">Konfirmasi Password</label>
-                                        <i class="fa fa-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="togglePassword('regPasswordConfirm', this)"></i>
+                                        <i class="fa fa-eye position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                            onclick="togglePassword('regPasswordConfirm', this)"></i>
                                     </div>
                                 </div>
                             </div>
@@ -229,16 +250,24 @@
                             <div class="row mb-4">
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="text" name="name" class="form-control input-custom @error('name') is-invalid @enderror" required value="{{ old('name') }}" />
+                                        <input type="text" name="name"
+                                            class="form-control input-custom @error('name') is-invalid @enderror"
+                                            required value="{{ old('name') }}" />
                                         <label class="form-label">Nama</label>
-                                        @error('name') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        @error('name')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="email" name="email" class="form-control input-custom @error('email') is-invalid @enderror" required value="{{ old('email') }}" />
+                                        <input type="email" name="email"
+                                            class="form-control input-custom @error('email') is-invalid @enderror"
+                                            required value="{{ old('email') }}" />
                                         <label class="form-label">Email</label>
-                                        @error('email') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        @error('email')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -246,17 +275,25 @@
                             <div class="row mb-4">
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline position-relative">
-                                        <input type="password" id="pass-usaha" name="password" class="form-control input-custom pe-5" required />
+                                        <input type="password" id="pass-usaha" name="password"
+                                            class="form-control input-custom pe-5" required />
                                         <label class="form-label">Password</label>
-                                        <i class="fa fa-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="togglePassword('pass-usaha', this)"></i>
-                                        @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        <i class="fa fa-eye position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                            onclick="togglePassword('pass-usaha', this)"></i>
+                                        @error('password')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline position-relative">
-                                        <input type="password" id="konfirm-pass" name="password_confirmation" class="form-control input-custom pe-5" required />
+                                        <input type="password" id="konfirm-pass" name="password_confirmation"
+                                            class="form-control input-custom pe-5" required />
                                         <label class="form-label">Konfirmasi Password</label>
-                                        <i class="fa fa-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="togglePassword('konfirm-pass', this)"></i>
+                                        <i class="fa fa-eye position-absolute"
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+                                            onclick="togglePassword('konfirm-pass', this)"></i>
                                     </div>
                                 </div>
                             </div>
@@ -265,20 +302,19 @@
                         <div class="text-center mt-4">
                             {{-- Tombol Daftar --}}
                             <button type="submit" form="form-inves" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-rounded px-4 py-2 mb-2"
-                                style="width: 220px;">
+                                class="btn btn-primary btn-rounded px-4 py-2 mb-2" style="width: 220px;">
                                 Daftar
                             </button>
                             {{-- Garis Pembatas --}}
                             <div class="d-flex align-items-center justify-content-center mb-2" style="gap: 8px;">
-                                <hr class="flex-grow-1" style="border-top: 1px solid #ccc; margin: 0;">
+                                <hr class="flex-grow-1" style="border-top: 1px solid #919191; margin: 0;">
                                 <span class="text-muted" style="font-size: 13px;">atau</span>
-                                <hr class="flex-grow-1" style="border-top: 1px solid #ccc; margin: 0;">
+                                <hr class="flex-grow-1" style="border-top: 1px solid #919191; margin: 0;">
                             </div>
                             {{-- Tombol Masuk dengan Google --}}
                             <a href="{{ route('login.google.with.tipe', ['tipe' => 'usaha']) }}"
-                            class="btn d-inline-flex align-items-center justify-content-center shadow-sm"
-                            style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px;">
+                                class="btn d-inline-flex align-items-center justify-content-center shadow-sm"
+                                style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px;">
                                 <i class="fab fa-google me-2" style="color: rgba(0,0,0,0.54); font-size: 14px;"></i>
                                 DAFTAR dengan Google
                             </a>
@@ -287,111 +323,111 @@
                 </div>
             </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Ambil elemen-elemen utama
-        const loginForm = document.getElementById('form-login');
-        const registerForm = document.getElementById('form-register');
-        const loginBtn = document.getElementById('btn-login');
-        const registerBtn = document.getElementById('btn-register');
-        const formInves = document.getElementById('form-inves');
-        const formUsaha = document.getElementById('form-usaha');
-        const submitBtn = document.querySelector('#form-register button[type="submit"]');
-        const dropdown = document.querySelector('.dropdown');
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Ambil elemen-elemen utama
+                    const loginForm = document.getElementById('form-login');
+                    const registerForm = document.getElementById('form-register');
+                    const loginBtn = document.getElementById('btn-login');
+                    const registerBtn = document.getElementById('btn-register');
+                    const formInves = document.getElementById('form-inves');
+                    const formUsaha = document.getElementById('form-usaha');
+                    const submitBtn = document.querySelector('#form-register button[type="submit"]');
+                    const dropdown = document.querySelector('.dropdown');
 
-        // Ambil parameter URL
-        const params = new URLSearchParams(window.location.search);
-        const formType = params.get('form'); // 'login' atau 'register'
-        const tipe = params.get('tipe'); // 'investor' atau 'usaha'
+                    // Ambil parameter URL
+                    const params = new URLSearchParams(window.location.search);
+                    const formType = params.get('form'); // 'login' atau 'register'
+                    const tipe = params.get('tipe'); // 'investor' atau 'usaha'
 
-        // Fungsi untuk toggle tombol aktif/nonaktif
-        function toggleButtons(type) {
-            if (type === 'login') {
-                // Tampilkan form login, sembunyikan register
-                loginForm.style.display = 'block';
-                registerForm.style.display = 'none';
-                dropdown?.classList.remove('show');
+                    // Fungsi untuk toggle tombol aktif/nonaktif
+                    function toggleButtons(type) {
+                        if (type === 'login') {
+                            // Tampilkan form login, sembunyikan register
+                            loginForm.style.display = 'block';
+                            registerForm.style.display = 'none';
+                            dropdown?.classList.remove('show');
 
-                // Aktifkan tombol login
-                loginBtn.classList.remove('btn-outline-primary');
-                loginBtn.classList.add('btn-primary');
-                loginBtn.style.backgroundColor = '#0062CC';
+                            // Aktifkan tombol login
+                            loginBtn.classList.remove('btn-outline-primary');
+                            loginBtn.classList.add('btn-primary');
+                            loginBtn.style.backgroundColor = '#0062CC';
 
-                // Nonaktifkan tombol register
-                registerBtn.classList.remove('btn-primary');
-                registerBtn.classList.add('btn-outline-primary');
-                registerBtn.style.backgroundColor = '';
-            } else if (type === 'register') {
-                // Tampilkan form register, sembunyikan login
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'block';
+                            // Nonaktifkan tombol register
+                            registerBtn.classList.remove('btn-primary');
+                            registerBtn.classList.add('btn-outline-primary');
+                            registerBtn.style.backgroundColor = '';
+                        } else if (type === 'register') {
+                            // Tampilkan form register, sembunyikan login
+                            loginForm.style.display = 'none';
+                            registerForm.style.display = 'block';
 
-                // Aktifkan tombol register
-                registerBtn.classList.remove('btn-outline-primary');
-                registerBtn.classList.add('btn-primary');
-                registerBtn.style.backgroundColor = '#0062CC';
+                            // Aktifkan tombol register
+                            registerBtn.classList.remove('btn-outline-primary');
+                            registerBtn.classList.add('btn-primary');
+                            registerBtn.style.backgroundColor = '#0062CC';
 
-                // Nonaktifkan tombol login
-                loginBtn.classList.remove('btn-primary');
-                loginBtn.classList.add('btn-outline-primary');
-                loginBtn.style.backgroundColor = '';
-            }
-        }
+                            // Nonaktifkan tombol login
+                            loginBtn.classList.remove('btn-primary');
+                            loginBtn.classList.add('btn-outline-primary');
+                            loginBtn.style.backgroundColor = '';
+                        }
+                    }
 
-        // Fungsi untuk tampilkan form investor atau usaha di form register
-        function showRegisterForm(type) {
-            if (type === 'investor') {
-                formInves.style.display = 'block';
-                formUsaha.style.display = 'none';
-                submitBtn.setAttribute('form', 'form-inves'); // Submit ke form investor
-            } else if (type === 'usaha') {
-                formInves.style.display = 'none';
-                formUsaha.style.display = 'block';
-                submitBtn.setAttribute('form', 'form-usaha'); // Submit ke form usaha
-            }
-        }
+                    // Fungsi untuk tampilkan form investor atau usaha di form register
+                    function showRegisterForm(type) {
+                        if (type === 'investor') {
+                            formInves.style.display = 'block';
+                            formUsaha.style.display = 'none';
+                            submitBtn.setAttribute('form', 'form-inves'); // Submit ke form investor
+                        } else if (type === 'usaha') {
+                            formInves.style.display = 'none';
+                            formUsaha.style.display = 'block';
+                            submitBtn.setAttribute('form', 'form-usaha'); // Submit ke form usaha
+                        }
+                    }
 
-        // Fungsi toggle password (bisa dipanggil dari event onclick icon)
-        window.togglePassword = function(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = "password";
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
+                    // Fungsi toggle password (bisa dipanggil dari event onclick icon)
+                    window.togglePassword = function(inputId, icon) {
+                        const input = document.getElementById(inputId);
+                        if (input.type === "password") {
+                            input.type = "text";
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        } else {
+                            input.type = "password";
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        }
+                    }
 
-        // Tampilkan form sesuai parameter URL, default ke login jika kosong atau tidak valid
-        if (formType === 'register') {
-            toggleButtons('register');
-            if (tipe === 'investor' || tipe === 'usaha') {
-                showRegisterForm(tipe);
-            } else {
-                // Default form register ke investor jika tipe tidak valid
-                showRegisterForm('investor');
-            }
-        } else {
-            toggleButtons('login');
-        }
+                    // Tampilkan form sesuai parameter URL, default ke login jika kosong atau tidak valid
+                    if (formType === 'register') {
+                        toggleButtons('register');
+                        if (tipe === 'investor' || tipe === 'usaha') {
+                            showRegisterForm(tipe);
+                        } else {
+                            // Default form register ke investor jika tipe tidak valid
+                            showRegisterForm('investor');
+                        }
+                    } else {
+                        toggleButtons('login');
+                    }
 
-        // Update link Google Login/Register agar sesuai tipe
-        const googleLoginLink = document.querySelector('#form-login a[href*="auth/google"]');
-        const googleRegisterLink = document.querySelector('#form-register a[href*="auth/google"]');
+                    // Update link Google Login/Register agar sesuai tipe
+                    const googleLoginLink = document.querySelector('#form-login a[href*="auth/google"]');
+                    const googleRegisterLink = document.querySelector('#form-register a[href*="auth/google"]');
 
-        if (tipe) {
-            if (googleLoginLink) {
-                googleLoginLink.href = `/auth/google/${tipe}`;
-            }
-            if (googleRegisterLink) {
-                googleRegisterLink.href = `/auth/google/${tipe}`;
-            }
-        }
-    });
-</script>
+                    if (tipe) {
+                        if (googleLoginLink) {
+                            googleLoginLink.href = `/auth/google/${tipe}`;
+                        }
+                        if (googleRegisterLink) {
+                            googleRegisterLink.href = `/auth/google/${tipe}`;
+                        }
+                    }
+                });
+            </script>
 
 
             <!-- MDB UI Kit JS -->

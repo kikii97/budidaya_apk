@@ -35,18 +35,16 @@
                     </div>
 
                     <!-- About Me Section -->
-                    <div class="mt-4 p-4 text-black" style="font-size: 16px;">
-                        <h5 class="text-dark mb-3">Tentang Saya</h5>
-
-                        <!-- Alamat -->
-                        <p style="font-size: 14px;">
-                            <strong>Alamat:</strong> {{ Auth::user()->alamat ? Auth::user()->alamat : '-' }}
-                        </p>
-
-                        <!-- Jenis Usaha -->
-                        <p style="font-size: 14px;">
-                            <strong>Jenis Usaha:</strong> {{ Auth::user()->jenis_usaha ? Auth::user()->jenis_usaha : '-' }}
-                        </p>
+                    <div class="mt-0 p-4 text-black mb-3" style="font-size: 80%;">
+                        <p class="lead fw-normal mb-1">Tentang Saya</p>
+                        <div class="p-4 bg-body-tertiary mb-5">
+                            <p class="font-italic mb-1">
+                                <strong>Alamat:</strong>{{ Auth::user()->alamat ? Auth::user()->alamat : '-' }}
+                            </p>
+                            <p class="font-italic mb-1">
+                                <strong>Jenis Usaha:</strong>{{ Auth::user()->jenis_usaha ? Auth::user()->jenis_usaha : '-' }}
+                            </p>
+                        </div>
                     </div>
 
                 </div>

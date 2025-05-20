@@ -54,9 +54,26 @@
                         <div style="width: 170px;"><strong>Pembudidaya</strong></div>
                         <div>: {{ $produk->pembudidaya->name ?? '-' }}</div>
                     </div>
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    {{-- <div class="mb-1 d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Telepon</strong></div>
                         <div>: {{ $produk->telepon ?? ($produk->pembudidaya->telepon ?? '-') }}</div>
+                    </div> --}}
+                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                        <div style="width: 170px;"><strong>Telepon</strong></div>
+                        <div>:
+                            @php
+                                $telepon = $produk->telepon ?? ($produk->pembudidaya->telepon ?? null);
+                            @endphp
+
+                            @if ($telepon)
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $telepon) }}" target="_blank"
+                                    style="color: #000; text-decoration: underline;">
+                                    {{ $telepon }}
+                                </a>
+                            @else
+                                -
+                            @endif
+                        </div>
                     </div>
                     <div class="mb-1 d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Kapasitas</strong></div>
