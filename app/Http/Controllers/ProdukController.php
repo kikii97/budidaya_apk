@@ -35,6 +35,7 @@ class ProdukController extends Controller
         $profil = $pembudidaya->profil;
         $produk = Produk::where('pembudidaya_id', $pembudidaya->id)
                         ->where('is_approved', true)
+                        ->orderBy('created_at', 'desc')
                         ->get();
 
         return view('detail_usaha', compact('pembudidaya', 'profil', 'produk'));
@@ -197,17 +198,46 @@ class ProdukController extends Controller
     // Untuk menampilkan katalog publik
     public function katalog(Request $request)
     {
-        $produkList = Produk::query()
-            ->where('is_approved', true);
-    
-        if ($request->has('komoditas') && $request->komoditas !== '') {
-            $produkList->where('jenis_komoditas', $request->komoditas);
+        $minPrice = is_numeric($request->input('price_min')) ? (int) $request->input('price_min') : null;
+        $maxPrice = is_numeric($request->input('price_max')) ? (int) $request->input('price_max') : null;
+
+        $produkList = Produk::query()->where('is_approved', true);
+
+        if ($request->has('jenis_komoditas') && is_array($request->jenis_komoditas)) {
+            $produkList->whereIn('jenis_komoditas', $request->jenis_komoditas);
         }
-    
-        $produkList = $produkList->get();
-    
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            if ($minPrice <= $maxPrice) {
+                $produkList->where(function ($q) use ($minPrice, $maxPrice) {
+                    $q->where('kisaran_harga_min', '<=', $maxPrice)
+                    ->where('kisaran_harga_max', '>=', $minPrice);
+                });
+            }
+        } elseif ($minPrice !== null) {
+            $produkList->where('kisaran_harga_max', '>=', $minPrice);
+        } elseif ($maxPrice !== null) {
+            $produkList->where('kisaran_harga_min', '<=', $maxPrice);
+        }
+
+        if ($request->has('kecamatan') && is_array($request->kecamatan)) {
+            $produkList->whereIn('kecamatan', $request->kecamatan);
+        }
+
+        $sortBy = $request->input('sort_by', 'terbaru'); // default 'terbaru'
+
+        if ($sortBy === 'termurah') {
+            $produkList = $produkList->orderBy('kisaran_harga_min', 'asc');
+        } else {
+            // default urut berdasarkan terbaru
+            $produkList = $produkList->orderBy('created_at', 'desc');
+        }
+
+        $produkList = $produkList->paginate(12)->withQueryString();
+
         return view('katalog', compact('produkList'));
     }
+
 
     private function uploadImages($images)
     {

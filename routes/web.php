@@ -102,7 +102,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::post('/produk/{id}/approve', [AdminProdukController::class, 'approve'])->name('produk.approve');
         Route::post('/produk/{id}/reject', [AdminProdukController::class, 'reject'])->name('produk.reject');
-
+        Route::get('/produk/{id}/detail', [AdminProdukController::class, 'show'])->name('produk.detail');
         Route::post('/pembudidaya/{id}/approve', [AdminPembudidayaController::class, 'approve'])->name('pembudidaya.approve');
         Route::post('/pembudidaya/{id}/reject', [AdminPembudidayaController::class, 'reject'])->name('pembudidaya.reject');
     });

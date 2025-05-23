@@ -381,56 +381,28 @@
 
                     <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
-                            {{-- <a href="{{ route('katalog', ['komoditas' => 'udang']) }}" class="nav-link swiper-slide text-center">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Udang']]) }}" class="nav-link swiper-slide text-center">
                                 <img src="{{ asset('images/udang.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
                             </a>
-                            <a href="{{ route('katalog', ['komoditas' => 'rumput-laut']) }}" class="nav-link swiper-slide text-center">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Rumput Laut']]) }}" class="nav-link swiper-slide text-center">
                                 <img src="{{ asset('images/rumputlaut.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Rumput Laut</h4>
                             </a>
-                            <a href="{{ route('katalog', ['komoditas' => 'ikan-bandeng']) }}" class="nav-link swiper-slide text-center">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Bandeng']]) }}" class="nav-link swiper-slide text-center">
                                 <img src="{{ asset('images/ikanbandeng.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Bandeng</h4>
                             </a>
-                            <a href="{{ route('katalog', ['komoditas' => 'ikan-gurame']) }}" class="nav-link swiper-slide text-center">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Gurame']]) }}" class="nav-link swiper-slide text-center">
                                 <img src="{{ asset('images/ikangurame.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Gurame</h4>
                             </a>
-                            <a href="{{ route('katalog', ['komoditas' => 'ikan-lele']) }}" class="nav-link swiper-slide text-center">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Lele']]) }}" class="nav-link swiper-slide text-center">
                                 <img src="{{ asset('images/ikanlele.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
                             </a>
-                            <a href="{{ route('katalog', ['komoditas' => 'ikan-nila']) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail"> --}}
-                            <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/udang.jpg') }}" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
-                            </a>
-                            <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/rumputlaut.jpg') }}" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Rumput Laut</h4>
-                            </a>
-                            <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikanbandeng.jpg') }}"
-                                    class="rounded-circle" alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Bandeng</h4>
-                            </a>
-                            <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikangurame.jpg') }}" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Gurame</h4>
-                            </a>
-                            <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikanlele.jpg') }}" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
-                            </a>
-                            <a class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle"
-                                    alt="Category Thumbnail">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Nila']]) }}" class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Nila</h4>
                             </a>
                         </div>

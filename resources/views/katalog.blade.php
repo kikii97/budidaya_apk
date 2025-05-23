@@ -46,12 +46,12 @@
                             <div class="mb-3">
                                 <label for="price_min" class="form-label">Min:</label>
                                 <input type="number" id="price_min" name="price_min" class="form-control"
-                                    placeholder="5000" min="0" value="{{ $priceMin }}">
+                                    min="0" value="{{ $priceMin }}">
                             </div>
                             <div>
                                 <label for="price_max" class="form-label">Max:</label>
                                 <input type="number" id="price_max" name="price_max" class="form-control"
-                                    placeholder="10000" min="0" value="{{ $priceMax }}">
+                                    min="0" value="{{ $priceMax }}">
                             </div>
                         </div>
 
@@ -174,12 +174,12 @@
                         <div class="mb-3">
                             <label for="price_min" class="form-label">Min:</label>
                             <input type="number" id="price_min" name="price_min" class="form-control"
-                                placeholder="5000" min="0" value="{{ $priceMin }}">
+                                min="0" value="{{ $priceMin }}">
                         </div>
                         <div>
                             <label for="price_max" class="form-label">Max:</label>
                             <input type="number" id="price_max" name="price_max" class="form-control"
-                                placeholder="10000" min="0" value="{{ $priceMax }}">
+                                min="0" value="{{ $priceMax }}">
                         </div>
                     </div>
 
@@ -283,61 +283,60 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const openFilterBtn = document.getElementById('openFilterBtn');
-            const filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
+document.addEventListener('DOMContentLoaded', function() {
+    const openFilterBtn = document.getElementById('openFilterBtn');
+    const filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
 
-            // Tombol Filter untuk mobile
-            if (openFilterBtn) {
-                openFilterBtn.addEventListener('click', () => {
-                    filterModal.show();
-                });
-            }
+    if (openFilterBtn) {
+        openFilterBtn.addEventListener('click', () => {
+            filterModal.show();
+        });
+    }
 
-            // Fungsi toggle kecamatan
-            function setupToggle(btnId, itemSelector) {
-                const toggleBtn = document.getElementById(btnId);
-                const kecamatanItems = document.querySelectorAll(itemSelector);
-                const visibleCount =
-                {{ $visibleCount }}; // Harus digantikan dengan nilai PHP sebelum dikirim ke browser
-                let expanded = false;
+    // Fungsi toggle kecamatan
+    function setupToggle(btnId, itemSelector, visibleCount) {
+        const toggleBtn = document.getElementById(btnId);
+        const kecamatanItems = document.querySelectorAll(itemSelector);
+        let expanded = false;
 
-                if (toggleBtn) {
-                    toggleBtn.addEventListener('click', () => {
-                        expanded = !expanded;
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                expanded = !expanded;
 
-                        if (expanded) {
-                            kecamatanItems.forEach(item => item.style.display = 'block');
-                            toggleBtn.innerHTML = 'Sembunyikan <i class="bi bi-chevron-up"></i>';
-                        } else {
-                            kecamatanItems.forEach((item, index) => {
-                                item.style.display = index < i visibleCount ? 'block' : 'none';
-                            });
-                            toggleBtn.innerHTML = 'Lihat lainnya <i class="bi bi-chevron-down"></i>';
-                        }
+                if (expanded) {
+                    kecamatanItems.forEach(item => item.style.display = 'block');
+                    toggleBtn.innerHTML = 'Sembunyikan <i class="bi bi-chevron-up"></i>';
+                } else {
+                    kecamatanItems.forEach((item, index) => {
+                        item.style.display = index < visibleCount ? 'block' : 'none';
                     });
-                }
-            }
-
-            // Panggil fungsi untuk dua tombol
-            setupToggle('toggleKecamatanBtnMobile', '#filterModal .kecamatan-item');
-            setupToggle('toggleKecamatanBtnDesktop', '.col-lg-3 .kecamatan-item');
-
-            // Format angka sebagai Rupiah dan validasi sebelum submit
-            const form = document.querySelector('form');
-            const priceMinInput = document.getElementById('price_min');
-            const priceMaxInput = document.getElementById('price_max');
-
-            form.addEventListener('submit', function(e) {
-                let min = parseInt(priceMinInput.value.replace(/\D/g, '')) || 0;
-                let max = parseInt(priceMaxInput.value.replace(/\D/g, '')) || 0;
-
-                if (min > max && max !== 0) {
-                    e.preventDefault();
-                    alert('Harga minimum tidak boleh lebih besar dari harga maksimum.');
-                    return;
+                    toggleBtn.innerHTML = 'Lihat lainnya <i class="bi bi-chevron-down"></i>';
                 }
             });
-        });
+        }
+    }
+
+    // Pastikan visibleCount dikirim ke JS dari PHP dengan benar
+    const visibleCount = {{ $visibleCount ?? 5 }};
+
+    setupToggle('toggleKecamatanBtnMobile', '#filterModal .kecamatan-item', visibleCount);
+    setupToggle('toggleKecamatanBtnDesktop', '.col-lg-3 .kecamatan-item', visibleCount);
+
+    // Validasi harga
+    const form = document.querySelector('form');
+    const priceMinInput = document.getElementById('price_min');
+    const priceMaxInput = document.getElementById('price_max');
+
+    form.addEventListener('submit', function(e) {
+        let min = parseInt(priceMinInput.value) || 0;
+        let max = parseInt(priceMaxInput.value) || 0;
+
+        if (min > max && max !== 0) {
+            e.preventDefault();
+            alert('Harga minimum tidak boleh lebih besar dari harga maksimum.');
+            return;
+        }
+    });
+});
     </script>
 @endsection

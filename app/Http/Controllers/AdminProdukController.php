@@ -16,6 +16,12 @@ class AdminProdukController extends Controller
         return view('admin.produk.index', compact('produk'));
     }
 
+public function show($id)
+{
+    $produk = Produk::with('pembudidaya')->findOrFail($id);
+    return view('admin.produk.detail', compact('produk'));
+}
+
     public function approve($id)
     {
         $produk = Produk::findOrFail($id);
