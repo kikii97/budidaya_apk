@@ -48,4 +48,8 @@ class Pembudidaya extends Authenticatable
     {
         return $this->hasMany(Produk::class, 'pembudidaya_id');
     }
+    public function customNotifikasi()
+    {
+        return $this->hasMany(Notifikasi::class);
+    }
 }

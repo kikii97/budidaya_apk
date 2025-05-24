@@ -28,7 +28,9 @@ public function handleGoogleCallback()
         abort(400, 'Tipe login tidak valid.');
     }
 
-    $googleUser = Socialite::driver('google')->stateless()->user();
+    /** @var \Laravel\Socialite\Two\GoogleProvider $provider */
+    $provider = Socialite::driver('google');
+    $googleUser = $provider->stateless()->user();
 
     if (!$googleUser->getEmail()) {
         abort(403, 'Email Google tidak ditemukan atau belum terverifikasi.');

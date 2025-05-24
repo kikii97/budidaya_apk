@@ -63,10 +63,16 @@
                         <div>:
                             @php
                                 $telepon = $produk->telepon ?? ($produk->pembudidaya->telepon ?? null);
+                                if ($telepon) {
+                                    $nomor = preg_replace('/[^0-9]/', '', $telepon);
+                                    if (strpos($nomor, '0') === 0) {
+                                        $nomor = '62' . substr($nomor, 1);
+                                    }
+                                }
                             @endphp
 
                             @if ($telepon)
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $telepon) }}" target="_blank"
+                                <a href="https://wa.me/{{ $nomor }}" target="_blank"
                                     style="color: #000; text-decoration: underline;">
                                     {{ $telepon }}
                                 </a>
@@ -149,80 +155,129 @@
                     @endif --}}
 
                     <div class="col">
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">
-                            <i class="fa-regular fa-clipboard" style="padding-right: 15px;"></i>Order
-                        </a>
+                        @auth
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">
+                                <i class="fa-regular fa-clipboard" style="padding-right: 15px;"></i>Order
+                            </a>
+                        @endauth
+
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary">
+                                <i class="fa-regular fa-clipboard" style="padding-right: 15px;"></i>Login untuk Order
+                            </a>
+                        @endguest
 
                         <a href="{{ route('usaha.detail', $produk->pembudidaya_id) }}" class="btn btn-outline-secondary">
                             <i class="fa-regular fa-user" style="padding-right: 15px;"></i>Detail Usaha
                         </a>
                     </div>
+                </div>
 
-                    <!-- Modal Input Order -->
-                    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel"
-                        aria-hidden="true">
+                    <!-- Modal hanya ditampilkan untuk user yang sudah login -->
+                    @auth
+                    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
                         <div class="modal-dialog" style="max-width: 500px;">
                             <div class="modal-content" style="border-radius: 1rem;">
                                 <div class="modal-header py-2">
                                     <h5 class="modal-title" id="orderModalLabel" style="font-weight: 500;">Form Order</h5>
-                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
-                                <form id="orderForm" method="POST" action="">
+                                <form id="orderForm" method="POST" action="{{ route('order.store') }}">
                                     @csrf
-                                    <div class="modal-body p-3" style="color: black; font-size: 0.8rem;">
+                                    <input type="hidden" name="produk_id" value="{{ $produk->id }}">
 
-                                        <div class="row mb-2">
-                                            <div class="col-12">
-                                                <label class="form-label mb-1">Nama Customer</label>
-                                                <input type="text" name="nama_customer"
-                                                    class="form-control form-control-sm"
-                                                    placeholder="Masukkan nama customer" required>
+                                        <div class="modal-body p-3" style="color: black; font-size: 0.8rem;">
+                                            <div class="row mb-2">
+                                                <div class="col-12">
+                                                    <label class="form-label mb-1">Nama Customer</label>
+                                                    <input type="text" name="nama_customer" class="form-control form-control-sm" placeholder="Masukkan nama customer" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col-12">
+                                                    <label class="form-label mb-1">Nomor HP Customer</label>
+                                                    <input type="text" name="no_hp_customer" class="form-control form-control-sm" placeholder="08xxxxxxxxxx" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    <label class="form-label mb-1">Jumlah (dalam kg)</label>
+                                                    <input type="number" name="jumlah"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="Contoh: 5"
+                                                        min="1"
+                                                        max="{{ $produk->kapasitas_produksi }}"
+                                                        required>
+                                                    <small class="text-muted">Maksimum: {{ $produk->kapasitas_produksi }} kg</small>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label mb-1">Tanggal Order</label>
+                                                    <input type="date" name="tanggal_order" class="form-control form-control-sm" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <label class="form-label mb-1">Keterangan</label>
+                                                    <textarea name="keterangan" class="form-control form-control-sm" rows="2" placeholder="Opsional"></textarea>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="row mb-2">
-                                            <div class="col-12">
-                                                <label class="form-label mb-1">Nama Produk</label>
-                                                <input type="text" name="nama_produk"
-                                                    class="form-control form-control-sm" placeholder="Masukkan nama produk"
-                                                    required>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-2">
-                                            <div class="col-6">
-                                                <label class="form-label mb-1">Jumlah</label>
-                                                <input type="number" name="jumlah" class="form-control form-control-sm"
-                                                    placeholder="Contoh: 5" required>
-                                            </div>
-                                            <div class="col-6">
-                                                <label class="form-label mb-1">Tanggal Order</label>
-                                                <input type="date" name="tanggal_order"
-                                                    class="form-control form-control-sm" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-12">
-                                                <label class="form-label mb-1">Keterangan</label>
-                                                <textarea name="keterangan" class="form-control form-control-sm" rows="2" placeholder="Opsional"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <div class="modal-footer py-2">
-                                        <button type="submit"
-                                            class="btn btn-primary btn-sm rounded-pill px-3">Simpan</button>
+                                        <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">Simpan</button>
                                     </div>
-
                                 </form>
                             </div>
                         </div>
                     </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const jumlahInput = document.getElementById('jumlahInput');
+                            const maxStok = {{ $produk->kapasitas_produksi ?? 0 }};
 
-                </div>
+                            jumlahInput.addEventListener('input', function () {
+                                let val = parseInt(this.value, 10);
+
+                                if (val > maxStok) {
+                                    this.value = maxStok;
+                                } else if (val < 1) {
+                                    this.value = 1;
+                                }
+                            });
+
+                            jumlahInput.addEventListener('blur', function () {
+                                if (!this.value || parseInt(this.value, 10) < 1) {
+                                    this.value = 1;
+                                }
+                            });
+                        });
+                    </script>
+                    @endauth
+
+                    @if(session('success'))
+                        <div class="alert alert-success mt-3" style="font-size: 0.9rem;">
+                            {{ session('success') }}<br>
+                            @php
+                                $telepon = $produk->telepon ?? ($produk->pembudidaya->telepon ?? null);
+                                $nomor = preg_replace('/[^0-9]/', '', $telepon);
+                                if (strpos($nomor, '0') === 0) {
+                                    $nomor = '62' . substr($nomor, 1);
+                                }
+                            @endphp
+                            @if ($telepon)
+                                <strong>
+                                    Hubungi pembudidaya melalui 
+                                    <a href="https://wa.me/{{ $nomor }}" target="_blank" style="text-decoration: underline;">
+                                        WhatsApp ({{ $telepon }})
+                                    </a>
+                                </strong>
+                            @endif
+                        </div>
+                    @endif
 
                 <!-- Additional Info -->
                 <div class="mt-3">
@@ -235,4 +290,17 @@
         </div>
         @stack('scripts')
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('success'))
+                const modalEl = document.getElementById('orderModal');
+                if (modalEl) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+            @endif
+        });
+    </script>
 @endsection

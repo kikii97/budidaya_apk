@@ -120,6 +120,21 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas"
                     data-bs-target="#mobileNav"></i>
             </nav>
+            <div class="d-flex align-items-center gap-2">
+            @php
+                $user = Auth::guard('pembudidaya')->user();
+            @endphp
+
+            @if ($user)
+                <!-- Notifikasi Button -->
+                <button type="button" class="btn btn-outline-secondary position-relative" data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
+                    🔔
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ $user->unreadNotifications->count() ?? 0 }}
+                        <span class="visually-hidden">notifikasi baru</span>
+                    </span>
+                </button>
+            @endif
             <div class="dropdown d-inline-block d-none d-xl-block">
                 @if (Auth::check() || Auth::guard('pembudidaya')->check())
                     @php
@@ -159,7 +174,31 @@
                     </ul>
                 @endif
             </div>
-
+        </div>
+        <!-- Offcanvas Notifikasi (Modal sebelah kanan) -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="notificationModal" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="notificationModalLabel">Notifikasi</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Isi notifikasi di sini -->
+            @if ($notifications->count())
+                <ul class="list-group">
+                    @foreach ($notifications as $notification)
+                        <li class="list-group-item">
+                            {{ $notification->data['message'] ?? 'Notifikasi baru' }}
+                            <br>
+                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-muted">Tidak ada notifikasi baru.</p>
+            @endif
+            <!-- Bisa tambahkan tombol hapus notifikasi jika ingin -->
+            <button type="button" class="btn btn-danger mt-3" id="clearNotificationsBtn">Hapus Semua Notifikasi</button>
+        </div>
         </div>
     </header>
 
