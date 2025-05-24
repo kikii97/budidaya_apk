@@ -12,6 +12,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -37,6 +38,27 @@
     textarea,
     button {
         font-family: 'Inter', sans-serif;
+    }
+
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    #peta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 1rem;
+        height: 500px;
+        overflow: hidden;
+    }
+
+    #map {
+        width: 90%;
+        height: 100%;
     }
 </style>
 
@@ -256,7 +278,8 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li>
+                            <li><a class="dropdown-item py-2"
+                                    href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li>
                         </ul>
                     </li>
                 @endif
@@ -291,12 +314,14 @@
                         <div class="modal-dialog" style="max-width: 500px;">
                             <div class="modal-content" style="border-radius: 1rem;">
                                 <div class="modal-header py-2">
-                                    <h5 class="modal-title" id="modalCariLabel" style="font-weight: 500;">Form Rekomendasi</h5>
+                                    <h5 class="modal-title" id="modalCariLabel" style="font-weight: 500;">Form
+                                        Rekomendasi</h5>
                                     <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form class="modal-body p-3 pb-0" method="GET" action="{{ route('produk.rekomendasi') }}"
+                                <form class="modal-body p-3 pb-0" method="GET"
+                                    action="{{ route('produk.rekomendasi') }}"
                                     style="font-size: 0.8rem; padding: 15px;">
 
                                     <div class="row mb-2">
@@ -474,7 +499,8 @@
         <div class="container-lg">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="section-header d-flex justify-content-between align-items-center flex-wrap gap-2"  style="row-gap: 0.5rem;">
+                    <div class="section-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+                        style="row-gap: 0.5rem;">
                         <h2 class="section-title m-0 fs-4">Etalase Produk Budidaya</h2>
                         <div class="d-flex align-items-center">
                             <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
@@ -545,9 +571,10 @@
     <!-- Start Map section -->
     <section id="peta" class="py-5"
         style="display: flex; justify-content: center; align-items: center; padding-top: 1rem !important;">
-        <iframe
+        <div id="map" style="width: 90%; height: 500px;"></div>
+        {{-- <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9207.358598888495!2d-85.64847801496286!3d30.183918972289003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x2320479d70eb6202!2sDillard&#39;s!5e0!3m2!1sbn!2sbd!4v1462359735720"
-            width="90%" height="500px" frameborder="0"allowfullscreen></iframe>
+            width="90%" height="500px" frameborder="0"allowfullscreen></iframe> --}}
     </section>
     <!-- End Map section -->
 
@@ -561,7 +588,8 @@
 
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="d-flex gap-2 mt-2">
-                        <a href="https://www.facebook.com/diskanla.indramayu/?locale=id_ID" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.facebook.com/diskanla.indramayu/?locale=id_ID"
+                            class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#facebook"></use>
                             </svg>
@@ -576,7 +604,8 @@
                                 <use xlink:href="#youtube"></use>
                             </svg>
                         </a>
-                        <a href="https://www.instagram.com/diskanla.indramayu/" class="btn btn-outline-primary btn-sm rounded-circle">
+                        <a href="https://www.instagram.com/diskanla.indramayu/"
+                            class="btn btn-outline-primary btn-sm rounded-circle">
                             <svg width="14" height="14">
                                 <use xlink:href="#instagram"></use>
                             </svg>
@@ -618,6 +647,26 @@
         </div>
     </footer>
 
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Masukkan access token Mapbox-mu di sini
+            mapboxgl.accessToken =
+                'pk.eyJ1Ijoia2lraWtzMjMiLCJhIjoiY205dDZiZDgyMDgzdzJtcTk1bW81ZG4wOCJ9.2KzfsbK1tXHs7vuAkwMsKQ';
+
+            const map = new mapboxgl.Map({
+                container: 'map', // id elemen tempat peta muncul
+                style: 'mapbox://styles/mapbox/navigation-day-v1', // style peta (bisa ganti ke yang lain)
+                center: [108.3247, -6.3265], // koordinat tengah peta [lng, lat] (sesuai lokasi Dillard's di contoh)
+                zoom: 12 // zoom level
+            });
+
+            // Optional: Tambah marker di lokasi Dillard's
+            const marker = new mapboxgl.Marker()
+                .setLngLat([108.3247, -6.3265])
+                .addTo(map);
+        });
+    </script>
 
     <script>
         document.getElementById("user-icon").addEventListener("click", function() {
