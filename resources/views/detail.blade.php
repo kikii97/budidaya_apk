@@ -155,17 +155,15 @@
                     @endif --}}
 
                     <div class="col">
-                        @auth
+                        @if(Auth::guard('web')->check() || Auth::guard('pembudidaya')->check())
                             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">
                                 <i class="fa-regular fa-clipboard" style="padding-right: 15px;"></i>Order
                             </a>
-                        @endauth
-
-                        @guest
+                        @else
                             <a href="{{ route('login') }}" class="btn btn-primary">
                                 <i class="fa-regular fa-clipboard" style="padding-right: 15px;"></i>Login untuk Order
                             </a>
-                        @endguest
+                        @endif
 
                         <a href="{{ route('usaha.detail', $produk->pembudidaya_id) }}" class="btn btn-outline-secondary">
                             <i class="fa-regular fa-user" style="padding-right: 15px;"></i>Detail Usaha
@@ -174,7 +172,7 @@
                 </div>
 
                     <!-- Modal hanya ditampilkan untuk user yang sudah login -->
-                    @auth
+                    @if(Auth::guard('web')->check() || Auth::guard('pembudidaya')->check())
                     <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
                         <div class="modal-dialog" style="max-width: 500px;">
                             <div class="modal-content" style="border-radius: 1rem;">
@@ -256,7 +254,7 @@
                             });
                         });
                     </script>
-                    @endauth
+                    @endif
 
                     @if(session('success'))
                         <div class="alert alert-success mt-3" style="font-size: 0.9rem;">

@@ -32,26 +32,21 @@ class OrderController extends Controller
 $produk = Produk::find($validated['produk_id']);
 
 if ($produk) {
-    $title = "🛒 Pesanan Baru dari *{$validated['nama_customer']}*";
+$title = "Pesanan Baru dari {$validated['nama_customer']}";
 
-$message = 
-"Pesanan Baru
+$data = [
+    'judul' => $title,
+    'no_hp' => $validated['no_hp_customer'],
+    'tanggal_order' => now()->format('d M Y, H:i'),
+    'jumlah' => "{$validated['jumlah']} kg",
+    'catatan' => $validated['keterangan'] ?? '-',
+    'jenis_produk' => $produk->jenis_komoditas,
+    'kapasitas' => "{$produk->kapasitas_produksi} kg",
+    'prediksi_panen' => \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d M Y'),
+    'tanggal_diunggah' => \Carbon\Carbon::parse($produk->created_at)->translatedFormat('d M Y'),
+];
 
-Nama Pemesan: {$validated['nama_customer']}
-No. HP: {$validated['no_hp_customer']}
-Tanggal Order: " . now()->format('d M Y, H:i') . "
-Jumlah Dipesan: {$validated['jumlah']} kg
-Catatan: " . ($validated['keterangan'] ?? '-') . "
-
-Detail Produk
-Jenis: {$produk->jenis_komoditas}
-Kapasitas Produksi: {$produk->kapasitas_produksi} kg
-Prediksi Panen: " . \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d M Y') . "
-Tanggal Diunggah: " . \Carbon\Carbon::parse($produk->created_at)->translatedFormat('d M Y') . "
-
-Silakan hubungi pemesan untuk proses selanjutnya.";
-
-    $this->notifikasiController->kirimNotifikasiKePembudidaya($produk->id, $title, $message);
+$this->notifikasiController->kirimNotifikasiKePembudidaya($produk->id, $data);
 }
 
         return redirect()->back()->with('success', 'Order berhasil dikirim dan notifikasi terkirim.');

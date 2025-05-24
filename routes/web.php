@@ -36,6 +36,10 @@ Route::middleware(['auth:pembudidaya'])->group(function () {
     Route::get('/profil/edit', [PembudidayaController::class, 'edit'])->name('pembudidaya.edit');
     Route::post('/profil/update', [PembudidayaController::class, 'update'])->name('pembudidaya.update');
     Route::post('/notifikasi/{id}/read', [NotifikasiController::class, 'read'])->name('notifications.read');
+    Route::post('/notifications/mark-all-read', [NotifikasiController::class, 'markAllRead'])->name('notifications.markAllRead');
+    Route::post('/notifications/clear', [NotifikasiController::class, 'clearAll'])->name('notifications.clearAll');
+    Route::get('/notifications/{id}', [NotifikasiController::class, 'show']);
+
 });
 
 // Rute otomatis ke detail usaha pembudidaya yang sedang login
