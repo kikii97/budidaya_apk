@@ -12,49 +12,47 @@ class DetailUsahaController extends Controller
         // Tidak perlu middleware auth di sini jika akses publik diperbolehkan
     }
 
-    public function index()
-    {
-        // Periksa apakah pembudidaya sudah login
-        $pembudidaya = Auth::guard('pembudidaya')->user();
+public function index()
+{
+    $pembudidaya = Auth::guard('pembudidaya')->user();
 
-        if (!$pembudidaya) {
-            return redirect()->route('pembudidaya.login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-
-        // Menampilkan profil dan produk yang sudah disetujui
-        $profil = $pembudidaya->profil; 
-        $produk = Produk::where('pembudidaya_id', $pembudidaya->id)
-            ->where('is_approved', 1)
-            ->get();
-
-        // Menambahkan gambar utama untuk setiap produk
-        foreach ($produk as $item) {
-            $gambarArray = json_decode($item->gambar, true);
-            $item->gambar_utama = $gambarArray[0] ?? 'default.jpg'; 
-        }
-
-        return view('detail_usaha', compact('pembudidaya', 'profil', 'produk'));
+    if (!$pembudidaya) {
+        return redirect()->route('pembudidaya.login')->with('error', 'Silakan login terlebih dahulu.');
     }
 
-    public function show($id)
-    {
-        // Mendapatkan pembudidaya berdasarkan ID
-        $pembudidaya = \App\Models\Pembudidaya::with('profil')->findOrFail($id);
+    $profil = $pembudidaya->profil;
+    $produk = Produk::where('pembudidaya_id', $pembudidaya->id)
+        ->where('is_approved', 1)
+        ->get();
 
-        // Mendapatkan produk yang disetujui oleh admin
-        $produk = Produk::where('pembudidaya_id', $id)
-            ->where('is_approved', 1)
-            ->get();
-
-        // Menambahkan gambar utama untuk setiap produk
-        foreach ($produk as $item) {
-            $gambarArray = json_decode($item->gambar, true);
-            $item->gambar_utama = $gambarArray[0] ?? 'default.jpg';
-        }
-
-        // Memeriksa apakah pembudidaya yang login adalah pemilik usaha
-        $isOwner = Auth::guard('pembudidaya')->check() && Auth::guard('pembudidaya')->id() == $id;
-
-        return view('detail_usaha', compact('pembudidaya', 'produk', 'isOwner'));
+    foreach ($produk as $item) {
+        $gambarArray = json_decode($item->gambar, true);
+        $item->gambar_utama = $gambarArray[0] ?? 'default.jpg';
     }
+
+    $user = $pembudidaya; // alias untuk keperluan Blade
+
+    return view('detail_usaha', compact('pembudidaya', 'profil', 'produk', 'user'));
+}
+
+public function show($id)
+{
+    $pembudidaya = \App\Models\Pembudidaya::with('profil')->findOrFail($id);
+
+    $produk = Produk::where('pembudidaya_id', $id)
+        ->where('is_approved', 1)
+        ->get();
+
+    foreach ($produk as $item) {
+        $gambarArray = json_decode($item->gambar, true);
+        $item->gambar_utama = $gambarArray[0] ?? 'default.jpg';
+    }
+
+    $isOwner = Auth::guard('pembudidaya')->check() && Auth::guard('pembudidaya')->id() == $id;
+
+    $user = Auth::guard('pembudidaya')->user(); // bisa null jika pengunjung
+
+    return view('detail_usaha', compact('pembudidaya', 'produk', 'isOwner', 'user'));
+}
+
 }

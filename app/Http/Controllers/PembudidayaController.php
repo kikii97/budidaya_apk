@@ -21,29 +21,35 @@ class PembudidayaController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'address' => 'nullable|string',
+            'alamat' => 'nullable|string',
             'nomor_telepon' => 'nullable|string|max:20',
             'deskripsi' => 'nullable|string',
             'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        // Update data di tabel pembudidaya
         $pembudidaya->name = $request->name;
-        $pembudidaya->address = $request->address;
-        $pembudidaya->nomor_telepon = $request->nomor_telepon;
-        $pembudidaya->deskripsi = $request->deskripsi;
+        $pembudidaya->save();
+
+        // Pastikan relasi profil ada
+        $profil = $pembudidaya->profil ?? new \App\Models\ProfilPembudidaya();
+        $profil->pembudidaya_id = $pembudidaya->id;
+        $profil->alamat = $request->alamat;
+        $profil->nomor_telepon = $request->nomor_telepon;
+        $profil->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('foto_profile')) {
             // Hapus foto lama jika ada
-            if ($pembudidaya->foto_profil) {
-                Storage::delete('public/' . $pembudidaya->foto_profil);
+            if ($profil->foto_profil) {
+                \Storage::delete('public/' . $profil->foto_profil);
             }
 
             $path = $request->file('foto_profile')->store('profile_photos', 'public');
-            $pembudidaya->foto_profil = $path;
+            $profil->foto_profil = $path;
         }
 
-        $pembudidaya->save();
+        $profil->save();
 
-        return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+        return redirect()->route('pembudidaya.profil', $pembudidaya->id)->with('success', 'Profil berhasil diperbarui.');
     }
 }

@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     detailTitle.textContent = data.judul ?? "Detail Notifikasi";
 
                     detailContent.innerHTML = `
+                        ${data.message || data.pesan ? `<p>${data.message || data.pesan}</p>` : ''}
                         ${data.no_hp ? `<p><strong>No. HP:</strong> ${data.no_hp}</p>` : ''}
                         ${data.tanggal_order ? `<p><strong>Tanggal Order:</strong> ${data.tanggal_order}</p>` : ''}
                         ${data.jumlah ? `<p><strong>Jumlah Dipesan:</strong> ${data.jumlah}</p>` : ''}

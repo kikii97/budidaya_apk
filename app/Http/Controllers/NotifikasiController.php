@@ -7,34 +7,39 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Produk;
+use App\Notifications\NotifikasiPembudidaya;
+
 
 class NotifikasiController extends Controller
 {
     // Kirim notifikasi ke pembudidaya
-    public function kirimNotifikasiKePembudidaya($produk_id, array $data)
-    {
-        $produk = Produk::find($produk_id);
+public function kirimNotifikasiKePembudidaya($produk_id, array $data)
+{
+    $produk = Produk::find($produk_id);
 
-        if (!$produk || !$produk->pembudidaya) {
-            return false;
-        }
-
-        $pembudidaya = $produk->pembudidaya;
-
-        DB::table('notifications')->insert([
-            'id' => (string) Str::uuid(),
-            'type' => 'App\\Notifications\\CustomNotification',
-            'notifiable_type' => 'App\\Models\\Pembudidaya',
-            'notifiable_id' => $pembudidaya->id,
-            'data' => json_encode($data),
-            'read_at' => null,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-
-        return true;
+    if (!$produk || !$produk->pembudidaya) {
+        return false;
     }
+
+    $pembudidaya = $produk->pembudidaya;
+
+$pembudidaya->notify(new NotifikasiPembudidaya(
+    'Pesanan Baru',
+    [
+        'no_hp' => '08123456789',
+        'tanggal_order' => '2025-06-10',
+        'jumlah' => '100kg',
+        'catatan' => 'Segera kirim ya!',
+        'jenis_produk' => 'Ikan Lele',
+        'kapasitas' => '500kg/bulan',
+        'prediksi_panen' => '2025-06-30',
+        'tanggal_diunggah' => '2025-06-09'
+    ]
+));
+
+
+    return true;
+}
 
     // Tandai satu notifikasi sudah dibaca
     public function read($id)

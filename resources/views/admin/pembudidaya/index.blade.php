@@ -29,7 +29,6 @@
                     <th style="width: 50px;">No</th>
                     <th>Nama</th>
                     <th>Email</th>
-                    <th>Alamat</th>
                     <th>Dokumen</th>
                     <th style="width: 120px;">Status</th>
                     <th style="width: 200px;">Aksi</th>
@@ -41,67 +40,86 @@
                         <td>{{ $index + 1 + ($pembudidaya->currentPage() - 1) * $pembudidaya->perPage() }}</td>
                         <td>{{ $item->name }}</td>
                         <td class="text-truncate" style="max-width: 200px;">{{ $item->email }}</td>
-                        <td class="text-wrap" style="max-width: 300px;">{{ $item->address ?? '-' }}</td>
+                        {{-- Dokumen --}}
                         <td>
-                            @if ($item->documents)
-                                @php
-                                    $documents = is_array($item->documents) ? $item->documents : json_decode($item->documents, true);
-                                @endphp
-                                @foreach ($documents as $doc)
+                            @php
+                                $dokumen = $item->dokumenPembudidaya;
+                            @endphp
+
+                            @if ($dokumen && ($dokumen->surat_usaha_path || $dokumen->foto_usaha_path))
+                                {{-- Surat Usaha --}}
+                                @if ($dokumen->surat_usaha_path)
                                     @php
-                                        $file_path = str_replace('\\/', '/', $doc);
-                                        $extension = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+                                        $suratExtension = pathinfo($dokumen->surat_usaha_path, PATHINFO_EXTENSION);
                                     @endphp
-                                    @if (in_array($extension, ['pdf', 'doc', 'docx']))
-                                        <a href="{{ asset('storage/' . $file_path) }}" class="btn btn-sm btn-info d-block mb-2" target="_blank" style="font-size: 0.8rem;">
-                                            <i class="fas fa-file-alt"></i> Lihat Dokumen
+                                    @if (in_array(strtolower($suratExtension), ['pdf', 'doc', 'docx']))
+                                        <a href="{{ asset('storage/' . $dokumen->surat_usaha_path) }}" class="btn btn-sm btn-info d-block mb-2" target="_blank" style="font-size: 0.8rem;">
+                                            <i class="fas fa-file-alt"></i> Lihat Surat Usaha
                                         </a>
-                                    @else
-                                        <img src="{{ asset('storage/' . $file_path) }}" alt="Dokumen" class="img-thumbnail mb-2" style="width: 100px;">
                                     @endif
-                                @endforeach
+                                @endif
+
+                                {{-- Foto Usaha --}}
+                                @if ($dokumen->foto_usaha_path)
+                                    <img src="{{ asset('storage/' . $dokumen->foto_usaha_path) }}" alt="Foto Usaha" class="img-thumbnail mb-2" style="width: 100px;">
+                                @endif
                             @else
                                 <span class="text-muted">Tidak ada dokumen</span>
                             @endif
                         </td>
-                                                
+
                         {{-- Status --}}
                         <td>
-                            @if (is_null($item->is_approved))
-                                <span class="badge bg-secondary"><i class="fas fa-clock"></i> Menunggu</span>
-                            @elseif ($item->is_approved)
-                                <span class="badge bg-success"><i class="fas fa-check-circle"></i> Disetujui</span>
+                            @if (!$item->dokumenPembudidaya)
+                                <span class="badge bg-secondary"><i class="fas fa-minus-circle"></i> Belum Upload</span>
                             @else
-                                <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Ditolak</span>
+                                @php $status = $item->dokumenPembudidaya->status; @endphp
+                                @if ($status === 'disetujui')
+                                    <span class="badge bg-success"><i class="fas fa-check-circle"></i> Disetujui</span>
+                                @elseif ($status === 'ditolak')
+                                    <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Ditolak</span>
+                                @else
+                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Menunggu</span>
+                                @endif
                             @endif
                         </td>
 
                         {{-- Aksi --}}
                         <td class="text-nowrap">
-                            @if (is_null($item->is_approved))
-                                <form action="{{ route('admin.pembudidaya.approve', $item->id) }}" method="POST" style="display:inline-block; margin-bottom:5px;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Setujui pembudidaya ini?')">
-                                        <i class="fas fa-check"></i> Setujui
-                                    </button>
-                                </form>
+                            @if ($item->dokumenPembudidaya)
+                                {{-- Tombol Detail selalu ditampilkan --}}
+                                <a href="{{ route('admin.dokumen.show', $item->dokumenPembudidaya->id) }}" class="btn btn-sm btn-primary mb-1">
+                                    <i class="fas fa-eye"></i> Detail
+                                </a>
 
-                                <form action="{{ route('admin.pembudidaya.reject', $item->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Tolak pembudidaya ini?')">
-                                        <i class="fas fa-times"></i> Tolak
-                                    </button>
-                                </form>
+                                @if ($item->dokumenPembudidaya->status === 'menunggu')
+                                    <form action="{{ route('admin.dokumen.approve', $item->dokumenPembudidaya->id) }}" method="POST" style="display:inline-block; margin-bottom:5px;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Setujui dokumen pembudidaya ini?')">
+                                            <i class="fas fa-check"></i> Setujui
+                                        </button>
+                                    </form>
+
+                                    <form action="{{ route('admin.dokumen.reject', $item->dokumenPembudidaya->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Tolak dokumen pembudidaya ini?')">
+                                            <i class="fas fa-times"></i> Tolak
+                                        </button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.pembudidaya.destroy', $item->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </button>
+                                    </form>
+                                @endif
                             @else
-                                <form action="{{ route('admin.pembudidaya.destroy', $item->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </form>
+                                <span class="text-muted">-</span>
                             @endif
                         </td>
+
                     </tr>
                 @empty
                     <tr>

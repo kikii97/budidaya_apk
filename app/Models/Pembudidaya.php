@@ -52,4 +52,8 @@ class Pembudidaya extends Authenticatable
     {
         return $this->hasMany(Notifikasi::class);
     }
+    public function dokumenPembudidaya()
+    {
+        return $this->hasOne(DokumenPembudidaya::class)->latestOfMany();
+    }
 }

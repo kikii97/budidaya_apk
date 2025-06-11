@@ -10,7 +10,10 @@ class ProdukSeeder extends Seeder
 {
     public function run(): void
     {
-        $pembudidayas = Pembudidaya::where('is_approved', 1)->get(); // hanya ambil pembudidaya yang disetujui
+        $pembudidayas = Pembudidaya::whereHas('dokumenPembudidaya', function ($q) {
+            $q->where('status', 'disetujui');
+        })->get();
+        // hanya ambil pembudidaya yang disetujui
         $bulan = [
             'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
             'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Crypt;
 use App\Models\User;
 use App\Models\Pembudidaya;
 use Illuminate\Support\Facades\Auth;
@@ -10,27 +11,34 @@ use Illuminate\Support\Str;
 
 class GoogleController extends Controller
 {
-    public function redirectToGoogle($tipe)
-    {
-        if (!in_array($tipe, ['investor', 'usaha'])) {
-            abort(400, 'Tipe login tidak valid.');
-        }
-
-        session(['login_tipe' => $tipe]);
-        return Socialite::driver('google')->redirect();
+public function redirectToGoogle($tipe)
+{
+    if (!in_array($tipe, ['investor', 'usaha'])) {
+        abort(400, 'Tipe login tidak valid.');
     }
+
+    // Enkripsi tipe untuk dikirim lewat 'state'
+    $state = Crypt::encryptString($tipe);
+
+    return Socialite::driver('google')
+        ->with(['state' => $state])
+        ->redirect();
+}
 
 public function handleGoogleCallback()
 {
-    $tipe = session('login_tipe');
+    try {
+        $encryptedTipe = request()->input('state');
+        $tipe = Crypt::decryptString($encryptedTipe);
+    } catch (DecryptException $e) {
+        abort(400, 'Tipe login tidak valid (gagal decrypt).');
+    }
 
     if (!in_array($tipe, ['investor', 'usaha'])) {
         abort(400, 'Tipe login tidak valid.');
     }
 
-    /** @var \Laravel\Socialite\Two\GoogleProvider $provider */
-    $provider = Socialite::driver('google');
-    $googleUser = $provider->stateless()->user();
+    $googleUser = Socialite::driver('google')->stateless()->user();
 
     if (!$googleUser->getEmail()) {
         abort(403, 'Email Google tidak ditemukan atau belum terverifikasi.');

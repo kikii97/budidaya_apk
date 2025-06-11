@@ -22,7 +22,7 @@
             </div>
             <div class="mb-3">
                 <label>Alamat</label>
-                <textarea name="alamat" class="form-control">{{ $pembudidaya->address }}</textarea>
+                <textarea name="alamat" class="form-control">{{ $pembudidaya->alamat }}</textarea>
             </div>
             <div class="mb-3">
                 <label>Nomor Telepon</label>
@@ -37,7 +37,11 @@
                 <label>Foto Profil</label>
                 <input type="file" name="foto_profile" class="form-control">
                 <small>Foto sekarang:</small><br>
-                    <img src="{{ asset($pembudidaya->foto_profil) }}" alt="Foto Profil" width="100">
+                @if ($pembudidaya->profil && $pembudidaya->profil->foto_profil)
+                    <img src="{{ asset('storage/' . $pembudidaya->profil->foto_profil) }}" alt="Foto Profil" width="100">
+                @else
+                    <p class="text-muted">Belum ada foto profil</p>
+                @endif
             </div>
             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
         </form>

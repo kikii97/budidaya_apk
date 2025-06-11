@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pembudidaya;
 use Illuminate\Support\Facades\Storage;
-use App\Helpers\EmailHelper; // Tambahkan ini di atas file
+use App\Models\DokumenPembudidaya;
+use App\Notifications\NotifikasiPembudidaya;
 
 class AdminPembudidayaController extends Controller
 {
     public function index()
     {
         // Urutkan berdasarkan waktu dibuat, terbaru di atas
-        $pembudidaya = Pembudidaya::orderBy('created_at', 'desc')->paginate(10);
+        $pembudidaya = Pembudidaya::with('dokumenPembudidaya')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.pembudidaya.index', compact('pembudidaya'));
     }
 
@@ -21,96 +22,100 @@ class AdminPembudidayaController extends Controller
         return view('admin.pembudidaya.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:pembudidaya,email',
-            'password' => 'required|string|min:6|confirmed',
-            'address' => 'required|string|max:255',
-            'documents' => 'nullable|array',
-            'documents.*' => 'file|mimes:pdf,doc,docx,jpeg,png,jpg|max:2048',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:pembudidaya,email',
+        'password' => 'required|string|min:6|confirmed',
+    ]);
 
-        $documents = [];
-        if ($request->hasFile('documents')) {
-            foreach ($request->file('documents') as $file) {
-                $documents[] = $file->store('documents', 'public');
-            }
+    $pembudidaya = new Pembudidaya();
+    $pembudidaya->name = $request->name;
+    $pembudidaya->email = $request->email;
+    $pembudidaya->password = bcrypt($request->password);
+    $pembudidaya->save();
+
+    return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditambahkan.');
+}
+
+public function approve($id)
+{
+    $dokumen = DokumenPembudidaya::findOrFail($id);
+
+    if ($dokumen->status === 'menunggu') {
+        $dokumen->status = 'disetujui';
+        $dokumen->save();
+
+        $pembudidaya = $dokumen->pembudidaya;
+
+        // Kirim notifikasi database
+        if ($pembudidaya) {
+            $pembudidaya->notify(new NotifikasiPembudidaya(
+                'Dokumen Disetujui',
+                'Selamat! Dokumen usaha Anda telah disetujui oleh admin. Anda kini dapat mengunggah produk.'
+            ));
         }
 
-        // SOLUSI FIX: Gunakan instansiasi manual supaya NULL beneran
-        $pembudidaya = new Pembudidaya();
-        $pembudidaya->name = $request->name;
-        $pembudidaya->email = $request->email;
-        $pembudidaya->password = bcrypt($request->password);
-        $pembudidaya->address = $request->address;
-        $pembudidaya->documents = $documents;
-        $pembudidaya->is_approved = null; // NULL beneran, bukan dianggap 0
-        $pembudidaya->save();
-
-        return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditambahkan dan menunggu persetujuan.');
+        return redirect()->back()->with('success', 'Dokumen berhasil disetujui.');
     }
 
-    public function approve($id)
-    {
-        $pembudidaya = Pembudidaya::findOrFail($id);
-    
-        if (is_null($pembudidaya->is_approved)) {
-            $pembudidaya->is_approved = true;
-            $pembudidaya->save();
-    
-            // Kirim email ke pembudidaya
-            $subject = 'Pendaftaran Anda Diterima - Sistem Budidaya';
-            $body = view('emails.approved', ['pembudidaya' => $pembudidaya])->render();
-            EmailHelper::sendEmail($pembudidaya->email, $subject, $body);
-    
-            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil disetujui dan email telah dikirim.');
-        }
-    
-        return redirect()->route('admin.pembudidaya.index')->with('error', 'Pembudidaya sudah diproses sebelumnya.');
-    }
-    
+    return redirect()->back()->with('error', 'Dokumen sudah diproses sebelumnya.');
+}
 
-    public function reject($id)
-    {
-        $pembudidaya = Pembudidaya::findOrFail($id);
-    
-        if (is_null($pembudidaya->is_approved)) {
-            $pembudidaya->is_approved = false;
-            $pembudidaya->save();
-    
-            // Kirim email ke pembudidaya
-            $subject = 'Pendaftaran Anda Ditolak - Sistem Budidaya';
-            $body = view('emails.rejected', ['pembudidaya' => $pembudidaya])->render();
-            EmailHelper::sendEmail($pembudidaya->email, $subject, $body);
+public function reject($id)
+{
+    $dokumen = DokumenPembudidaya::findOrFail($id);
 
-            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditolak dan email telah dikirim.');
-        }
-    
-        return redirect()->route('admin.pembudidaya.index')->with('error', 'Pembudidaya sudah diproses sebelumnya.');
-    }
-    
+    if ($dokumen->status === 'menunggu') {
+        $dokumen->status = 'ditolak';
+        $dokumen->save();
 
-    public function destroy($id)
-    {
-        $pembudidaya = Pembudidaya::findOrFail($id);
+        $pembudidaya = $dokumen->pembudidaya;
 
-        // Hanya bisa dihapus jika sudah diproses (disetujui atau ditolak)
-        if (!is_null($pembudidaya->is_approved)) {
-            if (!empty($pembudidaya->documents)) {
-                $documents = is_array($pembudidaya->documents) ? $pembudidaya->documents : json_decode($pembudidaya->documents, true);
-                foreach ($documents as $doc) {
-                    Storage::delete('public/' . $doc);
-                }
-            }
-
-            $pembudidaya->delete();
-            return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil dihapus.');
+        // Kirim notifikasi database
+        if ($pembudidaya) {
+            $pembudidaya->notify(new NotifikasiPembudidaya(
+                'Dokumen Ditolak',
+                'Mohon maaf, dokumen usaha Anda ditolak oleh admin. Silakan unggah ulang dokumen dengan data yang valid.'
+            ));
         }
 
-        return redirect()->route('admin.pembudidaya.index')->with('error', 'Hanya pembudidaya yang sudah diproses bisa dihapus.');
+        return redirect()->back()->with('success', 'Dokumen berhasil ditolak.');
     }
+
+    return redirect()->back()->with('error', 'Dokumen sudah diproses sebelumnya.');
+}
+
+public function show($id)
+{
+    $dokumen = DokumenPembudidaya::with('pembudidaya')->findOrFail($id);
+    return view('admin.pembudidaya.detail', compact('dokumen'));
+}
+
+public function destroy($id)
+{
+    $pembudidaya = Pembudidaya::with('dokumenPembudidaya')->findOrFail($id);
+
+    if ($pembudidaya->dokumenPembudidaya && in_array($pembudidaya->dokumenPembudidaya->status, ['disetujui', 'ditolak'])) {
+        // Hapus file dari storage
+        if ($pembudidaya->dokumenPembudidaya) {
+            Storage::disk('public')->delete([
+                $pembudidaya->dokumenPembudidaya->surat_usaha_path,
+                $pembudidaya->dokumenPembudidaya->foto_usaha_path
+            ]);
+
+            $pembudidaya->dokumenPembudidaya->delete();
+        }
+
+        // Hapus pembudidaya
+        $pembudidaya->delete();
+
+        return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil dihapus.');
+    }
+
+    return redirect()->route('admin.pembudidaya.index')->with('error', 'Hanya pembudidaya yang dokumennya sudah diproses bisa dihapus.');
+}
 
     
 }

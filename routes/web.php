@@ -17,6 +17,8 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\PembudidayaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\DokumenPembudidayaController;
+
 
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'rekomendasi'])->name('produk.rekomendasi');
@@ -111,8 +113,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/produk/{id}/approve', [AdminProdukController::class, 'approve'])->name('produk.approve');
         Route::post('/produk/{id}/reject', [AdminProdukController::class, 'reject'])->name('produk.reject');
         Route::get('/produk/{id}/detail', [AdminProdukController::class, 'show'])->name('produk.detail');
-        Route::post('/pembudidaya/{id}/approve', [AdminPembudidayaController::class, 'approve'])->name('pembudidaya.approve');
-        Route::post('/pembudidaya/{id}/reject', [AdminPembudidayaController::class, 'reject'])->name('pembudidaya.reject');
+        Route::post('/dokumen/{id}/approve', [AdminPembudidayaController::class, 'approve'])->name('dokumen.approve');
+        Route::post('/dokumen/{id}/reject', [AdminPembudidayaController::class, 'reject'])->name('dokumen.reject');
+        Route::get('/dokumen/{id}', [AdminPembudidayaController::class, 'show'])->name('dokumen.show');
     });
 });
 
@@ -132,6 +135,10 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
         Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
         Route::get('/profil', [ProdukController::class, 'index'])->name('profil');
+
+        // Dokumen Pembudidaya
+        Route::get('/dokumen/create', [DokumenPembudidayaController::class, 'create'])->name('dokumen.create');
+        Route::post('/dokumen', [DokumenPembudidayaController::class, 'store'])->name('dokumen.store');
 
         // CRUD produk tambahan
         Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');

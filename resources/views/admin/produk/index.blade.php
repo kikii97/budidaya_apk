@@ -69,47 +69,47 @@
                         {{-- Status Persetujuan --}}
                         <td class="text-center">
                             @if (is_null($item->is_approved))
-                                <span class="badge bg-secondary">Menunggu</span>
+                                <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Menunggu</span>
                             @elseif ($item->is_approved)
-                                <span class="badge bg-success">Disetujui</span>
+                                <span class="badge bg-success"><i class="fas fa-check-circle"></i> Disetujui</span>
                             @else
-                                <span class="badge bg-danger">Ditolak</span>
+                                <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Ditolak</span>
                             @endif
                         </td>
 
                         {{-- Aksi --}}
-<td class="text-nowrap text-center">
-    <a href="{{ route('admin.produk.detail', $item->id) }}" class="btn btn-sm btn-info mb-1" data-bs-toggle="tooltip" title="Lihat Detail">
-        <i class="fas fa-eye"></i> Detail
-    </a>
+                        <td class="text-nowrap text-center">
+                            <a href="{{ route('admin.produk.detail', $item->id) }}" class="btn btn-sm btn-primary mb-1" data-bs-toggle="tooltip" title="Lihat Detail">
+                                <i class="fas fa-eye"></i> Detail
+                            </a>
 
-    @if (is_null($item->is_approved))
-        {{-- Tombol Setujui --}}
-        <form action="{{ route('admin.produk.approve', $item->id) }}" method="POST" class="d-inline-block mb-1">
-            @csrf
-            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Setujui" onclick="return confirm('Setujui komoditas ini?')">
-                <i class="fas fa-check"></i> Setujui
-            </button>
-        </form>
+                            @if (is_null($item->is_approved))
+                                {{-- Tombol Setujui --}}
+                                <form action="{{ route('admin.produk.approve', $item->id) }}" method="POST" class="d-inline-block mb-1">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Setujui" onclick="return confirm('Setujui komoditas ini?')">
+                                        <i class="fas fa-check"></i> Setujui
+                                    </button>
+                                </form>
 
-        {{-- Tombol Tolak --}}
-        <form action="{{ route('admin.produk.reject', $item->id) }}" method="POST" class="d-inline-block mb-1">
-            @csrf
-            <button type="submit" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Tolak" onclick="return confirm('Tolak komoditas ini?')">
-                <i class="fas fa-times"></i> Tolak
-            </button>
-        </form>
-    @else
-        {{-- Tombol Hapus --}}
-        <form action="{{ route('admin.produk.destroy', $item->id) }}" method="POST" class="d-inline-block">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Hapus" onclick="return confirm('Yakin ingin menghapus?')">
-                <i class="fas fa-trash"></i> Hapus
-            </button>
-        </form>
-    @endif
-</td>
+                                {{-- Tombol Tolak --}}
+                                <form action="{{ route('admin.produk.reject', $item->id) }}" method="POST" class="d-inline-block mb-1">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Tolak" onclick="return confirm('Tolak komoditas ini?')">
+                                        <i class="fas fa-times"></i> Tolak
+                                    </button>
+                                </form>
+                            @else
+                                {{-- Tombol Hapus --}}
+                                <form action="{{ route('admin.produk.destroy', $item->id) }}" method="POST" class="d-inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Hapus" onclick="return confirm('Yakin ingin menghapus?')">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>

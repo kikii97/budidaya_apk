@@ -15,8 +15,6 @@ class PembudidayaSeeder extends Seeder
                 'name' => "Pembudidaya $i",
                 'email' => "pembudidaya$i@example.com",
                 'password' => Hash::make('password'),
-                'documents' => json_encode(['KTP', 'Surat Izin']),
-                'is_approved' => rand(0, 1),
             ]);
         }
     }
