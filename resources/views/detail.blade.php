@@ -8,25 +8,109 @@
 @endsection
 
 @section('content')
+<style>
+    /* Gambar utama */
+    .main-image-container {
+        width: 100%;
+        max-height: 300px;
+        overflow: hidden;
+    }
+
+    #mainImage {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: cover;
+        display: block;
+        cursor: zoom-in;
+    }
+
+    /* Thumbnail */
+    .thumb-container {
+        width: 100%;
+        height: 80px;
+        overflow: hidden;
+        border-radius: 6px;
+    }
+
+    .thumb-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    /* Overlay untuk gambar fullscreen */
+    .image-overlay {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .image-overlay img.overlay-img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .image-overlay .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 40px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 1051;
+    }
+</style>
+
     <div class="container">
         <div class="row justify-content-center">
             <!-- Product Images -->
             <div class="col-md-4 mb-4">
                 <div class="card">
+                    <!-- Modal / Fullscreen Image Preview -->
+                    <div id="imageOverlay" class="image-overlay" onclick="closeImageOverlay()">
+                        <span class="close-btn" onclick="closeImageOverlay(event)">&times;</span>
+                        <img id="overlayImage" src="" alt="Preview" class="overlay-img">
+                    </div>
                     @php
                         $images = json_decode($produk->gambar, true);
                         $mainImage = $images[0] ?? 'https://via.placeholder.com/300';
                     @endphp
-                    <img id="mainImage"
-                        src="{{ filter_var($mainImage, FILTER_VALIDATE_URL) ? $mainImage : asset('storage/images/' . $mainImage) }}"
-                        class="img-thumbnail thumbnail-img" alt="Product-Image">
 
+                    <!-- Gambar utama -->
+                    <div class="main-image-container">
+                        <img id="mainImage"
+                            src="{{ filter_var($mainImage, FILTER_VALIDATE_URL) ? $mainImage : asset('storage/images/' . $mainImage) }}"
+                            alt="Product-Image"
+                            onclick="showImageOverlay(this.src)"
+                            style="cursor: zoom-in;">
+                    </div>
+
+                    <!-- Thumbnail -->
                     <div class="card-body">
                         <div class="row g-2">
                             @foreach ($images as $img)
                                 <div class="col-3">
-                                    <img src="{{ filter_var($img, FILTER_VALIDATE_URL) ? $img : asset('storage/images/' . $img) }}"
-                                        class="img-thumbnail thumbnail-img" alt="Thumbnail">
+                                    <div class="thumb-container">
+                                        <img
+                                            src="{{ filter_var($img, FILTER_VALIDATE_URL) ? $img : asset('storage/images/' . $img) }}"
+                                            class="thumb-image"
+                                            alt="Thumbnail"
+                                            onclick="document.getElementById('mainImage').src = this.src">
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -300,5 +384,18 @@
                 }
             @endif
         });
+    </script>
+    <script>
+    function showImageOverlay(src) {
+        const overlay = document.getElementById('imageOverlay');
+        const overlayImage = document.getElementById('overlayImage');
+        overlayImage.src = src;
+        overlay.style.display = 'flex';
+    }
+
+    function closeImageOverlay(event) {
+        event?.stopPropagation();
+        document.getElementById('imageOverlay').style.display = 'none';
+    }
     </script>
 @endsection

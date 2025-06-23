@@ -261,5 +261,21 @@ class ProdukController extends Controller
             'Terisi', 'Tukdana', 'Widasari'
         ];
     }
+
+public function destroyMultiple(Request $request)
+{
+    $produkIds = $request->input('produk_ids', []);
+
+    if (empty($produkIds)) {
+        return redirect()->back()->with('error', 'Tidak ada produk yang dipilih.');
+    }
+
+    Produk::whereIn('id', $produkIds)
+        ->where('pembudidaya_id', Auth::guard('pembudidaya')->id())
+        ->delete();
+
+    return redirect()->back()->with('success', 'Produk yang dipilih berhasil dihapus.');
+}
+
     
 }

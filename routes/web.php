@@ -18,6 +18,7 @@ use App\Http\Controllers\PembudidayaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\DokumenPembudidayaController;
+use App\Http\Controllers\AdminDashboardController;
 
 
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
@@ -31,6 +32,8 @@ Route::view('/profile', 'profile')->name('profile');
 Route::view('/registrasi', 'registrasi')->name('registrasi');
 Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
+Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
+
 
 // Rute untuk melihat detail usaha pembudidaya
 Route::get('/detail_usaha/{id}', [DetailUsahaController::class, 'show'])->name('usaha.detail');
@@ -104,8 +107,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware(['auth:admin'])->group(function () {
-        Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
-
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard'); 
         Route::resource('pengguna', AdminPenggunaController::class);
         Route::resource('produk', AdminProdukController::class);
         Route::resource('pembudidaya', AdminPembudidayaController::class);
@@ -141,9 +143,9 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
         Route::post('/dokumen', [DokumenPembudidayaController::class, 'store'])->name('dokumen.store');
 
         // CRUD produk tambahan
-        Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
         Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
         Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
         Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+        Route::delete('/produk/delete/multiple', [ProdukController::class, 'destroyMultiple'])->name('pembudidaya.produk.destroy.multiple');
     });
 });

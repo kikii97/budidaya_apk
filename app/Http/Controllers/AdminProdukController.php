@@ -11,16 +11,22 @@ class AdminProdukController extends Controller
     public function index()
     {
         $produk = Produk::with('pembudidaya')
-        ->orderBy('created_at', 'desc') // urutan terbaru di atas
-        ->paginate(10);
+            ->orderByRaw("CASE 
+                WHEN is_approved IS NULL THEN 0 
+                WHEN is_approved = 0 THEN 1 
+                WHEN is_approved = 1 THEN 2 
+                ELSE 3 END")
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return view('admin.produk.index', compact('produk'));
     }
 
-public function show($id)
-{
-    $produk = Produk::with('pembudidaya')->findOrFail($id);
-    return view('admin.produk.detail', compact('produk'));
-}
+    public function show($id)
+    {
+        $produk = Produk::with('pembudidaya')->findOrFail($id);
+        return view('admin.produk.detail', compact('produk'));
+    }
 
     public function approve($id)
     {

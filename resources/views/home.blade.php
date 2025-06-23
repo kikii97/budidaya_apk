@@ -425,7 +425,7 @@
 
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Prediksi Panen</label>
+                                            <label class="form-label mb-1">Tanggal Panen</label>
                                             <input type="date" class="form-control form-control-sm rounded-2"
                                                 name="prediksi_panen">
                                         </div>
@@ -551,6 +551,13 @@
                                         </a>
                                     </figure>
                                     <div class="d-flex flex-column text-center">
+                                        {{-- RANKING PRODUK --}}
+                                        <div class="mb-2">
+                                            <span class="badge"
+                                                style="background-color: #c6d6a9; color: #2d3c10; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
+                                                #{{ $loop->iteration }}
+                                            </span>
+                                        </div>
                                         <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
 
                                         {{-- Jenis Komoditas --}}

@@ -1,137 +1,160 @@
-@extends('admin.dashboard')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manajemen Pembudidaya</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('content')
-<div class="container mt-4">
-    <h1 class="mb-4">Manajemen Pembudidaya</h1>
+  <!-- AdminLTE CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+  @include('admin.partials.navbar')
+  @include('admin.partials.sidebar')
 
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+  <div class="content-wrapper">
+    <section class="content pt-3">
+      <div class="container-fluid">
+        <h1 class="mb-4">Manajemen Pembudidaya</h1>
 
-    <a href="{{ route('admin.pembudidaya.create') }}" class="btn btn-primary mb-3">
-        <i class="fas fa-plus"></i> Tambah Pembudidaya
-    </a>
+        {{-- Alert Success --}}
+        @if(session('success'))
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ session('success') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        @endif
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle">
+        {{-- Alert Error --}}
+        @if(session('error'))
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ session('error') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        @endif
+
+        <a href="{{ route('admin.pembudidaya.create') }}" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Tambah Pembudidaya
+        </a>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle">
             <thead class="table-dark">
-                <tr>
-                    <th style="width: 50px;">No</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Dokumen</th>
-                    <th style="width: 120px;">Status</th>
-                    <th style="width: 200px;">Aksi</th>
-                </tr>
+              <tr>
+                <th style="width: 50px;">No</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Dokumen</th>
+                <th style="width: 120px;">Status</th>
+                <th style="width: 200px;">Aksi</th>
+              </tr>
             </thead>
             <tbody>
-                @forelse ($pembudidaya as $index => $item)
-                    <tr>
-                        <td>{{ $index + 1 + ($pembudidaya->currentPage() - 1) * $pembudidaya->perPage() }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td class="text-truncate" style="max-width: 200px;">{{ $item->email }}</td>
-                        {{-- Dokumen --}}
-                        <td>
+              @forelse ($pembudidaya as $index => $item)
+                <tr>
+                  <td>{{ $pembudidaya->firstItem() + $index }}</td>
+                  <td>{{ $item->name }}</td>
+                  <td class="text-truncate" style="max-width: 200px;">{{ $item->email }}</td>
+
+                  {{-- Dokumen --}}
+                  <td>
+                    @php $dokumen = $item->dokumenPembudidaya; @endphp
+
+                    @if ($dokumen && ($dokumen->surat_usaha_path || $dokumen->foto_usaha_path))
+                        @if ($dokumen->surat_usaha_path)
                             @php
-                                $dokumen = $item->dokumenPembudidaya;
+                                $suratExtension = pathinfo($dokumen->surat_usaha_path, PATHINFO_EXTENSION);
                             @endphp
-
-                            @if ($dokumen && ($dokumen->surat_usaha_path || $dokumen->foto_usaha_path))
-                                {{-- Surat Usaha --}}
-                                @if ($dokumen->surat_usaha_path)
-                                    @php
-                                        $suratExtension = pathinfo($dokumen->surat_usaha_path, PATHINFO_EXTENSION);
-                                    @endphp
-                                    @if (in_array(strtolower($suratExtension), ['pdf', 'doc', 'docx']))
-                                        <a href="{{ asset('storage/' . $dokumen->surat_usaha_path) }}" class="btn btn-sm btn-info d-block mb-2" target="_blank" style="font-size: 0.8rem;">
-                                            <i class="fas fa-file-alt"></i> Lihat Surat Usaha
-                                        </a>
-                                    @endif
-                                @endif
-
-                                {{-- Foto Usaha --}}
-                                @if ($dokumen->foto_usaha_path)
-                                    <img src="{{ asset('storage/' . $dokumen->foto_usaha_path) }}" alt="Foto Usaha" class="img-thumbnail mb-2" style="width: 100px;">
-                                @endif
-                            @else
-                                <span class="text-muted">Tidak ada dokumen</span>
-                            @endif
-                        </td>
-
-                        {{-- Status --}}
-                        <td>
-                            @if (!$item->dokumenPembudidaya)
-                                <span class="badge bg-secondary"><i class="fas fa-minus-circle"></i> Belum Upload</span>
-                            @else
-                                @php $status = $item->dokumenPembudidaya->status; @endphp
-                                @if ($status === 'disetujui')
-                                    <span class="badge bg-success"><i class="fas fa-check-circle"></i> Disetujui</span>
-                                @elseif ($status === 'ditolak')
-                                    <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Ditolak</span>
-                                @else
-                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Menunggu</span>
-                                @endif
-                            @endif
-                        </td>
-
-                        {{-- Aksi --}}
-                        <td class="text-nowrap">
-                            @if ($item->dokumenPembudidaya)
-                                {{-- Tombol Detail selalu ditampilkan --}}
-                                <a href="{{ route('admin.dokumen.show', $item->dokumenPembudidaya->id) }}" class="btn btn-sm btn-primary mb-1">
-                                    <i class="fas fa-eye"></i> Detail
+                            @if (in_array(strtolower($suratExtension), ['pdf', 'doc', 'docx']))
+                                <a href="{{ asset('storage/' . $dokumen->surat_usaha_path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-2" style="font-size: 0.8rem;">
+                                    <i class="fas fa-file-alt"></i> Surat Usaha
                                 </a>
-
-                                @if ($item->dokumenPembudidaya->status === 'menunggu')
-                                    <form action="{{ route('admin.dokumen.approve', $item->dokumenPembudidaya->id) }}" method="POST" style="display:inline-block; margin-bottom:5px;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Setujui dokumen pembudidaya ini?')">
-                                            <i class="fas fa-check"></i> Setujui
-                                        </button>
-                                    </form>
-
-                                    <form action="{{ route('admin.dokumen.reject', $item->dokumenPembudidaya->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Tolak dokumen pembudidaya ini?')">
-                                            <i class="fas fa-times"></i> Tolak
-                                        </button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('admin.pembudidaya.destroy', $item->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                            <i class="fas fa-trash"></i> Hapus
-                                        </button>
-                                    </form>
-                                @endif
-                            @else
-                                <span class="text-muted">-</span>
                             @endif
-                        </td>
+                        @endif
+                        @if ($dokumen->foto_usaha_path)
+                            <img src="{{ asset('storage/' . $dokumen->foto_usaha_path) }}" alt="Foto Usaha" class="img-thumbnail mb-2" style="width: 100px;">
+                        @endif
+                    @else
+                        <span class="text-muted">Tidak ada dokumen</span>
+                    @endif
+                  </td>
 
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center text-muted">Tidak ada data pembudidaya.</td>
-                    </tr>
-                @endforelse
+                  {{-- Status --}}
+                  <td>
+                    @if (!$dokumen)
+                      <span class="badge bg-secondary"><i class="fas fa-minus-circle"></i> Belum Upload</span>
+                    @else
+                      @if ($dokumen->status === 'disetujui')
+                          <span class="badge bg-success"><i class="fas fa-check-circle"></i> Disetujui</span>
+                      @elseif ($dokumen->status === 'ditolak')
+                          <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Ditolak</span>
+                      @else
+                          <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Menunggu</span>
+                      @endif
+                    @endif
+                  </td>
+
+                  {{-- Aksi --}}
+                  <td class="text-nowrap">
+                    @if ($dokumen)
+                      <a href="{{ route('admin.dokumen.show', $dokumen->id) }}" class="btn btn-sm btn-primary mb-1">
+                        <i class="fas fa-eye"></i> Detail
+                      </a>
+
+                      @if ($dokumen->status === 'menunggu')
+                        <form action="{{ route('admin.dokumen.approve', $dokumen->id) }}" method="POST" style="display:inline-block;">
+                          @csrf
+                          <button type="submit" class="btn btn-sm btn-success mb-1" onclick="return confirm('Setujui dokumen pembudidaya ini?')">
+                              <i class="fas fa-check"></i> Setujui
+                          </button>
+                        </form>
+                        <form action="{{ route('admin.dokumen.reject', $dokumen->id) }}" method="POST" style="display:inline-block;">
+                          @csrf
+                          <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Tolak dokumen pembudidaya ini?')">
+                              <i class="fas fa-times"></i> Tolak
+                          </button>
+                        </form>
+                      @else
+                        <form action="{{ route('admin.pembudidaya.destroy', $item->id) }}" method="POST" style="display:inline-block;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                              <i class="fas fa-trash"></i> Hapus
+                          </button>
+                        </form>
+                      @endif
+                    @else
+                      <span class="text-muted">-</span>
+                    @endif
+                  </td>
+                </tr>
+              @empty
+                <tr>
+                  <td colspan="6" class="text-center text-muted">Tidak ada data pembudidaya.</td>
+                </tr>
+              @endforelse
             </tbody>
-        </table>
-    </div>
+          </table>
+        </div>
 
-    <div class="d-flex justify-content-center">
-        {{ $pembudidaya->links() }}
-    </div>
+        <div class="d-flex justify-content-center">
+            {{ $pembudidaya->links() }}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="main-footer text-sm text-center">
+    <strong>&copy; {{ date('Y') }} Admin Panel.</strong> All rights reserved.
+  </footer>
 </div>
-@endsection
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+</body>
+</html>
