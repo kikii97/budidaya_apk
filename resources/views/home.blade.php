@@ -344,7 +344,7 @@
                                 </div>
 
                                 <form class="modal-body p-3 pb-0" method="GET"
-                                    action="{{ route('produk.rekomendasi') }}"
+                                    action="{{ route('produk.rekomendasi') }}#budidaya"
                                     style="font-size: 0.8rem; padding: 15px;">
 
                                     <div class="row mb-2">
@@ -558,6 +558,12 @@
                                                 #{{ $loop->iteration }}
                                             </span>
                                         </div>
+                                        {{-- Nilai Akhir SAW --}}
+                                        @if (isset($product->bobot))
+                                            <div class="mb-1">
+                                                <small class="text-muted">Nilai SAW: {{ number_format($product->bobot, 4, ',', '.') }}</small>
+                                            </div>
+                                        @endif
                                         <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
 
                                         {{-- Jenis Komoditas --}}
@@ -802,6 +808,16 @@
     </script>
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    @if(request('scroll') === 'budidaya')
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                const target = document.getElementById("budidaya");
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        </script>
+    @endif
 
 </body>
 
