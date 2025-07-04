@@ -39,7 +39,7 @@
           </div>
         @endif
 
-        <form action="{{ route('admin.pembudidaya.store') }}" method="POST">
+        <form action="{{ route('admin.pembudidaya.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
 
           <div class="form-group mt-2">
@@ -56,6 +56,23 @@
               oninvalid="this.setCustomValidity('Harap masukkan email yang valid.')"
               oninput="this.setCustomValidity('')"
               value="{{ old('email') }}">
+          </div>
+
+          <div class="form-group mt-2">
+            <label>Unggah Surat Kepemilikan Usaha (PDF, JPG, PNG)</label>
+            <input type="file" id="suratUsaha" name="surat_usaha[]" class="form-control" accept=".pdf,image/*" multiple required>
+            <ul id="documentPreview" class="mt-2 list-unstyled"></ul>
+          </div>
+
+          <div class="form-group mt-2">
+            <label>Unggah Foto Tambak / Kolam / Usaha</label>
+            <input type="file" id="fotoUsaha" name="foto_usaha[]" class="form-control" accept="image/*" multiple required>
+            <div id="photoPreview" class="mt-2 d-flex flex-wrap"></div>
+          </div>
+
+          <div class="form-group mt-2">
+            <label>Keterangan Tambahan (Opsional)</label>
+            <textarea name="keterangan" class="form-control" rows="3" placeholder="Tulis informasi tambahan mengenai usaha Anda...">{{ old('keterangan') }}</textarea>
           </div>
 
           <div class="form-group mt-2">
@@ -86,13 +103,6 @@
             </div>
           </div>
 
-          <div class="form-group mt-2">
-            <label>Alamat</label>
-            <textarea name="address" class="form-control" rows="3" required
-              oninvalid="this.setCustomValidity('Harap isi alamat anda.')"
-              oninput="this.setCustomValidity('')">{{ old('address') }}</textarea>
-          </div>
-
           <button type="submit" class="btn btn-success mt-3">Simpan</button>
           <a href="{{ route('admin.pembudidaya.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </form>
@@ -104,6 +114,45 @@
     <strong>&copy; {{ date('Y') }} Admin Panel.</strong> All rights reserved.
   </footer>
 </div>
+
+<style>
+  input[type="file"].form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.8125rem + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+  }
+  .preview-thumb {
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  .preview-thumb img {
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  .remove-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border: none;
+    font-size: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+  }
+</style>
 
 <!-- JS Script -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
@@ -128,6 +177,80 @@
     icon.classList.toggle('fa-eye');
     icon.classList.toggle('fa-eye-slash');
   });
+
+  let selectedDocs = [];
+  document.getElementById('suratUsaha').addEventListener('change', function (event) {
+    const newFiles = Array.from(event.target.files);
+    selectedDocs = selectedDocs.concat(newFiles);
+    updateDocumentPreview();
+  });
+
+  function updateDocumentPreview() {
+    const previewList = document.getElementById('documentPreview');
+    previewList.innerHTML = '';
+
+    selectedDocs.forEach((file, index) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = file.name;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = '×';
+      removeBtn.className = 'btn btn-sm btn-danger btn-xs ml-2';
+      removeBtn.onclick = function () {
+        selectedDocs.splice(index, 1);
+        updateDocumentPreview();
+      };
+
+      listItem.appendChild(removeBtn);
+      previewList.appendChild(listItem);
+    });
+
+    const input = document.getElementById('suratUsaha');
+    const dt = new DataTransfer();
+    selectedDocs.forEach(file => dt.items.add(file));
+    input.files = dt.files;
+  }
+
+  let selectedPhotos = [];
+  document.getElementById('fotoUsaha').addEventListener('change', function (event) {
+    const newFiles = Array.from(event.target.files);
+    selectedPhotos = selectedPhotos.concat(newFiles);
+    updatePhotoPreview();
+  });
+
+  function updatePhotoPreview() {
+    const preview = document.getElementById('photoPreview');
+    preview.innerHTML = '';
+
+    selectedPhotos.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'preview-thumb';
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '×';
+        removeBtn.className = 'remove-btn';
+        removeBtn.onclick = function () {
+          selectedPhotos.splice(index, 1);
+          updatePhotoPreview();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(removeBtn);
+        preview.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    const input = document.getElementById('fotoUsaha');
+    const dt = new DataTransfer();
+    selectedPhotos.forEach(file => dt.items.add(file));
+    input.files = dt.files;
+  }
 </script>
 </body>
 </html>

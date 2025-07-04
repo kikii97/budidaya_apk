@@ -37,15 +37,44 @@ class AdminPembudidayaController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:pembudidaya,email',
             'password' => 'required|string|min:6|confirmed',
+            'surat_usaha.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'foto_usaha.*' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'keterangan' => 'nullable|string|max:1000',
         ]);
 
+        // Simpan data user pembudidaya
         $pembudidaya = new Pembudidaya();
         $pembudidaya->name = $request->name;
         $pembudidaya->email = $request->email;
         $pembudidaya->password = bcrypt($request->password);
         $pembudidaya->save();
 
-        return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya berhasil ditambahkan.');
+        // Upload file surat usaha
+        $suratPaths = [];
+        if ($request->hasFile('surat_usaha')) {
+            foreach ($request->file('surat_usaha') as $file) {
+                $suratPaths[] = $file->store('dokumen/surat_usaha', 'public');
+            }
+        }
+
+        // Upload file foto usaha
+        $fotoPaths = [];
+        if ($request->hasFile('foto_usaha')) {
+            foreach ($request->file('foto_usaha') as $file) {
+                $fotoPaths[] = $file->store('dokumen/foto_usaha', 'public');
+            }
+        }
+
+        // Simpan ke tabel dokumen_pembudidaya
+        DokumenPembudidaya::create([
+            'pembudidaya_id' => $pembudidaya->id,
+            'surat_usaha_path' => json_encode($suratPaths),
+            'foto_usaha_path' => json_encode($fotoPaths),
+            'keterangan' => $request->keterangan,
+            'status' => 'menunggu',
+        ]);
+
+        return redirect()->route('admin.pembudidaya.index')->with('success', 'Pembudidaya dan dokumen berhasil ditambahkan.');
     }
 
     public function approve($id)

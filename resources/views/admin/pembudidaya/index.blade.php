@@ -61,24 +61,35 @@
 
                   {{-- Dokumen --}}
                   <td>
-                    @php $dokumen = $item->dokumenPembudidaya; @endphp
+                    @php 
+                      $dokumen = $item->dokumenPembudidaya; 
+                      $suratPaths = $dokumen && $dokumen->surat_usaha_path 
+                        ? (is_array(json_decode($dokumen->surat_usaha_path, true)) 
+                          ? json_decode($dokumen->surat_usaha_path, true) 
+                          : [$dokumen->surat_usaha_path]) 
+                        : [];
 
-                    @if ($dokumen && ($dokumen->surat_usaha_path || $dokumen->foto_usaha_path))
-                        @if ($dokumen->surat_usaha_path)
-                            @php
-                                $suratExtension = pathinfo($dokumen->surat_usaha_path, PATHINFO_EXTENSION);
-                            @endphp
-                            @if (in_array(strtolower($suratExtension), ['pdf', 'doc', 'docx']))
-                                <a href="{{ asset('storage/' . $dokumen->surat_usaha_path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-2" style="font-size: 0.8rem;">
-                                    <i class="fas fa-file-alt"></i> Surat Usaha
-                                </a>
-                            @endif
-                        @endif
-                        @if ($dokumen->foto_usaha_path)
-                            <img src="{{ asset('storage/' . $dokumen->foto_usaha_path) }}" alt="Foto Usaha" class="img-thumbnail mb-2" style="width: 100px;">
-                        @endif
-                    @else
-                        <span class="text-muted">Tidak ada dokumen</span>
+                      $fotoPaths = $dokumen && $dokumen->foto_usaha_path 
+                        ? (is_array(json_decode($dokumen->foto_usaha_path, true)) 
+                          ? json_decode($dokumen->foto_usaha_path, true) 
+                          : [$dokumen->foto_usaha_path]) 
+                        : [];
+                    @endphp
+
+                    {{-- Tampilkan Surat Usaha --}}
+                    @foreach ($suratPaths as $path)
+                      <a href="{{ asset('storage/' . $path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-1" style="font-size: 0.75rem;">
+                        <i class="fas fa-file-alt"></i> {{ basename($path) }}
+                      </a>
+                    @endforeach
+
+                    {{-- Tampilkan Foto Usaha --}}
+                    @foreach ($fotoPaths as $path)
+                      <img src="{{ asset('storage/' . $path) }}" alt="Foto Usaha" class="img-thumbnail mb-1" style="width: 90px;">
+                    @endforeach
+
+                    @if (empty($suratPaths) && empty($fotoPaths))
+                      <span class="text-muted">Tidak ada dokumen</span>
                     @endif
                   </td>
 

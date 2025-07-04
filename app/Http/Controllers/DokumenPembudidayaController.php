@@ -25,27 +25,39 @@ class DokumenPembudidayaController extends Controller
     }
 
     // Simpan dokumen ke database dan storage
-public function store(Request $request)
-{
-    $request->validate([
-        'surat_usaha' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-        'foto_usaha' => 'required|file|mimes:jpg,jpeg,png|max:2048',
-        'keterangan' => 'nullable|string',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'surat_usaha.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'foto_usaha.*' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'keterangan' => 'nullable|string',
+        ]);
 
-    $suratPath = $request->file('surat_usaha')->store('dokumen/surat_usaha', 'public');
-    $fotoPath = $request->file('foto_usaha')->store('dokumen/foto_usaha', 'public');
+        $suratPaths = [];
+        $fotoPaths = [];
 
-    DokumenPembudidaya::create([
-        'pembudidaya_id' => Auth::guard('pembudidaya')->id(),
-        'surat_usaha_path' => $suratPath,
-        'foto_usaha_path' => $fotoPath,
-        'keterangan' => $request->keterangan,
-        'status' => 'menunggu',
-    ]);
+        if ($request->hasFile('surat_usaha')) {
+            foreach ($request->file('surat_usaha') as $surat) {
+                $suratPaths[] = $surat->store('dokumen/surat_usaha', 'public');
+            }
+        }
 
-    return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Dokumen berhasil diunggah.');
-}
+        if ($request->hasFile('foto_usaha')) {
+            foreach ($request->file('foto_usaha') as $foto) {
+                $fotoPaths[] = $foto->store('dokumen/foto_usaha', 'public');
+            }
+        }
+
+        DokumenPembudidaya::create([
+            'pembudidaya_id' => Auth::guard('pembudidaya')->id(),
+            'surat_usaha_path' => json_encode($suratPaths),
+            'foto_usaha_path' => json_encode($fotoPaths),
+            'keterangan' => $request->keterangan,
+            'status' => 'menunggu',
+        ]);
+
+        return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Dokumen berhasil diunggah.');
+    }
 
     // Hapus dokumen milik sendiri (tidak digunakan jika tidak ada fitur hapus)
     public function destroy($id)

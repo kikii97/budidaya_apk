@@ -552,16 +552,19 @@
                                     </figure>
                                     <div class="d-flex flex-column text-center">
                                         {{-- RANKING PRODUK --}}
-                                        <div class="mb-2">
-                                            <span class="badge"
-                                                style="background-color: #c6d6a9; color: #2d3c10; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
-                                                #{{ $loop->iteration }}
-                                            </span>
-                                        </div>
+                                        @if (isset($product->bobot))
+                                            <div class="mb-2">
+                                                <span class="badge"
+                                                    style="background-color: #c6d6a9; color: #2d3c10; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
+                                                    #{{ $loop->iteration }}
+                                                </span>
+                                            </div>
+                                        @endif
+
                                         {{-- Nilai Akhir SAW --}}
                                         @if (isset($product->bobot))
                                             <div class="mb-1">
-                                                <small class="text-muted">Nilai SAW: {{ number_format($product->bobot, 4, ',', '.') }}</small>
+                                                <small class="text-muted">Score: {{ number_format($product->bobot, 4, ',', '.') }}</small>
                                             </div>
                                         @endif
                                         <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>

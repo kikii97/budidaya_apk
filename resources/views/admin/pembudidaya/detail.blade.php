@@ -43,14 +43,52 @@
             {{-- Dokumen Usaha --}}
             <div class="mb-4">
               <strong>Surat Usaha:</strong><br>
-              <a href="{{ asset('storage/' . $dokumen->surat_usaha_path) }}" class="btn btn-outline-info btn-sm mt-1" target="_blank">
-                <i class="fas fa-file-alt"></i> Lihat Surat Usaha ({{ basename($dokumen->surat_usaha_path) }})
-              </a>
+              @php
+                $suratPaths = is_array(json_decode($dokumen->surat_usaha_path, true)) 
+                  ? json_decode($dokumen->surat_usaha_path, true)
+                  : [$dokumen->surat_usaha_path];
+              @endphp
+
+              @foreach ($suratPaths as $path)
+                <a href="{{ asset('storage/' . $path) }}" class="btn btn-outline-info btn-sm mt-1" target="_blank">
+                  <i class="fas fa-file-alt"></i> Lihat ({{ basename($path) }})
+                </a><br>
+              @endforeach
             </div>
 
             <div class="mb-4">
               <strong>Foto Usaha:</strong><br>
-              <img src="{{ asset('storage/' . $dokumen->foto_usaha_path) }}" alt="Foto Usaha" class="img-thumbnail shadow-sm mt-2" style="max-width: 300px; height: auto;">
+              @php
+                $fotoPaths = is_array(json_decode($dokumen->foto_usaha_path, true)) 
+                  ? json_decode($dokumen->foto_usaha_path, true)
+                  : [$dokumen->foto_usaha_path];
+              @endphp
+
+              <div class="d-flex flex-wrap gap-2 mt-2">
+                @foreach ($fotoPaths as $path)
+                  <img src="{{ asset('storage/' . $path) }}"
+                      alt="Foto Usaha"
+                      class="img-thumbnail"
+                      style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
+                      onclick="tampilkanGambar('{{ asset('storage/' . $path) }}')">
+                @endforeach
+              </div>
+            </div>
+
+            <!-- Modal Preview Gambar -->
+            <div class="modal fade" id="gambarPreviewModal" tabindex="-1" aria-labelledby="gambarPreviewModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content bg-transparent border-0 position-relative">
+                  <!-- Tombol Close -->
+                  <button type="button" class="close position-absolute text-white" style="top: 10px; right: 15px; z-index: 1051;" data-dismiss="modal" aria-label="Close">
+                    <span style="font-size: 2rem;" aria-hidden="true">&times;</span>
+                  </button>
+
+                  <div class="modal-body text-center p-0">
+                    <img src="" id="previewGambar" class="img-fluid rounded" style="max-height: 90vh;" alt="Preview Gambar">
+                  </div>
+                </div>
+              </div>
             </div>
 
             <hr>
@@ -96,5 +134,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-</body>
+<script>
+  function tampilkanGambar(src) {
+    document.getElementById('previewGambar').src = src;
+    $('#gambarPreviewModal').modal('show');
+  }
+</script>
 </html>
