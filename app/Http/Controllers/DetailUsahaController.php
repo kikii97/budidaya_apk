@@ -14,13 +14,14 @@ class DetailUsahaController extends Controller
 
     public function index()
     {
-        $pembudidaya = Auth::guard('pembudidaya')->user();
+        $pembudidaya = \App\Models\Pembudidaya::with('profil')->find(Auth::guard('pembudidaya')->id());
 
         if (!$pembudidaya) {
             return redirect()->route('pembudidaya.login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
         $profil = $pembudidaya->profil;
+
         $produk = Produk::where('pembudidaya_id', $pembudidaya->id)
             ->where('is_approved', 1)
             ->get();
@@ -30,14 +31,14 @@ class DetailUsahaController extends Controller
             $item->gambar_utama = $gambarArray[0] ?? 'default.jpg';
         }
 
-        $user = $pembudidaya; // alias untuk keperluan Blade
+        $user = $pembudidaya;
 
         return view('detail_usaha', compact('pembudidaya', 'profil', 'produk', 'user'));
     }
 
     public function show($id)
     {
-        $pembudidaya = \App\Models\Pembudidaya::with('profil')->findOrFail($id);
+        $pembudidaya = \App\Models\Pembudidaya::with('profil')->find(Auth::guard('pembudidaya')->id());
 
         $produk = Produk::where('pembudidaya_id', $id)
             ->where('is_approved', 1)

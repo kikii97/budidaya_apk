@@ -137,6 +137,7 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
         Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
         Route::get('/profil', [ProdukController::class, 'index'])->name('profil');
+        Route::get('/profil', [DetailUsahaController::class, 'index'])->name('profil');
 
         // Dokumen Pembudidaya
         Route::get('/dokumen/create', [DokumenPembudidayaController::class, 'create'])->name('dokumen.create');

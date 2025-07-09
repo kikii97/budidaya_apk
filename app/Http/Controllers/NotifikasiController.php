@@ -13,9 +13,9 @@ use App\Notifications\NotifikasiPembudidaya;
 class NotifikasiController extends Controller
 {
     // Kirim notifikasi ke pembudidaya
-public function kirimNotifikasiKePembudidaya($produk_id, array $data)
+public function kirimNotifikasiKePembudidaya($produk_id, string $pesan, array $detail = [])
 {
-    $produk = Produk::find($produk_id);
+    $produk = Produk::with('pembudidaya')->find($produk_id);
 
     if (!$produk || !$produk->pembudidaya) {
         return false;
@@ -23,23 +23,15 @@ public function kirimNotifikasiKePembudidaya($produk_id, array $data)
 
     $pembudidaya = $produk->pembudidaya;
 
-$pembudidaya->notify(new NotifikasiPembudidaya(
-    'Pesanan Baru',
-    [
-        'no_hp' => '08123456789',
-        'tanggal_order' => '2025-06-10',
-        'jumlah' => '100kg',
-        'catatan' => 'Segera kirim ya!',
-        'jenis_produk' => 'Ikan Lele',
-        'kapasitas' => '500kg/bulan',
-        'prediksi_panen' => '2025-06-30',
-        'tanggal_diunggah' => '2025-06-09'
-    ]
-));
-
+    $pembudidaya->notify(new NotifikasiPembudidaya(
+        'Pesanan Baru',
+        $pesan,
+        $detail
+    ));
 
     return true;
 }
+
 
     // Tandai satu notifikasi sudah dibaca
     public function read($id)

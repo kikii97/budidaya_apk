@@ -101,8 +101,8 @@
                                                         style="z-index: 2; transform: scale(1.3);">
                                                 @endif
 
-                                                <img src="{{ asset('storage/images/' . ($item->gambar_utama ?? 'default.jpg')) }}"
-                                                    alt="image" class="card-img-top img-fixed-ratio">
+<img src="{{ Storage::url('images/' . $item->gambar_utama) }}"
+     alt="image" class="card-img-top img-fixed-ratio">
 
                                                 <div class="card-body text-center p-2">
                                                     <div class="d-flex justify-content-center gap-1">

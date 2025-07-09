@@ -46,7 +46,20 @@ $data = [
     'tanggal_diunggah' => \Carbon\Carbon::parse($produk->created_at)->translatedFormat('d M Y'),
 ];
 
-$this->notifikasiController->kirimNotifikasiKePembudidaya($produk->id, $data);
+$this->notifikasiController->kirimNotifikasiKePembudidaya(
+    $produk->id,
+    "Anda menerima pesanan baru dari {$validated['nama_customer']}.", // ✅ pesan sebagai string
+    [
+        'no_hp' => $validated['no_hp_customer'],
+        'tanggal_order' => now()->format('d M Y, H:i'),
+        'jumlah' => "{$validated['jumlah']} kg",
+        'catatan' => $validated['keterangan'] ?? '-',
+        'jenis_produk' => $produk->jenis_komoditas,
+        'kapasitas' => "{$produk->kapasitas_produksi} kg",
+        'prediksi_panen' => \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d M Y'),
+        'tanggal_diunggah' => \Carbon\Carbon::parse($produk->created_at)->translatedFormat('d M Y'),
+    ]
+);
 }
 
         return redirect()->back()->with('success', 'Order berhasil dikirim dan notifikasi terkirim.');

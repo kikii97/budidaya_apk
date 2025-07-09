@@ -120,9 +120,14 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label small">Prediksi Panen (DD-MM-YYYY)</label>
-                <input type="text" class="form-control form-control-sm" name="harvest_prediction"
-                    value="{{ old('harvest_prediction', \Carbon\Carbon::parse($produk->prediksi_panen)->format('d-m-Y')) }}">
+                <label for="harvest_prediction" class="form-label small">Prediksi Panen</label>
+                <input type="text"
+                    class="form-control form-control-sm"
+                    id="harvest_prediction"
+                    name="harvest_prediction"
+                    placeholder="Contoh: 21 April 2025"
+                    autocomplete="off"
+                    value="{{ old('harvest_prediction', $produk->prediksi_panen ? \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d F Y') : '') }}">
             </div>
 
             <div class="mb-3">
@@ -130,10 +135,32 @@
                 <textarea class="form-control form-control-sm" name="details" rows="3">{{ old('details', $produk->detail) }}</textarea>
             </div>
 
+            {{-- Bagian unggah gambar baru --}}
             <div class="mb-3">
-                <label class="form-label small">Gambar Baru (optional, akan menggantikan gambar lama)</label>
-                <input type="file" name="images[]" class="form-control form-control-sm" multiple>
+                <label class="form-label small">Unggah Gambar</label>
+                <input type="file" id="images" name="images[]" class="form-control form-control-sm" multiple accept="image/*" onchange="previewImages(event)">
+                <div id="imagePreview" class="mt-2"></div>
             </div>
+
+            {{-- Bagian gambar lama (jika ada) --}}
+            @if ($produk->gambar && is_array(json_decode($produk->gambar, true)))
+                <div class="mb-3">
+                    <label class="form-label small">Gambar Sebelumnya</label>
+                    <div class="row g-2">
+                        @foreach (json_decode($produk->gambar, true) as $index => $gambar)
+                            <div class="col-4 col-md-2 old-image-wrapper">
+                                <div class="image-box">
+                                    <img src="{{ asset('storage/images/' . $gambar) }}" alt="Gambar Produk">
+                                </div>
+                                <div class="form-check mt-1 d-flex align-items-center justify-content-center">
+                                    <input class="form-check-input" type="checkbox" name="hapus_gambar[]" value="{{ $gambar }}" id="hapus_{{ $index }}">
+                                    <label class="form-check-label small mb-0 ms-1" for="hapus_{{ $index }}">Hapus</label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
 
             <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="btn btn-success btn-sm">Simpan Perubahan</button>
@@ -143,4 +170,63 @@
         </form>
     </div>
 </div>
+<style>
+    /* Kontainer tiap gambar */
+    .image-box {
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        position: relative;
+    }
+
+    .image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .remove-preview {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #f8d7da;
+        border: none;
+        color: #721c24;
+        font-weight: bold;
+        line-height: 1;
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        border-radius: 0 0 0 0.25rem;
+    }
+
+    /* Flex container agar gambar baru ke samping */
+    #imagePreview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    /* Gambar lama */
+    .old-image-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .old-image-wrapper .form-check {
+        margin-top: 0.25rem;
+    }
+
+    .old-image-wrapper .form-check-input {
+        margin-top: 0 !important;
+    }
+
+    .old-image-wrapper .form-check-label {
+        margin-left: 0.25rem;
+    }
+</style>
+
 @endsection

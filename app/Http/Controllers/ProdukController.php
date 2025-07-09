@@ -108,16 +108,30 @@ class ProdukController extends Controller
 
         $data = $this->validateProduk($request);
 
-        // Hapus gambar lama jika ada gambar baru
-        if ($request->hasFile('images')) {
-            if ($produk->gambar) {
-                foreach (json_decode($produk->gambar) as $gambar) {
-                    Storage::disk('public')->delete('images/' . $gambar);
-                }
+        $gambarLama = json_decode($produk->gambar, true) ?? [];
+
+        // 1. Proses penghapusan gambar yang dicentang
+        $gambarYangDihapus = $request->input('hapus_gambar', []);
+        $gambarTersisa = [];
+
+        foreach ($gambarLama as $gambar) {
+            if (in_array($gambar, $gambarYangDihapus)) {
+                Storage::disk('public')->delete('images/' . $gambar);
+            } else {
+                $gambarTersisa[] = $gambar;
             }
-            $data['gambar'] = json_encode($this->uploadImages($request->file('images')));
         }
 
+        // 2. Proses upload gambar baru (jika ada)
+        if ($request->hasFile('images')) {
+            $gambarBaru = $this->uploadImages($request->file('images'));
+            $semuaGambar = array_merge($gambarTersisa, $gambarBaru);
+            $data['gambar'] = json_encode($semuaGambar);
+        } else {
+            $data['gambar'] = json_encode($gambarTersisa);
+        }
+
+        // Mapping field input ke kolom di DB
         $data['telepon'] = $data['phone'];
         $data['alamat_lengkap'] = $data['address'];
         $data['jenis_komoditas'] = $data['commodity_type'];
@@ -133,9 +147,10 @@ class ProdukController extends Controller
             $data['prediksi_panen'] = Carbon::createFromFormat('d-m-Y', $data['prediksi_panen'])->format('Y-m-d');
         }
 
-        // Reset status persetujuan ke null saat update
+        // Reset status persetujuan
         $data['is_approved'] = null;
 
+        // Hapus field input sementara
         unset(
             $data['phone'],
             $data['address'],

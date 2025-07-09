@@ -257,15 +257,17 @@
         @endif
 
         <!-- Detail Notifikasi (selalu tampil di DOM) -->
-        <div id="notificationDetail" class="card d-none">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <h6 class="fw-bold" id="detailTitle">Detail Notifikasi</h6>
-                    <button type="button" class="btn-close btn-sm" id="closeDetail" aria-label="Tutup"></button>
+        <template id="notificationDetailTemplate">
+            <div class="card notification-detail">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="fw-bold detail-title">Detail Notifikasi</h6>
+                        <button type="button" class="btn-close btn-sm btn-close-detail" aria-label="Tutup"></button>
+                    </div>
+                    <div class="detail-content small text-muted"></div>
                 </div>
-                <div id="detailContent" class="small text-muted"></div>
             </div>
-        </div>
+        </template>
     </div>
 </div>
 </header>
@@ -760,22 +762,31 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const notificationItems = document.querySelectorAll('.notification-item');
-        const detailCard = document.getElementById('notificationDetail');
-        const detailTitle = document.getElementById('detailTitle');
-        const detailContent = document.getElementById('detailContent');
-        const closeDetailBtn = document.getElementById('closeDetail');
+        const detailTemplate = document.getElementById('notificationDetailTemplate');
 
-        // Klik salah satu notifikasi
+        let currentDetailElement = null;
+
         notificationItems.forEach(item => {
             item.addEventListener('click', () => {
                 const notifId = item.getAttribute('data-id');
-                
+
                 fetch(`/notifications/${notifId}`)
                     .then(res => res.json())
                     .then(data => {
-                        detailCard.classList.remove('d-none');
-                        detailTitle.textContent = data.judul ?? "Detail Notifikasi";
+                        // Hapus detail yang sedang aktif sebelumnya
+                        if (currentDetailElement) {
+                            currentDetailElement.remove();
+                            currentDetailElement = null;
+                        }
 
+                        // Clone template detail
+                        const clone = detailTemplate.content.cloneNode(true);
+                        const detailCard = clone.querySelector('.notification-detail');
+                        const detailTitle = clone.querySelector('.detail-title');
+                        const detailContent = clone.querySelector('.detail-content');
+                        const closeBtn = clone.querySelector('.btn-close-detail');
+
+                        detailTitle.textContent = data.judul ?? "Detail Notifikasi";
                         detailContent.innerHTML = `
                             ${data.message || data.pesan ? `<p>${data.message || data.pesan}</p>` : ''}
                             ${data.no_hp ? `<p><strong>No. HP:</strong> ${data.no_hp}</p>` : ''}
@@ -786,18 +797,24 @@
                             ${data.kapasitas ? `<p><strong>Kapasitas Produksi:</strong> ${data.kapasitas}</p>` : ''}
                             ${data.prediksi_panen ? `<p><strong>Prediksi Panen:</strong> ${data.prediksi_panen}</p>` : ''}
                             ${data.tanggal_diunggah ? `<p><strong>Tanggal Diunggah:</strong> ${data.tanggal_diunggah}</p>` : ''}
+                            ${data.tanggal_disetujui ? `<p><strong>Tanggal Disetujui:</strong> ${data.tanggal_disetujui}</p>` : ''}
                         `;
 
+                        // Tandai sebagai dibaca
                         item.classList.remove('fw-bold');
                         item.classList.add('text-muted');
+
+                        // Tambahkan ke DOM setelah notifikasi yang diklik
+                        item.insertAdjacentElement('afterend', detailCard);
+                        currentDetailElement = detailCard;
+
+                        // Tombol tutup detail
+                        closeBtn.addEventListener('click', () => {
+                            detailCard.remove();
+                            currentDetailElement = null;
+                        });
                     });
             });
-        });
-
-        // Tombol untuk menutup detail
-        closeDetailBtn?.addEventListener('click', () => {
-            detailCard.classList.add('d-none');
-            detailContent.innerHTML = '';
         });
     });
     </script>
