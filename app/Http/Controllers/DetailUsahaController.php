@@ -38,7 +38,11 @@ class DetailUsahaController extends Controller
 
     public function show($id)
     {
-        $pembudidaya = \App\Models\Pembudidaya::with('profil')->find(Auth::guard('pembudidaya')->id());
+        $pembudidaya = \App\Models\Pembudidaya::with('profil')->find($id);
+
+        if (!$pembudidaya) {
+            abort(404, 'Pembudidaya tidak ditemukan.');
+        }
 
         $produk = Produk::where('pembudidaya_id', $id)
             ->where('is_approved', 1)
