@@ -90,7 +90,7 @@ class ProdukController extends Controller
 
         Produk::create($data);
 
-        return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Komoditas berhasil diunggah dan menunggu persetujuan admin.');
+        return redirect()->route('usaha.detail', Auth::guard('pembudidaya')->id())->with('success', 'Komoditas berhasil ditambahkan dan akan diverifikasi oleh admin. Komoditas akan tampil setelah disetujui.');
     }
 
     public function edit($id)
@@ -166,7 +166,7 @@ class ProdukController extends Controller
 
         $produk->update($data);
 
-        return redirect()->route('pembudidaya.profil')->with('success', 'Produk berhasil diperbarui dan menunggu persetujuan admin.');
+        return redirect()->route('usaha.detail', Auth::guard('pembudidaya')->id())->with('success', 'Komoditas berhasil diperbarui. Perubahan akan ditinjau kembali oleh admin sebelum ditampilkan.');
     }
 
     public function destroy($id)
@@ -185,7 +185,7 @@ class ProdukController extends Controller
 
         $produk->delete();
 
-        return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Komoditas berhasil dihapus.');
     }
 
     private function validateProduk(Request $request)
