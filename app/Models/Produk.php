@@ -16,6 +16,8 @@ class Produk extends Model
         'telepon',
         'alamat_lengkap', // ubah dari 'alamat'
         'kecamatan', // ditambahkan untuk keperluan filter
+        'latitude', 
+        'longitude',
         'jenis_komoditas',
         'jenis_spesifik_komoditas',
         'kapasitas_produksi',

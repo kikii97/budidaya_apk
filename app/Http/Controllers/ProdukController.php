@@ -57,7 +57,12 @@ class ProdukController extends Controller
 
         $data['pembudidaya_id'] = Auth::guard('pembudidaya')->id();
         $data['telepon'] = $data['phone'];
+        $data['telepon'] = $data['phone'];
         $data['alamat_lengkap'] = $data['address'];
+        $data['kecamatan'] = $data['kecamatan'];
+        $data['desa'] = $data['desa'];
+        $data['latitude'] = $data['latitude'];
+        $data['longitude'] = $data['longitude'];
         $data['jenis_komoditas'] = $data['commodity_type'];
         $data['kisaran_harga_min'] = $data['price_range_min'];
         $data['kisaran_harga_max'] = $data['price_range_max'];
@@ -133,7 +138,11 @@ class ProdukController extends Controller
 
         // Mapping field input ke kolom di DB
         $data['telepon'] = $data['phone'];
+        $data['latitude'] = $data['latitude'];
+        $data['longitude'] = $data['longitude'];
         $data['alamat_lengkap'] = $data['address'];
+        $data['kecamatan'] = $data['kecamatan'];
+        $data['desa'] = $data['desa'];
         $data['jenis_komoditas'] = $data['commodity_type'];
         $data['kisaran_harga_min'] = $data['price_range_min'];
         $data['kisaran_harga_max'] = $data['price_range_max'];
@@ -194,8 +203,11 @@ class ProdukController extends Controller
             'images' => 'sometimes|array',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone' => 'required|digits_between:10,15',
-            'kecamatan' => 'required|string',
-            'address' => 'required|string',
+        'kecamatan' => 'required|string',
+        'desa' => 'required|string',
+        'latitude' => 'required|numeric',
+        'longitude' => 'required|numeric',
+        'alamat_lengkap' => 'required|string',
             'commodity_type' => 'required|string',
             'specific_commodity_type' => 'nullable|string',
             'production_capacity' => 'nullable|integer',
@@ -209,6 +221,7 @@ class ProdukController extends Controller
             'images.*.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
     }
+
 
     // Untuk menampilkan katalog publik
     public function katalog(Request $request)

@@ -127,9 +127,9 @@
         </div>
     </div>
 @php
-    $user = Auth::user();
-    $pembudidaya = Auth::guard('pembudidaya')->user();
+    $user = Auth::user() ?? Auth::guard('pembudidaya')->user();
 @endphp
+
 <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
@@ -146,12 +146,12 @@
                 <li><a href="#kami">Tentang Kami</a></li>
             </ul>
 
-            @if ($pembudidaya)
+            @if ($user)
                 <!-- Tombol Notifikasi Mobile -->
                 <button id="btnNotifMobile" type="button" class="btn btn-outline-secondary position-relative d-xl-none" data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
                     🔔
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ $pembudidaya->unreadNotifications->count() ?? 0 }}
+                        {{ $user->unreadNotifications->count() ?? 0 }}
                         <span class="visually-hidden">notifikasi baru</span>
                     </span>
                 </button>
@@ -161,50 +161,50 @@
             <i id="btnHamburger" class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas" data-bs-target="#mobileNav"></i>
         </nav>
 
-        <div class="d-none d-xl-flex align-items-center gap-2 ms-3">
-            @if ($pembudidaya)
-                <!-- Tombol Notifikasi Desktop -->
-                <button type="button" class="btn btn-outline-secondary position-relative"
-                    data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
-                    🔔
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ $pembudidaya->unreadNotifications->count() ?? 0 }}
-                        <span class="visually-hidden">notifikasi baru</span>
-                    </span>
-                </button>
-            @endif
+            <!-- Tombol Notifikasi Desktop -->
+            @if ($user)
+                <div class="d-none d-xl-flex align-items-center gap-2 ms-3">
+                    <!-- Tombol Notifikasi Desktop -->
+                    <button type="button" class="btn btn-outline-secondary position-relative"
+                        data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
+                        🔔
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $user->unreadNotifications->count() ?? 0 }}
+                            <span class="visually-hidden">notifikasi baru</span>
+                        </span>
+                    </button>
 
-            @if ($pembudidaya || $user)
-                <!-- Dropdown User -->
-                <div class="dropdown position-relative">
-                    <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
-                        id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ $pembudidaya?->name ?? $user->name }}
-                    </a>
-                    <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
-                        aria-labelledby="accountDropdown">
-                        @if($pembudidaya)
+                    <!-- Dropdown User -->
+                    <div class="dropdown position-relative">
+                        <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
+                            id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ $user->name }}
+                        </a>
+                        <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
+                            aria-labelledby="accountDropdown">
+                            @if($user && $user->role === 'pembudidaya')
+                                <li>
+                                    <a class="dropdown-item py-1 px-3 small"
+                                    href="{{ route('pembudidaya.detail_usaha', ['id' => $user->pembudidaya->id ?? 0]) }}">
+                                        Account Settings
+                                    </a>
+                                </li>
+                            @endif
+                            <li><hr class="dropdown-divider my-1"></li>
                             <li>
-                                <a class="dropdown-item py-1 px-3 small"
-                                   href="{{ route('pembudidaya.detail_usaha', ['id' => $pembudidaya->id ?? 0]) }}">
-                                    Account Settings
-                                </a>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item py-1 px-3 small" type="submit">🚪 Log Out</button>
+                                </form>
                             </li>
-                        @endif
-                        <li><hr class="dropdown-divider my-1"></li>
-                        <li>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button class="dropdown-item py-1 px-3 small" type="submit">🚪 Log Out</button>
-                            </form>
-                        </li>
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             @else
                 <!-- Dropdown Login untuk Desktop -->
-                <div class="dropdown position-relative">
+                <div class="dropdown position-relative d-none d-xl-block ms-3">
                     <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
-                       id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         Log In
                     </a>
                     <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown" aria-labelledby="loginDropdown">
@@ -217,100 +217,75 @@
         </div>
     </div>
 
-<!-- Offcanvas Notifikasi -->
-<div class="offcanvas offcanvas-end" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true" style="max-width: 90vw;">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="notificationModalLabel">Notifikasi</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-
-    <div class="offcanvas-body">
-        <!-- Tombol Aksi -->
-        <div class="mb-3 d-flex justify-content-between">
-            <form action="{{ route('notifications.markAllRead') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-secondary px-2 py-1" style="font-size: 0.8rem;">✓ Tandai Semua Dibaca</button>
-            </form>
-            <form action="{{ route('notifications.clearAll') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-danger px-2 py-1" style="font-size: 0.8rem;">🗑️ Hapus Semua</button>
-            </form>
+    <!-- Offcanvas Notifikasi -->
+    <div class="offcanvas offcanvas-end" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true" style="max-width: 90vw;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="notificationModalLabel">Notifikasi</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-
-        @if ($pembudidaya && $pembudidaya->notifications->count())
-            <!-- Daftar Ringkas -->
-            <ul class="list-group mb-3" id="notificationList">
-                @foreach ($pembudidaya->notifications as $notification)
-                    <li 
-                        class="list-group-item notification-item {{ is_null($notification->read_at) ? 'fw-bold' : 'text-muted' }}" 
-                        data-id="{{ $notification->id }}" 
-                        style="cursor: pointer;"
-                    >
-                        📩 {{ $notification->data['judul'] ?? 'Pesanan Baru' }}
-                        <br>
-                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p class="text-muted">Tidak ada notifikasi baru.</p>
-        @endif
-
-        <!-- Detail Notifikasi (selalu tampil di DOM) -->
-        <template id="notificationDetailTemplate">
-            <div class="card notification-detail">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h6 class="fw-bold detail-title">Detail Notifikasi</h6>
-                        <button type="button" class="btn-close btn-sm btn-close-detail" aria-label="Tutup"></button>
-                    </div>
-                    <div class="detail-content small text-muted"></div>
-                </div>
-            </div>
-        </template>
-    </div>
-</div>
-</header>
-
-<!-- Mobile Menu (Offcanvas) -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="mobileNavLabel">Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="navbar-nav">
-            <li><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
-            <li><a class="nav-link" href="{{ url('/#komoditas') }}">Komoditas</a></li>
-            <li><a class="nav-link" href="{{ url('/#budidaya') }}">Budidaya</a></li>
-            <li><a class="nav-link" href="{{ url('/#peta') }}">Peta Budidaya</a></li>
-            <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
-
-            @if ($user)
-            @if(Auth::guard('pembudidaya')->check())
-                <li><a class="nav-link" href="{{ route('pembudidaya.detail_usaha') }}">Account Settings</a></li>
-            @endif
-                <li>
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button class="dropdown-item py-2" type="submit">🚪 Log Out</button>
-                    </form>
-                </li>
+        <div class="offcanvas-body">
+            @if ($notifications->count())
+                <ul class="list-group">
+                    @foreach ($notifications as $notification)
+                        <li class="list-group-item">
+                            {{ $notification->data['message'] ?? 'Notifikasi baru' }}
+                            <br>
+                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                        </li>
+                    @endforeach
+                </ul>
             @else
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Log In
-                    </a>
-                    <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0" aria-labelledby="mobileLoginDropdown">
-                        <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
-                    </ul>
-                </li>
+                <p class="text-muted">Tidak ada notifikasi baru.</p>
             @endif
-        </ul>
+            <button type="button" class="btn btn-danger mt-3" id="clearNotificationsBtn">Hapus Semua Notifikasi</button>
+        </div>
     </div>
-</div>
+</header>
+    <!-- Mobile Menu (Offcanvas) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="mobileNavLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li><a class="nav-link" href="#beranda">Beranda</a></li>
+                <li><a class="nav-link" href="#komoditas">Komoditas</a></li>
+                <li><a class="nav-link" href="#budidaya">Budidaya</a></li>
+                <li><a class="nav-link" href="#peta">Peta Budidaya</a></li>
+                <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
+
+                <!-- Log In dropdown di mobile -->
+                @if (Auth::check() || Auth::guard('pembudidaya')->check())
+                    @if(Auth::guard('pembudidaya')->check())
+                        <li><a class="nav-link" href="{{ route('pembudidaya.detail_usaha') }}">Account Settings</a></li>
+                    @endif
+                    <li>
+                        <form action="{{ url('logout') }}" method="POST">
+                            @csrf
+                            <button class="dropdown-item py-2" type="submit">🚪 Log Out</button>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Log In
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
+                            aria-labelledby="mobileLoginDropdown">
+                            <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item py-2"
+                                    href="{{ url('login?form=register&tipe=investor') }}">📝Gabung Investor</a></li>
+                        </ul>
+                    </li>
+                @endif
+            </ul>
+        </div>
+    </div>
 
     <section id="beranda"
         style="background-image: url('{{ asset('images/tambak-ikan.jpg') }}');background-repeat: no-repeat;background-size: cover;">
@@ -346,7 +321,7 @@
                                 </div>
 
                                 <form class="modal-body p-3 pb-0" method="GET"
-                                    action="{{ route('produk.rekomendasi') }}#budidaya"
+                                    action="{{ route('produk.rekomendasi') }}"
                                     style="font-size: 0.8rem; padding: 15px;">
 
                                     <div class="row mb-2">
@@ -427,7 +402,7 @@
 
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Tanggal Panen</label>
+                                            <label class="form-label mb-1">Prediksi Panen</label>
                                             <input type="date" class="form-control form-control-sm rounded-2"
                                                 name="prediksi_panen">
                                         </div>
@@ -553,22 +528,6 @@
                                         </a>
                                     </figure>
                                     <div class="d-flex flex-column text-center">
-                                        {{-- RANKING PRODUK --}}
-                                        @if (isset($product->bobot))
-                                            <div class="mb-2">
-                                                <span class="badge"
-                                                    style="background-color: #c6d6a9; color: #2d3c10; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
-                                                    #{{ $loop->iteration }}
-                                                </span>
-                                            </div>
-                                        @endif
-
-                                        {{-- Nilai Akhir SAW --}}
-                                        @if (isset($product->bobot))
-                                            <div class="mb-1">
-                                                <small class="text-muted">Score: {{ number_format($product->bobot, 4, ',', '.') }}</small>
-                                            </div>
-                                        @endif
                                         <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
 
                                         {{-- Jenis Komoditas --}}
@@ -743,81 +702,23 @@
         });
     </script>
     <script>
-        const notifModal = document.getElementById('notificationModal');
-        const notifBtn = document.getElementById('btnNotifMobile');
-        const hamburgerBtn = document.getElementById('btnHamburger');
+    const notifModal = document.getElementById('notificationModal');
+    const notifBtn = document.getElementById('btnNotifMobile');
+    const hamburgerBtn = document.getElementById('btnHamburger');
 
-        notifModal.addEventListener('show.bs.offcanvas', function () {
-            // Sembunyikan tombol saat modal terbuka
-            notifBtn?.classList.add('d-none');
-            hamburgerBtn?.classList.add('d-none');
-        });
-
-        notifModal.addEventListener('hidden.bs.offcanvas', function () {
-            // Tampilkan kembali tombol saat modal tertutup
-            notifBtn?.classList.remove('d-none');
-            hamburgerBtn?.classList.remove('d-none');
-        });
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const notificationItems = document.querySelectorAll('.notification-item');
-        const detailTemplate = document.getElementById('notificationDetailTemplate');
-
-        let currentDetailElement = null;
-
-        notificationItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const notifId = item.getAttribute('data-id');
-
-                fetch(`/notifications/${notifId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        // Hapus detail yang sedang aktif sebelumnya
-                        if (currentDetailElement) {
-                            currentDetailElement.remove();
-                            currentDetailElement = null;
-                        }
-
-                        // Clone template detail
-                        const clone = detailTemplate.content.cloneNode(true);
-                        const detailCard = clone.querySelector('.notification-detail');
-                        const detailTitle = clone.querySelector('.detail-title');
-                        const detailContent = clone.querySelector('.detail-content');
-                        const closeBtn = clone.querySelector('.btn-close-detail');
-
-                        detailTitle.textContent = data.judul ?? "Detail Notifikasi";
-                        detailContent.innerHTML = `
-                            ${data.message || data.pesan ? `<p>${data.message || data.pesan}</p>` : ''}
-                            ${data.no_hp ? `<p><strong>No. HP:</strong> ${data.no_hp}</p>` : ''}
-                            ${data.tanggal_order ? `<p><strong>Tanggal Order:</strong> ${data.tanggal_order}</p>` : ''}
-                            ${data.jumlah ? `<p><strong>Jumlah Dipesan:</strong> ${data.jumlah}</p>` : ''}
-                            ${data.catatan ? `<p><strong>Catatan:</strong> ${data.catatan}</p>` : ''}
-                            ${data.jenis_produk ? `<p><strong>Jenis Produk:</strong> ${data.jenis_produk}</p>` : ''}
-                            ${data.kapasitas ? `<p><strong>Kapasitas Produksi:</strong> ${data.kapasitas}</p>` : ''}
-                            ${data.prediksi_panen ? `<p><strong>Prediksi Panen:</strong> ${data.prediksi_panen}</p>` : ''}
-                            ${data.tanggal_diunggah ? `<p><strong>Tanggal Diunggah:</strong> ${data.tanggal_diunggah}</p>` : ''}
-                            ${data.tanggal_disetujui ? `<p><strong>Tanggal Disetujui:</strong> ${data.tanggal_disetujui}</p>` : ''}
-                        `;
-
-                        // Tandai sebagai dibaca
-                        item.classList.remove('fw-bold');
-                        item.classList.add('text-muted');
-
-                        // Tambahkan ke DOM setelah notifikasi yang diklik
-                        item.insertAdjacentElement('afterend', detailCard);
-                        currentDetailElement = detailCard;
-
-                        // Tombol tutup detail
-                        closeBtn.addEventListener('click', () => {
-                            detailCard.remove();
-                            currentDetailElement = null;
-                        });
-                    });
-            });
-        });
+    notifModal.addEventListener('show.bs.offcanvas', function () {
+        // Sembunyikan tombol saat modal terbuka
+        notifBtn?.classList.add('d-none');
+        hamburgerBtn?.classList.add('d-none');
     });
-    </script>
+
+    notifModal.addEventListener('hidden.bs.offcanvas', function () {
+        // Tampilkan kembali tombol saat modal tertutup
+        notifBtn?.classList.remove('d-none');
+        hamburgerBtn?.classList.remove('d-none');
+    });
+</script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
@@ -828,16 +729,6 @@
     </script>
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-    @if(request('scroll') === 'budidaya')
-        <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                const target = document.getElementById("budidaya");
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        </script>
-    @endif
 
 </body>
 

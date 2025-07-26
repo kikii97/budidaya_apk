@@ -15,6 +15,8 @@ class CreateProdukTable extends Migration
             $table->text('alamat_lengkap'); // Alamat lengkap produk
             $table->string('kecamatan')->index(); // Tambahan kolom untuk kecamatan
             $table->string('jenis_komoditas')->index(); // Jenis komoditas
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
             $table->string('jenis_spesifik_komoditas')->nullable(); // Jenis spesifik komoditas
             $table->unsignedInteger('kapasitas_produksi')->nullable(); // Kapasitas produksi
             $table->string('masa_produksi_puncak')->nullable(); // Masa produksi puncak
