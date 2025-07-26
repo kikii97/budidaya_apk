@@ -56,7 +56,7 @@ class DokumenPembudidayaController extends Controller
             'status' => 'menunggu',
         ]);
 
-        return redirect()->route('pembudidaya.detail_usaha')->with('success', 'Dokumen berhasil diunggah.');
+        return redirect()->route('usaha.detail', Auth::guard('pembudidaya')->id())->with('success', 'Dokumen berhasil diunggah dan akan diperiksa oleh admin. Mohon menunggu persetujuan sebelum dapat mengunggah komoditas.');
     }
 
     // Hapus dokumen milik sendiri (tidak digunakan jika tidak ada fitur hapus)

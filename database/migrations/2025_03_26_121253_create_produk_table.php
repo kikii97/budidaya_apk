@@ -14,6 +14,8 @@ class CreateProdukTable extends Migration
             $table->string('telepon', 15); // Nomor telepon
             $table->text('alamat_lengkap'); // Alamat lengkap produk
             $table->string('kecamatan')->index(); // Tambahan kolom untuk kecamatan
+            $table->decimal('latitude', 10, 8)->nullable(); // Tambahan latitude
+            $table->decimal('longitude', 11, 8)->nullable(); // Tambahan longitude
             $table->string('jenis_komoditas')->index(); // Jenis komoditas
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);

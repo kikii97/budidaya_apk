@@ -11,6 +11,23 @@
     $isOwner = $user && $pembudidaya && $user->id === $pembudidaya->id;
 @endphp
 
+@if (session('success'))
+    <div id="popupAlert" class="alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3 shadow-sm" role="alert" style="z-index: 1050; width: fit-content; max-width: 90%;">
+        {{ session('success') }}
+        <button type="button" class="btn-close ms-2" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <script>
+        setTimeout(function () {
+            const alert = document.getElementById('popupAlert');
+            if (alert) {
+                alert.classList.remove('show');
+                alert.classList.add('hide');
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 6000); // hilang otomatis dalam 4 detik
+    </script>
+@endif
+
 <section style="padding-top: 0px;">
     <div class="container py-2" style="padding-top: 0rem !important;">
         <div class="row d-flex justify-content-center">
@@ -101,8 +118,8 @@
                                                         style="z-index: 2; transform: scale(1.3);">
                                                 @endif
 
-<img src="{{ Storage::url('images/' . $item->gambar_utama) }}"
-     alt="image" class="card-img-top img-fixed-ratio">
+                                                <img src="{{ Storage::url('images/' . $item->gambar_utama) }}"
+                                                    alt="image" class="card-img-top img-fixed-ratio">
 
                                                 <div class="card-body text-center p-2">
                                                     <div class="d-flex justify-content-center gap-1">
