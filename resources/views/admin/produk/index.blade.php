@@ -28,6 +28,11 @@
             </div>
         @endif
 
+        {{-- Tombol Tambah Komoditas --}}
+        <a href="{{ route('admin.produk.create') }}" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Tambah Komoditas
+        </a>
+
         {{-- Tabel daftar komoditas --}}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover align-middle">
@@ -97,6 +102,13 @@
                                 <a href="{{ route('admin.produk.detail', $item->id) }}" class="btn btn-sm btn-primary mb-1" data-bs-toggle="tooltip" title="Lihat Detail">
                                     <i class="fas fa-eye"></i> Detail
                                 </a>
+
+                                {{-- Tombol Edit hanya jika sudah diputuskan (disetujui / ditolak) --}}
+                                @if (!is_null($item->is_approved))
+                                    <a href="{{ route('admin.produk.edit', $item->id) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit Komoditas">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                @endif
 
                                 @if (is_null($item->is_approved))
                                     <form action="{{ route('admin.produk.approve', $item->id) }}" method="POST" class="d-inline-block mb-1">

@@ -117,7 +117,7 @@
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ url()->current() }}?form=register&tipe=investor"
-                                onclick="showForm('register'); showRegisterForm('investor');">Investor</a>
+                                onclick="showForm('register'); showRegisterForm('investor');">Pengepul</a>
                             <a class="dropdown-item" href="{{ url()->current() }}?form=register&tipe=usaha"
                                 onclick="showForm('register'); showRegisterForm('usaha');">Usaha</a>
                         </div>

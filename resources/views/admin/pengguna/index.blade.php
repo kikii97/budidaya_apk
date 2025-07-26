@@ -26,7 +26,7 @@
         @endif
 
         <a href="{{ route('admin.pengguna.create') }}" class="btn btn-primary mb-3">
-            <i class="fas fa-plus"></i> Tambah Pembudidaya
+            <i class="fas fa-plus"></i> Tambah Pengguna
         </a>
 
         <div class="table-responsive">
