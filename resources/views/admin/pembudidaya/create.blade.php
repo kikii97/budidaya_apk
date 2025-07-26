@@ -103,6 +103,30 @@
             </div>
           </div>
 
+          <div class="form-group mt-2">
+  <label>Alamat</label>
+  <input type="text" name="alamat" class="form-control" placeholder="Masukkan alamat lengkap" value="{{ old('alamat') }}">
+</div>
+
+<div class="form-group mt-2">
+  <label>Nomor Telepon</label>
+  <input type="text" name="nomor_telepon" class="form-control" placeholder="Contoh: 081234567890" value="{{ old('nomor_telepon') }}">
+</div>
+
+<div class="form-group mt-2">
+  <label>Deskripsi Usaha</label>
+  <textarea name="deskripsi" class="form-control" rows="4" placeholder="Tulis deskripsi usaha Anda di sini...">{{ old('deskripsi') }}</textarea>
+</div>
+
+<div class="form-group mt-2">
+  <label>Unggah Foto Profil (Opsional)</label>
+  <input type="file" name="foto_profil" class="form-control" accept="image/*">
+  @if ($errors->has('foto_profil'))
+    <small class="text-danger">{{ $errors->first('foto_profil') }}</small>
+  @endif
+</div>
+
+
           <button type="submit" class="btn btn-success mt-3">Simpan</button>
           <a href="{{ route('admin.pembudidaya.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </form>

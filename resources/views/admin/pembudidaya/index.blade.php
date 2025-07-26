@@ -111,28 +111,31 @@
                   {{-- Aksi --}}
                   <td class="text-nowrap">
                     @if ($dokumen)
-                      <a href="{{ route('admin.dokumen.show', $dokumen->id) }}" class="btn btn-sm btn-primary mb-1">
+                      <a href="{{ route('admin.dokumen.show', $dokumen->id) }}" class="btn btn-sm btn-primary mb-1" data-bs-toggle="tooltip" title="Lihat Detail">
                         <i class="fas fa-eye"></i> Detail
                       </a>
 
                       @if ($dokumen->status === 'menunggu')
                         <form action="{{ route('admin.dokumen.approve', $dokumen->id) }}" method="POST" style="display:inline-block;">
                           @csrf
-                          <button type="submit" class="btn btn-sm btn-success mb-1" onclick="return confirm('Setujui dokumen pembudidaya ini?')">
+                          <button type="submit" class="btn btn-sm btn-success mb-1" data-bs-toggle="tooltip" title="Setujui" onclick="return confirm('Setujui dokumen pembudidaya ini?')">
                               <i class="fas fa-check"></i> Setujui
                           </button>
                         </form>
                         <form action="{{ route('admin.dokumen.reject', $dokumen->id) }}" method="POST" style="display:inline-block;">
                           @csrf
-                          <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Tolak dokumen pembudidaya ini?')">
+                          <button type="submit" class="btn btn-sm btn-warning mb-1" data-bs-toggle="tooltip" title="Tolak" onclick="return confirm('Tolak dokumen pembudidaya ini?')">
                               <i class="fas fa-times"></i> Tolak
                           </button>
                         </form>
                       @else
+                        <a href="{{ route('admin.pembudidaya.edit', $item->id) }}" class="btn btn-sm btn-warning mb-1" data-bs-toggle="tooltip" title="Edit Pembudidaya">
+                          <i class="fas fa-edit"></i> Edit
+                        </a>
                         <form action="{{ route('admin.pembudidaya.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                          <button type="submit" class="btn btn-sm btn-danger mb-1" data-bs-toggle="tooltip" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
                               <i class="fas fa-trash"></i> Hapus
                           </button>
                         </form>
@@ -167,5 +170,15 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+{{-- Tooltip init --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
 </body>
 </html>
