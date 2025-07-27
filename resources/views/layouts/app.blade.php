@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="author" content="">
     <meta name="keywords" content="">
@@ -16,6 +17,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
@@ -278,7 +280,6 @@
     <!-- Tambahkan Bahasa Indonesia -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
 
-
     <script>
         flatpickr("#harvest_prediction", {
             dateFormat: "d-m-Y",
@@ -288,11 +289,11 @@
     </script>
     <script>
         let selectedFiles = [];
-    
+
         function previewImages(event) {
             let preview = document.getElementById('imagePreview');
             let files = event.target.files;
-    
+
             for (let file of files) {
                 // Cek apakah file sudah ada di daftar
                 if (!selectedFiles.some(f => f.name === file.name)) {
@@ -310,50 +311,50 @@
                     reader.readAsDataURL(file);
                 }
             }
-    
+
             updateFileInput();
         }
-    
+
         function removeImage(fileName, button) {
             // Hapus file dari daftar
             selectedFiles = selectedFiles.filter(file => file.name !== fileName);
             button.parentElement.remove();
             updateFileInput();
         }
-    
+
         function updateFileInput() {
             let input = document.getElementById('images');
             let dataTransfer = new DataTransfer();
-    
+
             selectedFiles.forEach(file => {
                 dataTransfer.items.add(file);
             });
-    
+
             input.files = dataTransfer.files;
         }
     </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById("uploadForm"); // Pastikan ID form benar
-        const minPrice = document.getElementById("price_range_min");
-        const maxPrice = document.getElementById("price_range_max");
-    
-        form.addEventListener("submit", function(event) {
-            let errorMessage = "";
-    
-            // Cek apakah input kosong
-            if (!minPrice.value.trim()) {
-                errorMessage = "Harap isi harga jual minimum.";
-            } else if (!maxPrice.value.trim()) {
-                errorMessage = "Harap isi harga jual maksimum.";
-            }
-            if (errorMessage) {
-                event.preventDefault(); // Batalkan submit
-                alert(errorMessage); // Tampilkan pesan error
-            }
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("uploadForm"); // Pastikan ID form benar
+            const minPrice = document.getElementById("price_range_min");
+            const maxPrice = document.getElementById("price_range_max");
+
+            form.addEventListener("submit", function(event) {
+                let errorMessage = "";
+
+                // Cek apakah input kosong
+                if (!minPrice.value.trim()) {
+                    errorMessage = "Harap isi harga jual minimum.";
+                } else if (!maxPrice.value.trim()) {
+                    errorMessage = "Harap isi harga jual maksimum.";
+                }
+                if (errorMessage) {
+                    event.preventDefault(); // Batalkan submit
+                    alert(errorMessage); // Tampilkan pesan error
+                }
+            });
         });
-    });
     </script>
 </body>
 

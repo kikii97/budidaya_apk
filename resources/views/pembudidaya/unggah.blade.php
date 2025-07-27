@@ -61,49 +61,6 @@
 
                 <div class="row g-3">
                     <div class="mb-3 col-md-6">
-                        <label class="form-label small">Nomor Telepon</label>
-                        <input type="text" class="form-control form-control-sm" name="phone" required
-                            oninvalid="this.setCustomValidity('Harap isi nomor telepon yang valid.')"
-                            oninput="this.setCustomValidity('')">
-                    </div>
-
-                    <div class="mb-3 col-md-6">
-                        <label for="kecamatan" class="form-label small">Kecamatan</label>
-                        <input type="text" class="form-control form-control-sm" id="kecamatan" name="kecamatan" required readonly />
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label for="alamat" class="form-label small">Alamat Lengkap</label>
-                        <input type="text" class="form-control form-control-sm" id="alamat" name="address"
-                            placeholder="Ketik alamat..." required />
-                        <ul id="suggestion-list" class="list-group mt-1"></ul>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label for="desa" class="form-label small">Desa</label>
-                        <input type="text" class="form-control form-control-sm" id="desa" name="desa" required readonly />
-                    </div>
-                </div>
-
-                <!-- Perbaikan tampilan peta -->
-                <div id="map" class="mb-3" style="width: 100%; height: 258px; margin-top: 0rem; position: relative; border: 1px solid #ccc; overflow: hidden;">
-                    <div id="map-container" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="latitude" class="form-label small">Latitude</label>
-                        <input type="text" id="latitude" name="latitude" class="form-control form-control-sm" readonly required />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="longitude" class="form-label small">Longitude</label>
-                        <input type="text" id="longitude" name="longitude" class="form-control form-control-sm" readonly required />
-                    </div>
-                </div>
-
-                <div class="row g-3">
-                    <div class="mb-3 col-md-6">
                         <label for="commodity_type" class="form-label small">Jenis Komoditas</label>
                         <select class="form-select form-select-sm" id="commodity_type" name="commodity_type" required
                             oninvalid="this.setCustomValidity('Harap pilih jenis komoditas.')"
@@ -126,9 +83,62 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label for="alamat" class="form-label small">Alamat Lengkap</label>
+                        <input type="text" class="form-control form-control-sm" id="alamat" name="address"
+                            placeholder="Ketik alamat..." required />
+                        <ul id="suggestion-list" class="list-group mt-2"></ul>
+                    </div>
+
+                    <div class="mb-3 col-md-3">
+                        <label for="kecamatan" class="form-label small">Kecamatan</label>
+                        <input type="text" class="form-control form-control-sm" id="kecamatan" name="kecamatan" required
+                            readonly />
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <label for="desa" class="form-label small">Desa</label>
+                        <input type="text" class="form-control form-control-sm" id="desa" name="desa" required
+                            readonly />
+                    </div>
+                </div>
+
+                <!-- Perbaikan tampilan peta -->
+                <div id="map">
+                    <label id="use-location-container"
+                        style="
+                            position: absolute;
+                            top: 10px;
+                            left: 10px;
+                            padding: 6px 7px;
+                            border-radius: 6px;
+                            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+                            font-size: 14px;
+                            z-index: 10;
+                            cursor: pointer;">
+                        <input type="checkbox" id="use-location" />
+                        Gunakan Lokasi Saya
+                    </label>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="latitude" class="form-label small">Latitude</label>
+                        <input type="text" id="latitude" name="latitude" class="form-control form-control-sm" readonly
+                            required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="longitude" class="form-label small">Longitude</label>
+                        <input type="text" id="longitude" name="longitude" class="form-control form-control-sm" readonly
+                            required />
+                    </div>
+                </div>
+
                 <div class="row g-3">
                     <div class="mb-3 col-md-6">
-                        <label for="production_capacity" class="form-label small">Kapasitas Produksi per Bulan (kg)</label>
+                        <label for="production_capacity" class="form-label small">Kapasitas Produksi per Bulan
+                            (kg)</label>
                         <input type="number" class="form-control form-control-sm" id="production_capacity"
                             name="production_capacity"
                             oninvalid="this.setCustomValidity('Harap isi kapasitas produksi per bulan dengan angka yang benar.')"
@@ -161,10 +171,18 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="harvest_prediction" class="form-label small">Prediksi Panen</label>
-                    <input type="text" class="form-control form-control-sm" id="harvest_prediction" name="harvest_prediction"
-                        placeholder="Contoh: 21 April 2025" autocomplete="off">
+                <div class="row g-3">
+                    <div class="mb-3 col-md-6">
+                        <label for="harvest_prediction" class="form-label small">Prediksi Panen</label>
+                        <input type="text" class="form-control form-control-sm" id="harvest_prediction"
+                            name="harvest_prediction" placeholder="Contoh: 21 April 2025" autocomplete="off">
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label small">Nomor Telepon</label>
+                        <input type="text" class="form-control form-control-sm" name="phone" required
+                            oninvalid="this.setCustomValidity('Harap isi nomor telepon yang valid.')"
+                            oninput="this.setCustomValidity('')">
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -173,6 +191,9 @@
                         oninvalid="this.setCustomValidity('Harap isi detail Komoditas dengan informasi yang lengkap.')"
                         oninput="this.setCustomValidity('')"></textarea>
                 </div>
+
+                <!-- Tambahkan ini di dalam <body> -->
+                <div id="dropzone" style="display:none;"></div>
 
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary btn-sm">Unggah</button>
@@ -188,7 +209,7 @@
     <!-- Flatpickr Bahasa Indonesia -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
     <!-- Mapbox JS -->
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 
     <script>
         // Inisialisasi Flatpickr
@@ -202,20 +223,29 @@
         mapboxgl.accessToken = 'pk.eyJ1Ijoia2lraWtzMjMiLCJhIjoiY205dDZiZDgyMDgzdzJtcTk1bW81ZG4wOCJ9.2KzfsbK1tXHs7vuAkwMsKQ';
 
         const map = new mapboxgl.Map({
-            container: 'map-container',
+            container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
-            center: [108.3247, -6.3265],
+            center: [108.321601, -6.326467],
             zoom: 12,
-            maxBounds: [[107.98, -6.60], [108.50, -6.00]]
+            maxBounds: [
+                [107.98, -6.60],
+                [108.50, -6.00]
+            ]
         });
 
         map.addControl(new mapboxgl.NavigationControl());
 
         // Deklarasi marker sebagai variabel global dalam scope map.on('load')
         let marker;
+        let previousCenter = null;
+        let previousZoom = null;
+        let previousMarker = null;
+
         map.on('load', () => {
-            marker = new mapboxgl.Marker({ draggable: true })
-                .setLngLat([108.3247, -6.3265])
+            marker = new mapboxgl.Marker({
+                    draggable: true
+                })
+                .setLngLat([108.321601, -6.326467])
                 .addTo(map);
 
             const inputAlamat = document.getElementById('alamat');
@@ -228,13 +258,23 @@
             function setUserLocation(position) {
                 const lngLat = [position.coords.longitude, position.coords.latitude];
                 if (isWithinBounds(lngLat)) {
-                    map.flyTo({ center: lngLat, zoom: 14 });
+                    map.flyTo({
+                        center: lngLat,
+                        zoom: 14
+                    });
                     placeMarker(lngLat[0], lngLat[1]);
+                    updateInputs([lngLat[1], lngLat[0]]); // lat, lng
+                    reverseGeocodeAndUpdate([lngLat[1], lngLat[0]]);
                 } else {
                     alert('Lokasi Anda di luar wilayah Indramayu. Menggunakan lokasi default.');
-                    const defaultLngLat = [108.3247, -6.3265];
-                    map.flyTo({ center: defaultLngLat, zoom: 12 });
+                    const defaultLngLat = [108.321601, -6.326467];
+                    map.flyTo({
+                        center: defaultLngLat,
+                        zoom: 12
+                    });
                     placeMarker(defaultLngLat[0], defaultLngLat[1]);
+                    updateInputs(defaultLngLat);
+                    reverseGeocodeAndUpdate(defaultLngLat);
                 }
             }
 
@@ -254,24 +294,84 @@
                         alert('Terjadi error yang tidak diketahui. Menggunakan lokasi default.');
                         break;
                 }
-                const defaultLngLat = [108.3247, -6.3265];
-                map.flyTo({ center: defaultLngLat, zoom: 12 });
+                const defaultLngLat = [108.321601, -6.326467];
+                map.flyTo({
+                    center: defaultLngLat,
+                    zoom: 12
+                });
                 placeMarker(defaultLngLat[0], defaultLngLat[1]);
             }
 
             // Dapatkan lokasi pengguna saat peta dimuat
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(setUserLocation, handleLocationError, {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
+            document.getElementById('use-location').addEventListener('change', function(e) {
+                if (e.target.checked) {
+                    // Simpan posisi saat ini SEBELUM ke lokasi pengguna
+                    previousCenter = map.getCenter();
+                    previousZoom = map.getZoom();
+                    previousMarker = marker.getLngLat();
+
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(setUserLocation, handleLocationError, {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        });
+                    } else {
+                        alert('Geolokasi tidak didukung oleh browser ini.');
+                    }
+                } else {
+                    // Balik ke posisi sebelumnya (jika ada)
+                    if (previousCenter && previousZoom !== null && previousMarker) {
+                        map.flyTo({
+                            center: [previousCenter.lng, previousCenter.lat],
+                            zoom: previousZoom
+                        });
+
+                        placeMarker(previousMarker.lng, previousMarker.lat); // balikin markernya
+
+                        // update input & reverse geocode
+                        updateInputs([previousMarker.lat, previousMarker.lng]);
+                        reverseGeocodeAndUpdate([previousMarker.lat, previousMarker.lng]);
+                    }
+
+                }
+            });
+
+
+            // Fungsi yang sebelumnya kamu pakai
+            function setUserLocation(position) {
+                const userLng = position.coords.longitude;
+                const userLat = position.coords.latitude;
+                const userLocation = [userLng, userLat];
+
+                map.flyTo({
+                    center: userLocation,
+                    zoom: 14
                 });
-            } else {
-                alert('Geolokasi tidak didukung oleh browser ini. Menggunakan lokasi default.');
-                const defaultLngLat = [108.3247, -6.3265];
-                map.flyTo({ center: defaultLngLat, zoom: 12 });
-                placeMarker(defaultLngLat[0], defaultLngLat[1]);
+                placeMarker(userLng, userLat);
+                updateInputs([userLat, userLng]);
+                reverseGeocodeAndUpdate([userLat, userLng]);
             }
+
+            function handleLocationError(error) {
+                alert('Gagal mendapatkan lokasi Anda.');
+            }
+
+            // if (navigator.geolocation) {
+            //     navigator.geolocation.getCurrentPosition(setUserLocation, handleLocationError, {
+            //         enableHighAccuracy: true,
+            //         timeout: 10000,
+            //         maximumAge: 0
+            //     });
+            // } else {
+            //     alert('Geolokasi tidak didukung oleh browser ini. Menggunakan lokasi default.');
+            //     const defaultLngLat = [108.3247, -6.3265];
+            //     map.flyTo({
+            //         center: defaultLngLat,
+            //         zoom: 12
+            //     });
+            //     placeMarker(defaultLngLat[0], defaultLngLat[1]);
+            // }
 
             // Klik peta untuk menempatkan marker
             map.on('click', (e) => {
@@ -283,8 +383,11 @@
                     reverseGeocodeAndUpdate([lat, lng]);
                 } else {
                     alert('Lokasi di luar wilayah Indramayu. Menggunakan lokasi default.');
-                    const defaultLngLat = [108.3247, -6.3265];
-                    map.flyTo({ center: defaultLngLat, zoom: 12 });
+                    const defaultLngLat = [108.321601, -6.326467];
+                    map.flyTo({
+                        center: defaultLngLat,
+                        zoom: 12
+                    });
                     placeMarker(defaultLngLat[0], defaultLngLat[1]);
                     updateInputs(defaultLngLat);
                 }
@@ -293,19 +396,27 @@
             // Fungsi untuk menempatkan dan memperbarui marker
             function placeMarker(lng, lat) {
                 if (marker) marker.remove();
-                marker = new mapboxgl.Marker({ draggable: true })
+                marker = new mapboxgl.Marker({
+                        draggable: true
+                    })
                     .setLngLat([lng, lat])
                     .addTo(map);
                 marker.on('dragend', () => {
                     const lngLat = marker.getLngLat();
                     if (isWithinBounds([lngLat.lng, lngLat.lat])) {
-                        map.flyTo({ center: [lngLat.lng, lngLat.lat], zoom: 14 });
+                        map.flyTo({
+                            center: [lngLat.lng, lngLat.lat],
+                            zoom: 14
+                        });
                         updateInputs([lngLat.lat, lngLat.lng]);
                         reverseGeocodeAndUpdate([lngLat.lat, lngLat.lng]);
                     } else {
                         alert('Marker di luar wilayah Indramayu. Mengembalikan ke posisi default.');
-                        const defaultLngLat = [108.3247, -6.3265];
-                        map.flyTo({ center: defaultLngLat, zoom: 12 });
+                        const defaultLngLat = [108.321601, -6.326467];
+                        map.flyTo({
+                            center: defaultLngLat,
+                            zoom: 12
+                        });
                         placeMarker(defaultLngLat[0], defaultLngLat[1]);
                         updateInputs(defaultLngLat);
                     }
@@ -330,14 +441,20 @@
             }
 
             async function reverseGeocode(lat, lng) {
-                const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&types=address,place,locality,region,district&language=id`;
+                const url =
+                    `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&types=address,place,locality,region,district&language=id`;
                 const response = await fetch(url);
                 return response.json();
             }
 
             async function reverseGeocodeWithNominatim(lat, lon) {
-                const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`;
-                const response = await fetch(url, { headers: { 'Accept-Language': 'id' } });
+                const url =
+                    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`;
+                const response = await fetch(url, {
+                    headers: {
+                        'Accept-Language': 'id'
+                    }
+                });
                 const data = await response.json();
                 return data;
             }
@@ -369,14 +486,25 @@
                                     const lat = parseFloat(item.lat);
                                     const lon = parseFloat(item.lon);
                                     if (isWithinBounds([lon, lat])) {
-                                        map.flyTo({ center: [lon, lat], zoom: 14 });
+                                        map.flyTo({
+                                            center: [lon, lat],
+                                            zoom: 14
+                                        });
                                         placeMarker(lon, lat);
                                         updateInputs([lat, lon]);
                                     } else {
-                                        alert('Lokasi di luar wilayah Indramayu. Menggunakan lokasi default.');
-                                        const defaultLngLat = [108.3247, -6.3265];
-                                        map.flyTo({ center: defaultLngLat, zoom: 12 });
-                                        placeMarker(defaultLngLat[0], defaultLngLat[1]);
+                                        alert(
+                                            'Lokasi di luar wilayah Indramayu. Menggunakan lokasi default.'
+                                        );
+                                        const defaultLngLat = [108.322028, -
+                                            6.3267936
+                                        ];
+                                        map.flyTo({
+                                            center: defaultLngLat,
+                                            zoom: 12
+                                        });
+                                        placeMarker(defaultLngLat[0],
+                                            defaultLngLat[1]);
                                         updateInputs(defaultLngLat);
                                     }
                                     inputAlamat.value = item.display_name;
@@ -406,10 +534,12 @@
             async function reverseGeocodeAndUpdate(lngLat) {
                 const [lat, lng] = lngLat;
                 const data = await reverseGeocodeWithNominatim(lat, lng);
+                console.log("Data hasil reverse geocode:", data); // <--- Tambahkan ini
                 if (data && data.address) {
                     inputAlamat.value = data.display_name || '-';
                     inputKecamatan.value = data.address.county || data.address.city || '-';
-                    inputDesa.value = data.address.village || data.address.hamlet || data.address.suburb || data.address.neighbourhood || data.address.locality || '-';
+                    inputDesa.value = data.address.village || data.address.hamlet || data.address.suburb || data
+                        .address.neighbourhood || data.address.locality || '-';
                 }
             }
         });
@@ -421,11 +551,40 @@
     </script>
 
     <style>
-        .img-thumbnail { width: 100px; height: 100px; object-fit: cover; }
-        input[type="text"].flatpickr-input { background-color: #fff !important; cursor: text; }
-        @media (max-width: 576px) { .img-thumbnail { width: 80px; height: 80px; } }
-        #map { position: relative; width: 100%; height: 258px; margin-top: 0rem; border: 1px solid #ccc; z-index: 1; overflow: hidden; }
-        #map-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; }
-        #suggestion-list { position: absolute; z-index: 999; top: 100%; left: 0; max-height: 200px; overflow-y: auto; background: #fff; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
+        .img-thumbnail {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        input[type="text"].flatpickr-input {
+            background-color: #fff !important;
+            cursor: text;
+        }
+
+        @media (max-width: 576px) {
+            .img-thumbnail {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        #map {
+            width: 100%;
+            height: 258px;
+            margin-top: 0rem;
+            position: relative;
+        }
+
+        #suggestion-list {
+            position: absolute;
+            z-index: 999;
+            top: 200px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 @endsection

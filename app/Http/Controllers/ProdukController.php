@@ -13,16 +13,21 @@ class ProdukController extends Controller
     public function __construct()
     {
         $this->middleware('auth:pembudidaya')->only([
-            'index', 'create', 'store', 'edit', 'update', 'destroy'
+            'index',
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy'
         ]);
     }
 
     public function show($id)
     {
         $produk = Produk::with('pembudidaya')
-                        ->where('id', $id)
-                        ->where('is_approved', true)
-                        ->firstOrFail();
+            ->where('id', $id)
+            ->where('is_approved', true)
+            ->firstOrFail();
 
         return view('detail', compact('produk'));
     }
@@ -34,9 +39,9 @@ class ProdukController extends Controller
         $pembudidaya = Auth::guard('pembudidaya')->user();
         $profil = $pembudidaya->profil;
         $produk = Produk::where('pembudidaya_id', $pembudidaya->id)
-                        ->where('is_approved', true)
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+            ->where('is_approved', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('detail_usaha', compact('pembudidaya', 'profil', 'produk'));
     }
@@ -108,8 +113,8 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         $produk = Produk::where('pembudidaya_id', Auth::guard('pembudidaya')->id())
-                        ->where('id', $id)
-                        ->firstOrFail();
+            ->where('id', $id)
+            ->firstOrFail();
 
         $data = $this->validateProduk($request);
 
@@ -203,11 +208,11 @@ class ProdukController extends Controller
             'images' => 'sometimes|array',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone' => 'required|digits_between:10,15',
-        'kecamatan' => 'required|string',
-        'desa' => 'required|string',
-        'latitude' => 'required|numeric',
-        'longitude' => 'required|numeric',
-        'alamat_lengkap' => 'required|string',
+            'kecamatan' => 'required|string',
+            'desa' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'address' => 'required|string',
             'commodity_type' => 'required|string',
             'specific_commodity_type' => 'nullable|string',
             'production_capacity' => 'nullable|integer',
@@ -239,7 +244,7 @@ class ProdukController extends Controller
             if ($minPrice <= $maxPrice) {
                 $produkList->where(function ($q) use ($minPrice, $maxPrice) {
                     $q->where('kisaran_harga_min', '<=', $maxPrice)
-                    ->where('kisaran_harga_max', '>=', $minPrice);
+                        ->where('kisaran_harga_max', '>=', $minPrice);
                 });
             }
         } elseif ($minPrice !== null) {
@@ -281,29 +286,54 @@ class ProdukController extends Controller
     private function getKecamatanList()
     {
         return [
-            'Anjatan', 'Arahan', 'Balongan', 'Bangodua', 'Bongas', 'Cantigi',
-            'Cikedung', 'Gabuswetan', 'Gantar', 'Haurgeulis', 'Indramayu',
-            'Jatibarang', 'Juntinyuat', 'Kandanghaur', 'Karangampel', 'Kedokan Bunder',
-            'Kertasemaya', 'Krangkeng', 'Kroya', 'Lelea', 'Lohbener', 'Losarang',
-            'Pasekan', 'Patrol', 'Sindang', 'Sliyeg', 'Sukagumiwang', 'Sukra',
-            'Terisi', 'Tukdana', 'Widasari'
+            'Anjatan',
+            'Arahan',
+            'Balongan',
+            'Bangodua',
+            'Bongas',
+            'Cantigi',
+            'Cikedung',
+            'Gabuswetan',
+            'Gantar',
+            'Haurgeulis',
+            'Indramayu',
+            'Jatibarang',
+            'Juntinyuat',
+            'Kandanghaur',
+            'Karangampel',
+            'Kedokan Bunder',
+            'Kertasemaya',
+            'Krangkeng',
+            'Kroya',
+            'Lelea',
+            'Lohbener',
+            'Losarang',
+            'Pasekan',
+            'Patrol',
+            'Sindang',
+            'Sliyeg',
+            'Sukagumiwang',
+            'Sukra',
+            'Terisi',
+            'Tukdana',
+            'Widasari'
         ];
     }
 
-public function destroyMultiple(Request $request)
-{
-    $produkIds = $request->input('produk_ids', []);
+    public function destroyMultiple(Request $request)
+    {
+        $produkIds = $request->input('produk_ids', []);
 
-    if (empty($produkIds)) {
-        return redirect()->back()->with('error', 'Tidak ada produk yang dipilih.');
+        if (empty($produkIds)) {
+            return redirect()->back()->with('error', 'Tidak ada produk yang dipilih.');
+        }
+
+        Produk::whereIn('id', $produkIds)
+            ->where('pembudidaya_id', Auth::guard('pembudidaya')->id())
+            ->delete();
+
+        return redirect()->back()->with('success', 'Produk yang dipilih berhasil dihapus.');
     }
 
-    Produk::whereIn('id', $produkIds)
-        ->where('pembudidaya_id', Auth::guard('pembudidaya')->id())
-        ->delete();
 
-    return redirect()->back()->with('success', 'Produk yang dipilih berhasil dihapus.');
-}
-
-    
 }
