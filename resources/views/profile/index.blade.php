@@ -17,7 +17,7 @@
                     <div class="rounded-top text-white d-flex flex-wrap align-items-center justify-content-between p-3">
                         <div class="d-flex align-items-center" style="gap: 15px;">
                             <div style="width: 120px;">
-                                <img src="{{ asset('apk_gis/public/images/akun.jpg') }}" alt="profile"
+                                <img src="{{ asset('images/akun.jpg') }}" alt="profile"
                                     class="img-fluid img-thumbnail rounded-circle" style="width: 100px; z-index: 1;">
                             </div>
                             <div>

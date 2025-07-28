@@ -66,7 +66,7 @@
                                 @if(!empty($gambarList) && is_array($gambarList))
                                     <div class="d-flex flex-wrap gap-1" style="max-width: 150px;">
                                         @foreach($gambarList as $gambar)
-                                            <img src="{{ asset('apk_gis/public/storage/images/' . $gambar) }}" alt="gambar produk" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                                            <img src="{{ asset('storage/images/' . $gambar) }}" alt="gambar produk" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                                         @endforeach
                                     </div>
                                 @else

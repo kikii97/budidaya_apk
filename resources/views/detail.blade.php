@@ -94,7 +94,7 @@
                     <!-- Gambar utama -->
                     <div class="main-image-container">
                         <img id="mainImage"
-                            src="{{ filter_var($mainImage, FILTER_VALIDATE_URL) ? $mainImage : asset('apk_gis/public/storage/images/' . $mainImage) }}"
+                            src="{{ filter_var($mainImage, FILTER_VALIDATE_URL) ? $mainImage : asset('storage/images/' . $mainImage) }}"
                             alt="Product-Image" style="aspect-ratio: 1 / 1;" onclick="showImageOverlay(this.src)"
                             style="cursor: zoom-in;">
                     </div>
@@ -105,7 +105,7 @@
                             @foreach ($images as $img)
                                 <div class="col-3" style="width: 30%;">
                                     <div class="thumb-container">
-                                        <img src="{{ filter_var($img, FILTER_VALIDATE_URL) ? $img : asset('apk_gis/public/storage/images/' . $img) }}"
+                                        <img src="{{ filter_var($img, FILTER_VALIDATE_URL) ? $img : asset('storage/images/' . $img) }}"
                                             class="thumb-image" alt="Thumbnail"
                                             onclick="document.getElementById('mainImage').src = this.src">
                                     </div>

@@ -9,7 +9,7 @@
 
 @section('content')
     <!-- Modal Filter untuk layar kecil -->
-    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal fade" id="filterModal" style="padding-top: -1rem; padding-bottom: 0rem; font-size: 0.8rem;" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-slideout modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -24,16 +24,20 @@
                             @php
                                 $selectedKomoditas = request('jenis_komoditas', []);
                             @endphp
-                            @foreach (['Udang', 'Rumput Laut', 'Ikan Bandeng', 'Ikan Gurame', 'Ikan Lele', 'Ikan Nila'] as $komoditas)
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="{{ Str::slug($komoditas) }}"
-                                        name="jenis_komoditas[]" value="{{ $komoditas }}"
-                                        {{ in_array($komoditas, $selectedKomoditas) ? 'checked' : '' }}>
-                                    <label class="mt-1 ps-2 form-check-label" for="{{ Str::slug($komoditas) }}">
-                                        {{ $komoditas }}
-                                    </label>
-                                </div>
-                            @endforeach
+                            <div class="row">
+                                @foreach (['Udang', 'Rumput Laut', 'Ikan Bandeng', 'Ikan Gurame', 'Ikan Lele', 'Ikan Nila'] as $komoditas)
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="{{ Str::slug($komoditas) }}"
+                                                name="jenis_komoditas[]" value="{{ $komoditas }}"
+                                                {{ in_array($komoditas, $selectedKomoditas) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="{{ Str::slug($komoditas) }}">
+                                                {{ $komoditas }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
 
                         <!-- Filter Price Range -->
@@ -43,20 +47,22 @@
                                 $priceMin = request('price_min', '');
                                 $priceMax = request('price_max', '');
                             @endphp
-                            <div class="mb-3">
-                                <label for="price_min" class="form-label">Min:</label>
-                                <input type="number" id="price_min" name="price_min" class="form-control" min="0"
-                                    value="{{ $priceMin }}">
-                            </div>
-                            <div>
-                                <label for="price_max" class="form-label">Max:</label>
-                                <input type="number" id="price_max" name="price_max" class="form-control" min="0"
-                                    value="{{ $priceMax }}">
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <label for="price_min" class="form-label">Min:</label>
+                                    <input type="number" id="price_min" name="price_min" class="form-control"
+                                        min="0" value="{{ $priceMin }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="price_max" class="form-label">Max:</label>
+                                    <input type="number" id="price_max" name="price_max" class="form-control"
+                                        min="0" value="{{ $priceMax }}">
+                                </div>
                             </div>
                         </div>
 
                         <!-- Filter Kecamatan -->
-                        <div class="filter-group mt-2">
+                        <div class="filter-group mt-4">
                             <h6 class="mb-3">Kecamatan</h6>
                             @php
                                 $selectedKecamatan = request('kecamatan', []);
@@ -93,19 +99,24 @@
                                     'Tukdana',
                                     'Widasari',
                                 ];
-                                $visibleCount = 5; // jumlah kecamatan yang tampil awalnya
+                                $visibleCount = 6; // menampilkan 6 item awal (2 kolom × 3 baris)
                             @endphp
-                            @foreach ($kecamatanList as $index => $kecamatan)
-                                <div class="form-check mb-2 kecamatan-item"
-                                    style="{{ $index >= $visibleCount ? 'display:none;' : '' }}">
-                                    <input class="form-check-input" type="checkbox" id="{{ Str::slug($kecamatan) }}"
-                                        name="kecamatan[]" value="{{ $kecamatan }}"
-                                        {{ in_array($kecamatan, $selectedKecamatan) ? 'checked' : '' }}>
-                                    <label class="mt-1 ps-2 form-check-label" for="{{ Str::slug($kecamatan) }}">
-                                        {{ $kecamatan }}
-                                    </label>
-                                </div>
-                            @endforeach
+
+                            <div class="row">
+                                @foreach ($kecamatanList as $index => $kecamatan)
+                                    <div class="col-md-6 kecamatan-item"
+                                        style="{{ $index >= $visibleCount ? 'display:none;' : '' }}">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="{{ Str::slug($kecamatan) }}"
+                                                name="kecamatan[]" value="{{ $kecamatan }}"
+                                                {{ in_array($kecamatan, $selectedKecamatan) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="{{ Str::slug($kecamatan) }}">
+                                                {{ $kecamatan }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                             <button type="button" id="toggleKecamatanBtnMobile" class="toggle-btn">
                                 Lihat lainnya <i class="bi bi-chevron-down"></i>
                             </button>
@@ -270,12 +281,11 @@
                                             $gambar = json_decode($produk->gambar, true);
                                             $gambarUtama = $gambar[0] ?? 'default.jpg';
                                         @endphp
-                                        <img src="{{ asset('apk_gis/public/storage/images/' . $gambarUtama) }}"
+                                        <img src="{{ asset('storage/images/' . $gambarUtama) }}"
                                             class="product-image w-100" alt="Product">
                                     </div>
                                     <div class="p-3">
-                                        <h6
-                                            class="category-badge d-inline-block">{{ $produk->jenis_komoditas }}</h6>
+                                        <h6 class="category-badge d-inline-block">{{ $produk->jenis_komoditas }}</h6>
                                         <h6 class="mt-2">{{ $produk->jenis_spesifik_komoditas ?? '-' }}</h6>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h6 class="price text-dark fw-semibold">

@@ -47,8 +47,8 @@
                             flex-shrink: 0;
                         ">
                             <img src="{{ $pembudidaya->profil && $pembudidaya->profil->foto_profil
-                                ? asset('apk_gis/public/storage/' . $pembudidaya->profil->foto_profil)
-                                : asset('apk_gis/public/images/akun.jpg') }}"
+                                ? asset('storage/' . $pembudidaya->profil->foto_profil)
+                                : asset('images/akun.jpg') }}"
                                 alt="profile"
                                 style="
                                     width: 100%;
@@ -130,7 +130,7 @@
                                             @endif
 
                                             {{-- <img src="{{ Storage::url('images/' . $item->gambar_utama) }}" --}}
-                                            <img src="{{ asset('apk_gis/public/storage/images/' . $item->gambar_utama) }}"
+                                            <img src="{{ asset('storage/images/' . $item->gambar_utama) }}"
                                                 alt="image" class="card-img-top"
                                                 style="
                                                 width: 100% !important; 

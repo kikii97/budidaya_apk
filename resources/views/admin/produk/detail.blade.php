@@ -33,11 +33,11 @@
                 @if (!empty($gambarList) && is_array($gambarList))
                     <div class="d-flex flex-wrap gap-2 mt-2">
                         @foreach ($gambarList as $gambar)
-                        <img src="{{ asset('apk_gis/public/storage/images/' . $gambar) }}"
+                        <img src="{{ asset('storage/images/' . $gambar) }}"
                             alt="Gambar Produk"
                             class="img-thumbnail"
                             style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
-                            onclick="tampilkanGambar('{{ asset('apk_gis/public/storage/images/' . $gambar) }}')">
+                            onclick="tampilkanGambar('{{ asset('storage/images/' . $gambar) }}')">
                         @endforeach
                     </div>
                 @else

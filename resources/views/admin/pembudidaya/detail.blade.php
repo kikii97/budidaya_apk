@@ -50,7 +50,7 @@
               @endphp
 
               @foreach ($suratPaths as $path)
-                <a href="{{ asset('apk_gis/public/storage/' . $path) }}" class="btn btn-outline-info btn-sm mt-1" target="_blank">
+                <a href="{{ asset('storage/' . $path) }}" class="btn btn-outline-info btn-sm mt-1" target="_blank">
                   <i class="fas fa-file-alt"></i> Lihat ({{ basename($path) }})
                 </a><br>
               @endforeach
@@ -66,11 +66,11 @@
 
               <div class="d-flex flex-wrap gap-2 mt-2">
                 @foreach ($fotoPaths as $path)
-                  <img src="{{ asset('apk_gis/public/storage/' . $path) }}"
+                  <img src="{{ asset('storage/' . $path) }}"
                       alt="Foto Usaha"
                       class="img-thumbnail"
                       style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
-                      onclick="tampilkanGambar('{{ asset('apk_gis/public/storage/' . $path) }}')">
+                      onclick="tampilkanGambar('{{ asset('storage/' . $path) }}')">
                 @endforeach
               </div>
             </div>
@@ -107,7 +107,7 @@
               </div>
               <div class="mb-3">
                 <strong>Foto Profil:</strong><br>
-                <img src="{{ asset('apk_gis/public/storage/' . $profil->foto_profil) }}" alt="Foto Profil" class="img-thumbnail shadow-sm mt-2" style="max-width: 150px; height: auto;">
+                <img src="{{ asset('storage/' . $profil->foto_profil) }}" alt="Foto Profil" class="img-thumbnail shadow-sm mt-2" style="max-width: 150px; height: auto;">
               </div>
             @else
               <div class="mb-3 text-muted">
