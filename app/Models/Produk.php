@@ -16,6 +16,7 @@ class Produk extends Model
         'telepon',
         'alamat_lengkap', // ubah dari 'alamat'
         'kecamatan', // ditambahkan untuk keperluan filter
+        'desa',
         'latitude', 
         'longitude',
         'jenis_komoditas',
@@ -26,6 +27,7 @@ class Produk extends Model
         'kisaran_harga_max',
         'prediksi_panen',
         'detail',
+        'use_geolocation',
         'is_approved',
         'user_id',
         'pembudidaya_id', // pastikan juga bisa diisi jika relasi dipakai

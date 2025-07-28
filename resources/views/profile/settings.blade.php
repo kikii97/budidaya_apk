@@ -13,7 +13,7 @@
     <a href="{{ url()->previous() }}" class="text-muted" style="">
         <i class="bi bi-arrow-left-circle"></i> Kembali
     </a>
-    <div class="card p-3 mt-2">
+    <div class="card p-3 mt-2" style="zoom: 80%">
         <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">

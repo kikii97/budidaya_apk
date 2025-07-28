@@ -76,6 +76,7 @@ class ProdukController extends Controller
         $data['masa_produksi_puncak'] = $data['peak_production_period'];
         $data['prediksi_panen'] = $data['harvest_prediction'];
         $data['detail'] = $data['details'];
+        $data['use_geolocation'] = $request->has('use_geolocation') ? 1 : 0;
 
         if (!empty($data['prediksi_panen'])) {
             $data['prediksi_panen'] = Carbon::createFromFormat('d-m-Y', $data['prediksi_panen'])->format('Y-m-d');
@@ -95,7 +96,8 @@ class ProdukController extends Controller
             $data['production_capacity'],
             $data['peak_production_period'],
             $data['harvest_prediction'],
-            $data['details']
+            $data['details'],
+            $data['use_geolocation']
         );
 
         Produk::create($data);
@@ -156,6 +158,7 @@ class ProdukController extends Controller
         $data['masa_produksi_puncak'] = $data['peak_production_period'];
         $data['prediksi_panen'] = $data['harvest_prediction'];
         $data['detail'] = $data['details'];
+        $data['use_geolocation'] = $request->has('use_geolocation') ? 1 : 0;
 
         if (!empty($data['prediksi_panen'])) {
             $data['prediksi_panen'] = Carbon::createFromFormat('d-m-Y', $data['prediksi_panen'])->format('Y-m-d');
@@ -175,7 +178,8 @@ class ProdukController extends Controller
             $data['production_capacity'],
             $data['peak_production_period'],
             $data['harvest_prediction'],
-            $data['details']
+            $data['details'],
+            $data['use_geolocation']
         );
 
         $produk->update($data);
@@ -221,6 +225,7 @@ class ProdukController extends Controller
             'price_range_max' => 'required|numeric|gte:price_range_min',
             'harvest_prediction' => 'nullable|date_format:d-m-Y',
             'details' => 'nullable|string',
+            'use_geolocation' => 'nullable|boolean',
         ], [
             'images.*.mimes' => 'Gambar harus format JPEG, PNG, atau JPG.',
             'images.*.max' => 'Ukuran gambar maksimal 2MB.',

@@ -117,8 +117,8 @@
                             font-size: 14px;
                             z-index: 10;
                             cursor: pointer;">
-                        <input type="checkbox" id="use-location" />
-                        Gunakan Lokasi Saya
+                            <input type="checkbox" id="use-location" 
+                            name="use_geolocation" value="1" />Gunakan Lokasi Saya
                     </label>
                 </div>
 
@@ -336,7 +336,6 @@
 
                 }
             });
-
 
             // Fungsi yang sebelumnya kamu pakai
             function setUserLocation(position) {
@@ -571,20 +570,10 @@
 
         #map {
             width: 100%;
-            height: 258px;
+            height: 260px;
             margin-top: 0rem;
             position: relative;
-        }
-
-        #suggestion-list {
-            position: absolute;
-            z-index: 999;
-            top: 200px;
-            max-height: 200px;
-            overflow-y: auto;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            overflow: hidden;
         }
     </style>
 @endsection

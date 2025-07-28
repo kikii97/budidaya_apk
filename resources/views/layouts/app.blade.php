@@ -275,6 +275,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- Tambahkan Bahasa Indonesia -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+    <!-- Pastikan library Turf sudah dimuat -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+
 
     <script>
         flatpickr("#harvest_prediction", {
