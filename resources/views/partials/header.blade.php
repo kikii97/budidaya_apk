@@ -7,7 +7,7 @@
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
         <a class="logo d-flex align-items-center me-auto me-xl-0" href="{{ url('/') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="Logo">
         </a>
 
         <nav id="navmenu" class="navmenu d-flex align-items-center gap-2">

@@ -100,7 +100,7 @@
         <div class="row gx-0 justify-content-center align-items-center min-vh-75">
             <!-- Kiri: Sambutan -->
             <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-img"
+                <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="Logo" class="logo-img"
                     style="height: 70px; max-width: 100%;" />
                 <h3 class="mt-3 text-primary">Selamat Datang</h3>
                 <p class="text-small">Silakan login atau daftar akun terlebih dahulu!</p>

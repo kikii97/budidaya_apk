@@ -294,7 +294,8 @@ body {
 
 .product-image {
   max-height: 400px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #f0f0f0;
 }
 
 .thumbnail {

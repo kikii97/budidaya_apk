@@ -150,7 +150,7 @@
                         @foreach (json_decode($produk->gambar, true) as $index => $gambar)
                             <div class="col-4 col-md-2 old-image-wrapper">
                                 <div class="image-box">
-                                    <img src="{{ asset('storage/images/' . $gambar) }}" alt="Gambar Produk">
+                                    <img src="{{ asset('apk_gis/public/storage/images/' . $gambar) }}" alt="Gambar Produk">
                                 </div>
                                 <div class="form-check mt-1 d-flex align-items-center justify-content-center">
                                     <input class="form-check-input" type="checkbox" name="hapus_gambar[]" value="{{ $gambar }}" id="hapus_{{ $index }}">

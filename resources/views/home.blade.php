@@ -17,13 +17,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/vendor.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/style.css') }}">
 
-    <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('apk_gis/public/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
     <!-- Main CSS File -->
-    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('apk_gis/public/css/main.css') }}" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,10 +89,6 @@
                 <path fill="currentColor"
                     d="M17.92 11.62a1 1 0 0 0-.21-.33l-5-5a1 1 0 0 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l5-5a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76Z" />
             </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z" />
-            </symbol>
             <symbol xmlns="http://www.w3.org/2000/svg" id="detail" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
@@ -134,7 +130,7 @@
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
         <a class="logo d-flex align-items-center me-auto me-xl-0" href="{{ url('/') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="Logo">
         </a>
 
         <nav id="navmenu" class="navmenu d-flex align-items-center gap-2">
@@ -288,7 +284,7 @@
     </div>
 
     <section id="beranda"
-        style="background-image: url('{{ asset('images/tambak-ikan.jpg') }}');background-repeat: no-repeat;background-size: cover;">
+        style="background-image: url('{{ asset('apk_gis/public/images/tambak-ikan.jpg') }}');background-repeat: no-repeat;background-size: cover;">
         <div class="container-lg mt-3">
             <div class="row">
                 <div class="col-lg-6">
@@ -465,27 +461,27 @@
                     <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
                             <a href="{{ route('katalog', ['jenis_komoditas' => ['Udang']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/udang.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                                <img src="{{ asset('apk_gis/public/images/udang.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
                             </a>
                             <a href="{{ route('katalog', ['jenis_komoditas' => ['Rumput Laut']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/rumputlaut.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                                <img src="{{ asset('apk_gis/public/images/rumputlaut.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Rumput Laut</h4>
                             </a>
                             <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Bandeng']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikanbandeng.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                                <img src="{{ asset('apk_gis/public/images/ikanbandeng.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Bandeng</h4>
                             </a>
                             <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Gurame']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikangurame.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                                <img src="{{ asset('apk_gis/public/images/ikangurame.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Gurame</h4>
                             </a>
                             <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Lele']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikanlele.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                                <img src="{{ asset('apk_gis/public/images/ikanlele.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
                             </a>
                             <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Nila']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail">
+                                <img src="{{ asset('apk_gis/public/images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Nila</h4>
                             </a>
                         </div>
@@ -495,7 +491,7 @@
         </div>
     </section>
 
-    <section id="budidaya" style="padding-bottom: 5rem;">
+    <section id="budidaya" style="padding-bottom: 3.5rem;">
         <div class="container-lg">
             <div class="row">
                 <div class="col-md-12">
@@ -509,7 +505,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" style="zoom: 90%">
                     <div
                         class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
                         @foreach ($recommendedProducts as $product)
@@ -522,9 +518,9 @@
                                                 $gambarList = json_decode($product->gambar, true);
                                                 $thumbnail = $gambarList[0] ?? 'default.jpg';
                                             @endphp
-                                            <img src="{{ asset('storage/images/' . $thumbnail) }}"
+                                            <img src="{{ asset('apk_gis/public/storage/images/' . $thumbnail) }}"
                                                 alt="Thumbnail {{ $product->nama }}" class="tab-image"
-                                                style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
+                                                style="width: 100%; height: 180px; object-fit: contain; border-radius: 6px; background: #f0f0f0;">
                                         </a>
                                     </figure>
                                     <div class="d-flex flex-column text-center">
@@ -721,14 +717,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/jquery-1.11.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('js/plugins.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/plugins.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/script.js') }}"></script>
 
 </body>
 

@@ -111,7 +111,7 @@
     <div class="row mt-3 mx-3" style="margin-top:25px;">
         <div class="col-md-3">
             <div style="" class="text-center">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 70px;">
+                <img src="{{ asset('apk_gis/public/images/logo.png') }}" alt="Logo" style="height: 70px;">
                 <h3 class="mt-3 text-primary">Selamat Datang</h3>
                 <p class="text">Daftarkan diri Anda sebagai Investor atau Usaha!</p>
 

@@ -42,7 +42,7 @@
                 <input type="file" name="foto_profile" class="form-control">
                 @if ($pembudidaya->profil && $pembudidaya->profil->foto_profil)
                     <small class="d-block mt-2">Foto saat ini:</small>
-                    <img src="{{ asset('storage/' . $pembudidaya->profil->foto_profil) }}" alt="Foto Profil" width="100" class="mb-2">
+                    <img src="{{ asset('apk_gis/public/storage/' . $pembudidaya->profil->foto_profil) }}" alt="Foto Profil" width="100" class="mb-2">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="hapusFoto" name="hapus_foto">
                         <label class="form-check-label" for="hapusFoto">Hapus foto profil</label>

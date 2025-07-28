@@ -23,13 +23,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/vendor.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('apk_gis/public/css/style.css') }}">
 
-    <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('apk_gis/public/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
     <!-- Main CSS File -->
-    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('apk_gis/public/css/main.css') }}" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,10 +78,6 @@
             <symbol xmlns="http://www.w3.org/2000/svg" id="calendar" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M19 4h-2V3a1 1 0 0 0-2 0v1H9V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7h16Zm0-9H4V7a1 1 0 0 1 1-1h2v1a1 1 0 0 0 2 0V6h6v1a1 1 0 0 0 2 0V6h2a1 1 0 0 1 1 1Z" />
-            </symbol>
-            <symbol xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z" />
             </symbol>
             <symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewBox="0 0 24 24">
                 <path fill="currentColor"
@@ -160,7 +156,7 @@
 
     <!-- Footer -->
     <footer id="kami"
-        style="background: linear-gradient(to top, #d3effa, #ffffff); font-size: 13px; line-height: 1.6; color: #333; padding-top: 3rem;">
+        style="zoom: 80%; background: linear-gradient(to top, #d3effa, #ffffff); font-size: 13px; line-height: 1.6; color: #333; padding-top: 3rem;">
         <!-- Pembatas -->
         <div style="border-top: 1px solid #bde5f4; margin-bottom: 20px;"></div>
 
@@ -264,14 +260,14 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/jquery-1.11.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('js/plugins.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/plugins.js') }}"></script>
+    <script src="{{ asset('apk_gis/public/js/script.js') }}"></script>
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>

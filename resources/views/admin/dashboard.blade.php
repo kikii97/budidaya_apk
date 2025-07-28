@@ -105,14 +105,14 @@
 
                             {{-- Tampilkan Surat Usaha --}}
                             @foreach ($suratPaths as $path)
-                              <a href="{{ asset('storage/' . $path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-1" style="font-size: 0.75rem;">
+                              <a href="{{ asset('apk_gis/public/storage/' . $path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-1" style="font-size: 0.75rem;">
                                 <i class="fas fa-file-alt"></i> {{ basename($path) }}
                               </a>
                             @endforeach
 
                             {{-- Tampilkan Foto Usaha --}}
                             @foreach ($fotoPaths as $path)
-                              <img src="{{ asset('storage/' . $path) }}" alt="Foto Usaha" class="img-thumbnail mb-1" style="width: 90px;">
+                              <img src="{{ asset('apk_gis/public/storage/' . $path) }}" alt="Foto Usaha" class="img-thumbnail mb-1" style="width: 90px;">
                             @endforeach
 
                             @if (empty($suratPaths) && empty($fotoPaths))
@@ -197,7 +197,7 @@
                       @if (!empty($gambarList) && is_array($gambarList))
                         <div class="d-flex flex-wrap gap-1" style="max-width: 150px;">
                           @foreach ($gambarList as $gambar)
-                            <img src="{{ asset('storage/images/' . $gambar) }}" alt="gambar produk" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                            <img src="{{ asset('apk_gis/public/storage/images/' . $gambar) }}" alt="gambar produk" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                           @endforeach
                         </div>
                       @else

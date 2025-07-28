@@ -78,14 +78,14 @@
 
                     {{-- Tampilkan Surat Usaha --}}
                     @foreach ($suratPaths as $path)
-                      <a href="{{ asset('storage/' . $path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-1" style="font-size: 0.75rem;">
+                      <a href="{{ asset('apk_gis/public/storage/' . $path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-1" style="font-size: 0.75rem;">
                         <i class="fas fa-file-alt"></i> {{ basename($path) }}
                       </a>
                     @endforeach
 
                     {{-- Tampilkan Foto Usaha --}}
                     @foreach ($fotoPaths as $path)
-                      <img src="{{ asset('storage/' . $path) }}" alt="Foto Usaha" class="img-thumbnail mb-1" style="width: 90px;">
+                      <img src="{{ asset('apk_gis/public/storage/' . $path) }}" alt="Foto Usaha" class="img-thumbnail mb-1" style="width: 90px;">
                     @endforeach
 
                     @if (empty($suratPaths) && empty($fotoPaths))

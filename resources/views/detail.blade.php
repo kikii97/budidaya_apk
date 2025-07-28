@@ -8,75 +8,76 @@
 @endsection
 
 @section('content')
-<style>
-    /* Gambar utama */
-    .main-image-container {
-        width: 100%;
-        max-height: 300px;
-        overflow: hidden;
-    }
+    <style>
+        /* Gambar utama */
+        .main-image-container {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+        }
 
-    #mainImage {
-        width: 100%;
-        height: auto;
-        max-height: 300px;
-        object-fit: cover;
-        display: block;
-        cursor: zoom-in;
-    }
+        #mainImage {
+            width: 100%;
+            height: 230px;
+            max-height: 300px;
+            object-fit: contain;
+            background: #f0f0f0;
+            display: block;
+            cursor: zoom-in;
+        }
 
-    /* Thumbnail */
-    .thumb-container {
-        width: 100%;
-        height: 80px;
-        overflow: hidden;
-        border-radius: 6px;
-    }
+        /* Thumbnail */
+        .thumb-container {
+            width: 100%;
+            height: 80px;
+            overflow: hidden;
+            border-radius: 6px;
+        }
 
-    .thumb-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+        .thumb-image {
+            width: 100%;
+            height: 80%;
+            object-fit: contain;
+            display: block;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
-    /* Overlay untuk gambar fullscreen */
-    .image-overlay {
-        display: none;
-        position: fixed;
-        z-index: 1050;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.85);
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
+        /* Overlay untuk gambar fullscreen */
+        .image-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-    .image-overlay img.overlay-img {
-        max-width: 90%;
-        max-height: 90%;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-    }
+        .image-overlay img.overlay-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
 
-    .image-overlay .close-btn {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        font-size: 40px;
-        color: #fff;
-        cursor: pointer;
-        z-index: 1051;
-    }
-</style>
+        .image-overlay .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 1051;
+        }
+    </style>
 
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" style="zoom: 80%;">
             <!-- Product Images -->
             <div class="col-md-4 mb-4">
                 <div class="card">
@@ -93,22 +94,19 @@
                     <!-- Gambar utama -->
                     <div class="main-image-container">
                         <img id="mainImage"
-                            src="{{ filter_var($mainImage, FILTER_VALIDATE_URL) ? $mainImage : asset('storage/images/' . $mainImage) }}"
-                            alt="Product-Image"
-                            onclick="showImageOverlay(this.src)"
+                            src="{{ filter_var($mainImage, FILTER_VALIDATE_URL) ? $mainImage : asset('apk_gis/public/storage/images/' . $mainImage) }}"
+                            alt="Product-Image" style="aspect-ratio: 1 / 1;" onclick="showImageOverlay(this.src)"
                             style="cursor: zoom-in;">
                     </div>
 
                     <!-- Thumbnail -->
-                    <div class="card-body">
-                        <div class="row g-2">
+                    <div class="card-body" style="padding: 16px 16px 1px;">
+                        <div class="row">
                             @foreach ($images as $img)
-                                <div class="col-3">
+                                <div class="col-3" style="width: 30%;">
                                     <div class="thumb-container">
-                                        <img
-                                            src="{{ filter_var($img, FILTER_VALIDATE_URL) ? $img : asset('storage/images/' . $img) }}"
-                                            class="thumb-image"
-                                            alt="Thumbnail"
+                                        <img src="{{ filter_var($img, FILTER_VALIDATE_URL) ? $img : asset('apk_gis/public/storage/images/' . $img) }}"
+                                            class="thumb-image" alt="Thumbnail"
                                             onclick="document.getElementById('mainImage').src = this.src">
                                     </div>
                                 </div>
@@ -134,17 +132,15 @@
 
                 {{-- Ringkasan awal --}}
                 <div id="produk-summary">
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div class="d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Pembudidaya</strong></div>
-                        <div>: {{ $produk->pembudidaya->name ?? '-' }}</div>
+                        <div style="width: 10px;">:</div>
+                        <div style="flex: 1;">{{ $produk->pembudidaya->name ?? '-' }}</div>
                     </div>
-                    {{-- <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div class="d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Telepon</strong></div>
-                        <div>: {{ $produk->telepon ?? ($produk->pembudidaya->telepon ?? '-') }}</div>
-                    </div> --}}
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
-                        <div style="width: 170px;"><strong>Telepon</strong></div>
-                        <div>:
+                        <div style="width: 10px;">:</div>
+                        <div style="flex: 1;">
                             @php
                                 $telepon = $produk->telepon ?? ($produk->pembudidaya->telepon ?? null);
                                 if ($telepon) {
@@ -165,36 +161,43 @@
                             @endif
                         </div>
                     </div>
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div class="d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Kapasitas</strong></div>
-                        <div>: {{ $produk->kapasitas_produksi ?? '-' }} kg</div>
+                        <div style="width: 10px;">:</div>
+                        <div style="flex: 1;">{{ $produk->kapasitas_produksi ?? '-' }} kg</div>
                     </div>
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div class="d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Spesifik Komoditas</strong></div>
-                        <div>: {{ $produk->jenis_spesifik_komoditas ?? '-' }}</div>
+                        <div style="width: 10px;">:</div>
+                        <div style="flex: 1;">{{ $produk->jenis_spesifik_komoditas ?? '-' }}</div>
                     </div>
                 </div>
 
                 {{-- Detail lengkap --}}
-                <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                <div class="d-flex" style="font-size: 0.85rem;">
                     <div style="width: 170px;"><strong>Alamat</strong></div>
-                    <div>: {{ $produk->alamat_lengkap ?? '-' }}{{ $produk->kecamatan ? ', ' . $produk->kecamatan : '' }}
+                    <div style="width: 10px;">:</div>
+                    <div style="flex: 1;">
+                        {{ $produk->alamat_lengkap ?? '-' }}{{ $produk->kecamatan ? ', ' . $produk->kecamatan : '' }}
                     </div>
                 </div>
                 <div id="produk-detail" style="display: none;">
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div class="d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Prediksi Panen</strong></div>
-                        <div>:
+                        <div style="width: 10px;">:</div>
+                        <div style="flex: 1;">
                             {{ $produk->prediksi_panen ? \Carbon\Carbon::parse($produk->prediksi_panen)->translatedFormat('d F Y') : '-' }}
                         </div>
                     </div>
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div class="d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Masa Produksi Puncak</strong></div>
-                        <div>: {{ $produk->masa_produksi_puncak ?? '-' }}</div>
+                        <div style="width: 10px;">:</div>
+                        <div style="flex: 1;">{{ $produk->masa_produksi_puncak ?? '-' }}</div>
                     </div>
-                    <div class="mb-1 d-flex" style="font-size: 0.85rem;">
+                    <div class="d-flex" style="font-size: 0.85rem;">
                         <div style="width: 170px;"><strong>Detail</strong></div>
-                        <div>: {{ $produk->detail ?? '-' }}</div>
+                        <div style="width: 10px;">:</div>
+                        <div style="flex: 1;">{{ $produk->detail ?? '-' }}</div>
                     </div>
                 </div>
 
@@ -239,7 +242,7 @@
                     @endif --}}
 
                     <div class="col">
-                        @if(Auth::guard('web')->check() || Auth::guard('pembudidaya')->check())
+                        @if (Auth::guard('web')->check() || Auth::guard('pembudidaya')->check())
                             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">
                                 <i class="fa-regular fa-clipboard" style="padding-right: 15px;"></i>Order
                             </a>
@@ -255,73 +258,80 @@
                     </div>
                 </div>
 
-                    <!-- Modal hanya ditampilkan untuk user yang sudah login -->
-                    @if(Auth::guard('web')->check() || Auth::guard('pembudidaya')->check())
-                    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+                <!-- Modal hanya ditampilkan untuk user yang sudah login -->
+                @if (Auth::guard('web')->check() || Auth::guard('pembudidaya')->check())
+                    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog" style="max-width: 500px;">
                             <div class="modal-content" style="border-radius: 1rem;">
                                 <div class="modal-header py-2">
-                                    <h5 class="modal-title" id="orderModalLabel" style="font-weight: 500;">Form Order</h5>
-                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title" id="orderModalLabel" style="font-weight: 500;">Form Order
+                                    </h5>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
 
                                 <form id="orderForm" method="POST" action="{{ route('order.store') }}">
                                     @csrf
                                     <input type="hidden" name="produk_id" value="{{ $produk->id }}">
 
-                                        <div class="modal-body p-3" style="color: black; font-size: 0.8rem;">
-                                            <div class="row mb-2">
-                                                <div class="col-12">
-                                                    <label class="form-label mb-1">Nama Customer</label>
-                                                    <input type="text" name="nama_customer" class="form-control form-control-sm" placeholder="Masukkan nama customer" required>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2">
-                                                <div class="col-12">
-                                                    <label class="form-label mb-1">Nomor HP Customer</label>
-                                                    <input type="text" name="no_hp_customer" class="form-control form-control-sm" placeholder="08xxxxxxxxxx" required>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2">
-                                                <div class="col-6">
-                                                    <label class="form-label mb-1">Jumlah (dalam kg)</label>
-                                                    <input type="number" name="jumlah"
-                                                        class="form-control form-control-sm"
-                                                        placeholder="Contoh: 5"
-                                                        min="1"
-                                                        max="{{ $produk->kapasitas_produksi }}"
-                                                        required>
-                                                    <small class="text-muted">Maksimum: {{ $produk->kapasitas_produksi }} kg</small>
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label mb-1">Tanggal Order</label>
-                                                    <input type="date" name="tanggal_order" class="form-control form-control-sm" required>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <label class="form-label mb-1">Keterangan</label>
-                                                    <textarea name="keterangan" class="form-control form-control-sm" rows="2" placeholder="Opsional"></textarea>
-                                                </div>
+                                    <div class="modal-body p-3" style="color: black; font-size: 0.8rem;">
+                                        <div class="row mb-2">
+                                            <div class="col-12">
+                                                <label class="form-label mb-1">Nama Customer</label>
+                                                <input type="text" name="nama_customer"
+                                                    class="form-control form-control-sm"
+                                                    placeholder="Masukkan nama customer" required>
                                             </div>
                                         </div>
 
+                                        <div class="row mb-2">
+                                            <div class="col-12">
+                                                <label class="form-label mb-1">Nomor HP Customer</label>
+                                                <input type="text" name="no_hp_customer"
+                                                    class="form-control form-control-sm" placeholder="08xxxxxxxxxx"
+                                                    required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-6">
+                                                <label class="form-label mb-1">Jumlah (dalam kg)</label>
+                                                <input type="number" name="jumlah" class="form-control form-control-sm"
+                                                    placeholder="Contoh: 5" min="1"
+                                                    max="{{ $produk->kapasitas_produksi }}" required>
+                                                <small class="text-muted">Maksimum: {{ $produk->kapasitas_produksi }}
+                                                    kg</small>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label mb-1">Tanggal Order</label>
+                                                <input type="date" name="tanggal_order"
+                                                    class="form-control form-control-sm" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label mb-1">Keterangan</label>
+                                                <textarea name="keterangan" class="form-control form-control-sm" rows="2" placeholder="Opsional"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="modal-footer py-2">
-                                        <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">Simpan</button>
+                                        <button type="submit"
+                                            class="btn btn-primary btn-sm rounded-pill px-3">Simpan</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <script>
-                        document.addEventListener('DOMContentLoaded', function () {
+                        document.addEventListener('DOMContentLoaded', function() {
                             const jumlahInput = document.getElementById('jumlahInput');
                             const maxStok = {{ $produk->kapasitas_produksi ?? 0 }};
 
-                            jumlahInput.addEventListener('input', function () {
+                            jumlahInput.addEventListener('input', function() {
                                 let val = parseInt(this.value, 10);
 
                                 if (val > maxStok) {
@@ -331,50 +341,44 @@
                                 }
                             });
 
-                            jumlahInput.addEventListener('blur', function () {
+                            jumlahInput.addEventListener('blur', function() {
                                 if (!this.value || parseInt(this.value, 10) < 1) {
                                     this.value = 1;
                                 }
                             });
                         });
                     </script>
-                    @endif
+                @endif
 
-                    @if(session('success'))
-                        <div class="alert alert-success mt-3" style="font-size: 0.9rem;">
-                            {{ session('success') }}<br>
-                            @php
-                                $telepon = $produk->telepon ?? ($produk->pembudidaya->telepon ?? null);
-                                $nomor = preg_replace('/[^0-9]/', '', $telepon);
-                                if (strpos($nomor, '0') === 0) {
-                                    $nomor = '62' . substr($nomor, 1);
-                                }
-                            @endphp
-                            @if ($telepon)
-                                <strong>
-                                    Hubungi pembudidaya melalui 
-                                    <a href="https://wa.me/{{ $nomor }}" target="_blank" style="text-decoration: underline;">
-                                        WhatsApp ({{ $telepon }})
-                                    </a>
-                                </strong>
-                            @endif
-                        </div>
-                    @endif
-
-                <!-- Additional Info -->
-                <div class="mt-3">
-                    <div class="d-flex align-items-center mb-1">
-                        <i class="fas fa-truck text-primary me-2"></i>
-                        <span style="font-size: 0.775rem;">Gratis ongkos kirim untuk pesanan lebih dari 10 kg</span>
+                @if (session('success'))
+                    <div class="alert alert-success mt-3" style="font-size: 0.9rem;">
+                        {{ session('success') }}<br>
+                        @php
+                            $telepon = $produk->telepon ?? ($produk->pembudidaya->telepon ?? null);
+                            $nomor = preg_replace('/[^0-9]/', '', $telepon);
+                            if (strpos($nomor, '0') === 0) {
+                                $nomor = '62' . substr($nomor, 1);
+                            }
+                        @endphp
+                        @if ($telepon)
+                            <strong>
+                                Hubungi pembudidaya melalui
+                                <a href="https://wa.me/{{ $nomor }}" target="_blank"
+                                    style="text-decoration: underline;">
+                                    WhatsApp ({{ $telepon }})
+                                </a>
+                            </strong>
+                        @endif
                     </div>
-                </div>
+                @endif
+
             </div>
         </div>
         @stack('scripts')
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            @if(session('success'))
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
                 const modalEl = document.getElementById('orderModal');
                 if (modalEl) {
                     const modalInstance = bootstrap.Modal.getInstance(modalEl);
@@ -386,16 +390,16 @@
         });
     </script>
     <script>
-    function showImageOverlay(src) {
-        const overlay = document.getElementById('imageOverlay');
-        const overlayImage = document.getElementById('overlayImage');
-        overlayImage.src = src;
-        overlay.style.display = 'flex';
-    }
+        function showImageOverlay(src) {
+            const overlay = document.getElementById('imageOverlay');
+            const overlayImage = document.getElementById('overlayImage');
+            overlayImage.src = src;
+            overlay.style.display = 'flex';
+        }
 
-    function closeImageOverlay(event) {
-        event?.stopPropagation();
-        document.getElementById('imageOverlay').style.display = 'none';
-    }
+        function closeImageOverlay(event) {
+            event?.stopPropagation();
+            document.getElementById('imageOverlay').style.display = 'none';
+        }
     </script>
 @endsection
