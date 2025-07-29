@@ -122,47 +122,51 @@
         <div class="preloader">
         </div>
     </div>
-@php
-    $user = Auth::user() ?? Auth::guard('pembudidaya')->user();
-@endphp
+    @php
+        $user = Auth::user() ?? Auth::guard('pembudidaya')->user();
+    @endphp
 
-<header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
 
-        <a class="logo d-flex align-items-center me-auto me-xl-0" href="{{ url('/') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo">
-        </a>
+            <a class="logo d-flex align-items-center me-auto me-xl-0" href="{{ url('/') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            </a>
 
-        <nav id="navmenu" class="navmenu d-flex align-items-center gap-2">
-            <ul class="d-none d-xl-flex">
-                <li><a href="{{ url('/') }}">Beranda</a></li>
-                <li><a href="{{ url('/#komoditas') }}">Komoditas</a></li>
-                <li><a href="{{ url('/#budidaya') }}">Budidaya</a></li>
-                <li><a href="{{ url('/#peta') }}">Peta Budidaya</a></li>
-                <li><a href="#kami">Tentang Kami</a></li>
-            </ul>
+            <nav id="navmenu" class="navmenu d-flex align-items-center gap-2">
+                <ul class="d-none d-xl-flex">
+                    <li><a href="{{ url('/') }}">Beranda</a></li>
+                    <li><a href="{{ url('/#komoditas') }}">Komoditas</a></li>
+                    <li><a href="{{ url('/#budidaya') }}">Budidaya</a></li>
+                    <li><a href="{{ url('/#peta') }}">Peta Budidaya</a></li>
+                    <li><a href="#kami">Tentang Kami</a></li>
+                </ul>
 
-            @if ($user)
-                <!-- Tombol Notifikasi Mobile -->
-                <button id="btnNotifMobile" type="button" class="btn btn-outline-secondary position-relative d-xl-none" data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
-                    🔔
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ $user->unreadNotifications->count() ?? 0 }}
-                        <span class="visually-hidden">notifikasi baru</span>
-                    </span>
-                </button>
-            @endif
+                @if ($user)
+                    <!-- Tombol Notifikasi Mobile -->
+                    <button id="btnNotifMobile" type="button"
+                        class="btn btn-outline-secondary position-relative d-xl-none" data-bs-toggle="offcanvas"
+                        data-bs-target="#notificationModal" aria-controls="notificationModal">
+                        🔔
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $user->unreadNotifications->count() ?? 0 }}
+                            <span class="visually-hidden">notifikasi baru</span>
+                        </span>
+                    </button>
+                @endif
 
-            <!-- Tombol Hamburger Menu -->
-            <i id="btnHamburger" class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas" data-bs-target="#mobileNav"></i>
-        </nav>
+                <!-- Tombol Hamburger Menu -->
+                <i id="btnHamburger" class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas"
+                    data-bs-target="#mobileNav"></i>
+            </nav>
 
             <!-- Tombol Notifikasi Desktop -->
             @if ($user)
                 <div class="d-none d-xl-flex align-items-center gap-2 ms-3">
                     <!-- Tombol Notifikasi Desktop -->
                     <button type="button" class="btn btn-outline-secondary position-relative"
-                        data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
+                        data-bs-toggle="offcanvas" data-bs-target="#notificationModal"
+                        aria-controls="notificationModal">
                         🔔
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             {{ $user->unreadNotifications->count() ?? 0 }}
@@ -178,15 +182,17 @@
                         </a>
                         <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
                             aria-labelledby="accountDropdown">
-                            @if($user && $user->role === 'pembudidaya')
+                            @if ($user && $user->role === 'pembudidaya')
                                 <li>
                                     <a class="dropdown-item py-1 px-3 small"
-                                    href="{{ route('pembudidaya.detail_usaha', ['id' => $user->pembudidaya->id ?? 0]) }}">
+                                        href="{{ route('pembudidaya.detail_usaha', ['id' => $user->pembudidaya->id ?? 0]) }}">
                                         Account Settings
                                     </a>
                                 </li>
                             @endif
-                            <li><hr class="dropdown-divider my-1"></li>
+                            <li>
+                                <hr class="dropdown-divider my-1">
+                            </li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
@@ -203,40 +209,47 @@
                         id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         Log In
                     </a>
-                    <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown" aria-labelledby="loginDropdown">
+                    <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
+                        aria-labelledby="loginDropdown">
                         <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                        <li><hr class="dropdown-divider my-1"></li>
-                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
+                        <li>
+                            <hr class="dropdown-divider my-1">
+                        </li>
+                        <li><a class="dropdown-item py-1 px-3 small"
+                                href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
                     </ul>
                 </div>
             @endif
         </div>
-    </div>
+        </div>
 
-    <!-- Offcanvas Notifikasi -->
-    <div class="offcanvas offcanvas-end" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true" style="max-width: 90vw;">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="notificationModalLabel">Notifikasi</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <!-- Offcanvas Notifikasi -->
+        <div class="offcanvas offcanvas-end" id="notificationModal" tabindex="-1"
+            aria-labelledby="notificationModalLabel" aria-hidden="true" style="max-width: 90vw;">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="notificationModalLabel">Notifikasi</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                @if ($notifications->count())
+                    <ul class="list-group">
+                        @foreach ($notifications as $notification)
+                            <li class="list-group-item">
+                                {{ $notification->data['message'] ?? 'Notifikasi baru' }}
+                                <br>
+                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="text-muted">Tidak ada notifikasi baru.</p>
+                @endif
+                <button type="button" class="btn btn-danger mt-3" id="clearNotificationsBtn">Hapus Semua
+                    Notifikasi</button>
+            </div>
         </div>
-        <div class="offcanvas-body">
-            @if ($notifications->count())
-                <ul class="list-group">
-                    @foreach ($notifications as $notification)
-                        <li class="list-group-item">
-                            {{ $notification->data['message'] ?? 'Notifikasi baru' }}
-                            <br>
-                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <p class="text-muted">Tidak ada notifikasi baru.</p>
-            @endif
-            <button type="button" class="btn btn-danger mt-3" id="clearNotificationsBtn">Hapus Semua Notifikasi</button>
-        </div>
-    </div>
-</header>
+    </header>
     <!-- Mobile Menu (Offcanvas) -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
         <div class="offcanvas-header">
@@ -253,8 +266,9 @@
 
                 <!-- Log In dropdown di mobile -->
                 @if (Auth::check() || Auth::guard('pembudidaya')->check())
-                    @if(Auth::guard('pembudidaya')->check())
-                        <li><a class="nav-link" href="{{ route('pembudidaya.detail_usaha') }}">Account Settings</a></li>
+                    @if (Auth::guard('pembudidaya')->check())
+                        <li><a class="nav-link" href="{{ route('pembudidaya.detail_usaha') }}">Account Settings</a>
+                        </li>
                     @endif
                     <li>
                         <form action="{{ url('logout') }}" method="POST">
@@ -460,28 +474,40 @@
 
                     <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
-                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Udang']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/udang.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Udang']]) }}"
+                                class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('images/udang.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Udang</h4>
                             </a>
-                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Rumput Laut']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/rumputlaut.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Rumput Laut']]) }}"
+                                class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('images/rumputlaut.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Rumput Laut</h4>
                             </a>
-                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Bandeng']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikanbandeng.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Bandeng']]) }}"
+                                class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('images/ikanbandeng.jpg') }}"
+                                    class="rounded-circle" alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Bandeng</h4>
                             </a>
-                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Gurame']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikangurame.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Gurame']]) }}"
+                                class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('images/ikangurame.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Gurame</h4>
                             </a>
-                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Lele']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikanlele.jpg') }}" class="rounded-circle" alt="Category Thumbnail">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Lele']]) }}"
+                                class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('images/ikanlele.jpg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Lele</h4>
                             </a>
-                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Nila']]) }}" class="nav-link swiper-slide text-center">
-                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle" alt="Category Thumbnail">
+                            <a href="{{ route('katalog', ['jenis_komoditas' => ['Ikan Nila']]) }}"
+                                class="nav-link swiper-slide text-center">
+                                <img src="{{ asset('images/ikannila.jpeg') }}" class="rounded-circle"
+                                    alt="Category Thumbnail">
                                 <h4 class="fs-6 mt-3 fw-normal category-title">Ikan Nila</h4>
                             </a>
                         </div>
@@ -653,7 +679,9 @@
             const map = new mapboxgl.Map({
                 container: 'map', // id elemen tempat peta muncul
                 style: 'mapbox://styles/mapbox/navigation-day-v1', // style peta (bisa ganti ke yang lain)
-                center: [108.3247, -6.3265], // koordinat tengah peta [lng, lat] (sesuai lokasi Dillard's di contoh)
+                center: [108.3247, -
+                    6.3265
+                ], // koordinat tengah peta [lng, lat] (sesuai lokasi Dillard's di contoh)
                 zoom: 12 // zoom level
             });
 
@@ -698,23 +726,35 @@
         });
     </script>
     <script>
-    const notifModal = document.getElementById('notificationModal');
-    const notifBtn = document.getElementById('btnNotifMobile');
-    const hamburgerBtn = document.getElementById('btnHamburger');
+        const notifModal = document.getElementById('notificationModal');
+        const notifBtn = document.getElementById('btnNotifMobile');
+        const hamburgerBtn = document.getElementById('btnHamburger');
 
-    notifModal.addEventListener('show.bs.offcanvas', function () {
-        // Sembunyikan tombol saat modal terbuka
-        notifBtn?.classList.add('d-none');
-        hamburgerBtn?.classList.add('d-none');
-    });
+        notifModal.addEventListener('show.bs.offcanvas', function() {
+            // Sembunyikan tombol saat modal terbuka
+            notifBtn?.classList.add('d-none');
+            hamburgerBtn?.classList.add('d-none');
+        });
 
-    notifModal.addEventListener('hidden.bs.offcanvas', function () {
-        // Tampilkan kembali tombol saat modal tertutup
-        notifBtn?.classList.remove('d-none');
-        hamburgerBtn?.classList.remove('d-none');
-    });
-</script>
+        notifModal.addEventListener('hidden.bs.offcanvas', function() {
+            // Tampilkan kembali tombol saat modal tertutup
+            notifBtn?.classList.remove('d-none');
+            hamburgerBtn?.classList.remove('d-none');
+        });
+    </script>
+    <script>
+        const kabupaten = "{{ asset('storage/app/public/kabupaten.json') }}";
+        const kecamatan = "{{ asset('storage/app/public/31kecamatan.geojson') }}";
+        const desa = "{{ asset('storage/app/public/desa.geojson') }}";
+    </script>
 
+    {{-- gis --}}
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script> --}}
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
@@ -725,6 +765,7 @@
     </script>
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/map.js') }}"></script>
 
 </body>
 
