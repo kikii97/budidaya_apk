@@ -77,7 +77,7 @@ class LoginRegisterController extends Controller
             ]);
 
             Auth::guard('web')->login($user);
-            return redirect()->route('produk.rekomendasi');
+            return redirect()->route('home');
         }
 
         return back()->withErrors(['tipe' => 'Tipe tidak valid.'])->withInput();
@@ -114,7 +114,7 @@ class LoginRegisterController extends Controller
         if (User::where('email', $credentials['email'])->exists()) {
             if (Auth::guard('web')->attempt($credentials)) {
                 $request->session()->regenerate();
-                return redirect()->route('produk.rekomendasi');
+                return redirect()->route('home');
             }
         }
 

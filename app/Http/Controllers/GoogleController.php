@@ -67,7 +67,7 @@ public function handleGoogleCallback()
     if ($user) {
         Auth::guard('web')->login($user);
         session()->forget('login_tipe');
-        return redirect()->route('produk.rekomendasi');
+        return redirect()->route('home');
     }
 
     // Jika belum ada di semua tabel, buat akun baru sesuai tipe login
@@ -87,7 +87,7 @@ public function handleGoogleCallback()
         ]);
         Auth::guard('web')->login($user);
         session()->forget('login_tipe');
-        return redirect()->route('produk.rekomendasi');
+        return redirect()->route('home');
     }
 
     if ($tipe === 'usaha') {

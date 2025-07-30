@@ -515,77 +515,86 @@
         </div>
     </section>
 
-    <section id="budidaya" style="padding-bottom: 3.5rem;">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-header d-flex justify-content-between align-items-center flex-wrap gap-2"
-                        style="row-gap: 0.5rem;">
-                        <h2 class="section-title m-0 fs-4">Etalase Produk Budidaya</h2>
-                        <div class="d-flex align-items-center">
-                            <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
-                        </div>
+<section id="budidaya" style="padding-bottom: 3.5rem;">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+                    style="row-gap: 0.5rem;">
+                    <h2 class="section-title m-0 fs-4">Etalase Produk Budidaya</h2>
+                    <div class="d-flex align-items-center">
+                        <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12" style="zoom: 90%">
-                    <div
-                        class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-                        @foreach ($recommendedProducts as $product)
-                            <div class="col-6 col-md-4">
-                                <div class="product-item">
-                                    <figure>
-                                        <a href="{{ route('produk.detail', $product->id) }}"
-                                            title="{{ $product->nama }}">
-                                            @php
-                                                $gambarList = json_decode($product->gambar, true);
-                                                $thumbnail = $gambarList[0] ?? 'default.jpg';
-                                            @endphp
-                                            <img src="{{ asset('storage/images/' . $thumbnail) }}"
-                                                alt="Thumbnail {{ $product->nama }}" class="tab-image"
-                                                style="width: 100%; height: 180px; object-fit: contain; border-radius: 6px; background: #f0f0f0;">
-                                        </a>
-                                    </figure>
-                                    <div class="d-flex flex-column text-center">
-                                        <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="zoom: 90%">
+                <div
+                    class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                    @foreach ($recommendedProducts as $index => $product)
+                        <div class="col-6 col-md-4">
+                            <div class="product-item">
+                                <figure>
+                                    <a href="{{ route('produk.detail', $product->id) }}"
+                                       title="{{ $product->nama }}">
+                                        @php
+                                            $gambarList = json_decode($product->gambar, true);
+                                            $thumbnail = $gambarList[0] ?? 'default.jpg';
+                                        @endphp
+                                        <img src="{{ asset('storage/images/' . $thumbnail) }}"
+                                             alt="Thumbnail {{ $product->nama }}" class="tab-image"
+                                             style="width: 100%; height: 180px; object-fit: contain; border-radius: 6px; background: #f0f0f0;">
+                                    </a>
+                                </figure>
 
-                                        {{-- Jenis Komoditas --}}
-                                        <div class="mb-1">
-                                            <div class="fw-semibold fs-6">
-                                                {{ $product->jenis_komoditas ?? 'Tidak tersedia' }}</div>
+                                {{-- Menampilkan Nilai & Nomor Urut jika hasil dari form rekomendasi dan produk memiliki bobot --}}
+                                @if (!empty($filters) && isset($product->bobot))
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <div class="px-3 py-1 border border-primary rounded-pill bg-light text-dark shadow-sm"
+                                             style="font-size: 0.75rem;">
+                                            <strong>Nilai:</strong> {{ number_format($product->bobot, 4) }}
+                                            <span class="mx-1">|</span>
+                                            <strong>No:</strong> {{ $index + 1 }}
                                         </div>
+                                    </div>
+                                @endif
 
-                                        {{-- Kisaran Harga --}}
-                                        <div class="text-center">
-                                            <span class="fw-semibold text-dark fs-6 m-0 p-0">
-                                                Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} –
-                                                Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
-                                            </span>
-                                            <span class="text-warning fw-semibold fs-6">/kg</span>
+                                <div class="d-flex flex-column text-center">
+                                    <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
+                                    <div class="mb-1">
+                                        <div class="fw-semibold fs-6">
+                                            {{ $product->jenis_komoditas ?? 'Tidak tersedia' }}
                                         </div>
-
-                                        <div class="button-area p-3 pt-0">
-                                            <div class="row g-1 mt-2 d-flex justify-content-center">
-                                                <div class="col-7">
-                                                    <a href="{{ route('produk.detail', $product->id) }}"
-                                                        class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#detail"></use>
-                                                        </svg> Detail
-                                                    </a>
-                                                </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <span class="fw-semibold text-dark fs-6 m-0 p-0">
+                                            Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} –
+                                            Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
+                                        </span>
+                                        <span class="text-warning fw-semibold fs-6">/kg</span>
+                                    </div>
+                                    <div class="button-area p-3 pt-0">
+                                        <div class="row g-1 mt-2 d-flex justify-content-center">
+                                            <div class="col-7">
+                                                <a href="{{ route('produk.detail', $product->id) }}"
+                                                   class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+                                                    <svg width="18" height="18">
+                                                        <use xlink:href="#detail"></use>
+                                                    </svg> Detail
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <section id="peta" class="py-5"
         style="display: flex; justify-content: center; align-items: center; padding-top: 1rem !important;">
@@ -1299,6 +1308,16 @@
                 document.querySelectorAll('.komoditas-filter').forEach(cb => cb.checked = checked);
                 renderMarkers();
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if (!empty($filters))
+                const budidayaSection = document.getElementById('budidaya');
+                if (budidayaSection) {
+                    budidayaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            @endif
         });
     </script>
 
