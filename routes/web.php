@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KomoditasController;
 use App\Http\Controllers\BudidayaController;
-use App\Http\Controllers\LoginRegisterController; 
+use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AdminProdukController;
@@ -20,9 +21,8 @@ use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\DokumenPembudidayaController;
 use App\Http\Controllers\AdminDashboardController;
 
-
 // ─── Halaman Umum ─────────────────────────────────────────────────────────────
-Route::get('/', [HomeController::class, 'rekomendasi'])->name('produk.rekomendasi');
+Route::get('/', [HomeController::class, 'rekomendasi'])->name('home');
 Route::get('/welcome', fn () => view('welcome'));
 
 // Halaman informasi publik
@@ -32,8 +32,6 @@ Route::view('/profile', 'profile')->name('profile');
 Route::view('/registrasi', 'registrasi')->name('registrasi');
 Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
-Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
-
 
 // Rute untuk melihat detail usaha pembudidaya
 Route::get('/detail_usaha/{id}', [DetailUsahaController::class, 'show'])->name('usaha.detail');
@@ -44,7 +42,6 @@ Route::middleware(['auth:pembudidaya'])->group(function () {
     Route::post('/notifications/mark-all-read', [NotifikasiController::class, 'markAllRead'])->name('notifications.markAllRead');
     Route::post('/notifications/clear', [NotifikasiController::class, 'clearAll'])->name('notifications.clearAll');
     Route::get('/notifications/{id}', [NotifikasiController::class, 'show']);
-
 });
 
 // Rute otomatis ke detail usaha pembudidaya yang sedang login
@@ -54,8 +51,8 @@ Route::get('/detail_usaha', function () {
 })->middleware('auth:pembudidaya')->name('pembudidaya.detail_usaha');
 
 // Lokasi
-Route::get('/lokasi', [LocationController::class, 'showLocations']);
-Route::get('/location', [LocationController::class, 'showLocations']); // alias
+Route::get('/lokasi', [ProdukController::class, 'lokasi'])->name('lokasi.index');
+Route::get('/api/budidaya', [ProdukController::class, 'getGeojson']);
 
 // ─── Komoditas dan Budidaya (CRUD) ────────────────────────────────────────────
 Route::resource('commodity', KomoditasController::class);
@@ -66,11 +63,9 @@ Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallb
 Route::get('/auth/google/{tipe}', [GoogleController::class, 'redirectToGoogle'])->name('login.google.with.tipe');
 
 // ─── Auth Pengguna Umum ───────────────────────────────────────────────────────
-// Asumsikan controller untuk login/register user umum adalah LoginRegisterController
 Route::middleware(['guest:web', 'no.cache'])->group(function () {
     Route::get('/login', [LoginRegisterController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginRegisterController::class, 'login'])->name('login.post');
-
     Route::get('/register', [LoginRegisterController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [LoginRegisterController::class, 'register'])->name('register.post');
 });
@@ -94,12 +89,10 @@ Route::post('/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
 
-    return redirect()->route('produk.rekomendasi');
+    return redirect()->route('home'); // Perbaikan: Ganti 'produk.rekomendasi' menjadi 'home'
 })->name('logout');
 
 // ─── Login & Register Admin ───────────────────────────────────────────────────
-// Asumsikan controller admin login juga LoginRegisterController, 
-// atau sesuaikan dengan controller login admin Anda sekarang
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['guest:admin'])->group(function () {
         Route::get('/login', [LoginRegisterController::class, 'showAdminLoginForm'])->name('login');
@@ -107,7 +100,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware(['auth:admin'])->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard'); 
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::resource('pengguna', AdminPenggunaController::class);
         Route::resource('produk', AdminProdukController::class);
         Route::resource('pembudidaya', AdminPembudidayaController::class);
@@ -122,12 +115,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // ─── Login & Register Pembudidaya ─────────────────────────────────────────────
-// Asumsikan controller pembudidaya login juga di LoginRegisterController
 Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
     Route::middleware(['guest:pembudidaya'])->group(function () {
         Route::get('/login', [LoginRegisterController::class, 'showPembudidayaLoginForm'])->name('login');
         Route::post('/login', [LoginRegisterController::class, 'login'])->name('login.post');
-
         Route::get('/register', [LoginRegisterController::class, 'showPembudidayaRegisterForm'])->name('register');
         Route::post('/register', [LoginRegisterController::class, 'pembudidayaRegister'])->name('register.post');
     });

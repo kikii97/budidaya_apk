@@ -19,6 +19,19 @@ class HomeController extends Controller
 
         $isFiltered = $jenis || $hargaMin || $hargaMax || $kapasitas || $kecamatan || $prediksi;
 
+        // Ambil data lokasi untuk peta
+        $lokasi = Produk::where('is_approved', true)->get([
+            'id',
+            'gambar',
+            'jenis_komoditas',
+            'kecamatan',
+            'desa',
+            'telepon',
+            'alamat_lengkap as alamat',
+            'latitude',
+            'longitude'
+        ]);
+
         // Jika tidak ada filter, tampilkan produk terbaru
         if (!$isFiltered) {
             $produkList = Produk::with('pembudidaya')
@@ -30,6 +43,7 @@ class HomeController extends Controller
             return view('home', [
                 'recommendedProducts' => $produkList,
                 'filters' => [],
+                'lokasi' => $lokasi
             ]);
         }
 
@@ -51,39 +65,39 @@ class HomeController extends Controller
         $produkTerbobot = $produkList->map(function ($produk) use ($jenis, $hargaMin, $hargaMax, $kapasitas, $kecamatan, $prediksi, $bobotKriteria) {
             $totalBobot = 0;
 
-            // === Jenis Komoditas ===
-            if ($jenis && strtolower($produk->jenis_komoditas) === strtolower($jenis)) {
+            // Jenis Komoditas
+            if ($jenis && is_array($jenis) && in_array(strtolower($produk->jenis_komoditas), array_map('strtolower', $jenis))) {
                 $totalBobot += $bobotKriteria['jenis'];
             }
 
-            // === Harga ===
+            // Harga
             if ($hargaMin && $hargaMax) {
                 $hargaPreferensi = ($hargaMin + $hargaMax) / 2;
                 $hargaProduk = ($produk->kisaran_harga_min + $produk->kisaran_harga_max) / 2;
                 $selisih = abs($hargaPreferensi - $hargaProduk);
-                $skorHarga = 1 / (1 + $selisih); // Semakin kecil selisih, semakin besar skor
+                $skorHarga = 1 / (1 + $selisih);
                 $totalBobot += $skorHarga * $bobotKriteria['harga'];
             }
 
-            // === Kapasitas ===
+            // Kapasitas
             if ($kapasitas && $kapasitas > 0) {
                 $skorKapasitas = min($produk->kapasitas_produksi / $kapasitas, 1);
                 $totalBobot += $skorKapasitas * $bobotKriteria['kapasitas'];
             }
 
-            // === Kecamatan (lokasi) ===
-            if ($kecamatan && strtolower($produk->kecamatan) === strtolower($kecamatan)) {
+            // Kecamatan
+            if ($kecamatan && is_array($kecamatan) && in_array(strtolower($produk->kecamatan), array_map('strtolower', $kecamatan))) {
                 $totalBobot += $bobotKriteria['kecamatan'];
             }
 
-            // === Prediksi Panen (tanggal) ===
+            // Prediksi Panen
             if ($prediksi && $produk->prediksi_panen) {
                 $selisihHari = abs(strtotime($produk->prediksi_panen) - strtotime($prediksi)) / 86400;
-                $skorPanen = 1 / (1 + $selisihHari); // Semakin dekat, semakin besar skor
+                $skorPanen = 1 / (1 + $selisihHari);
                 $totalBobot += $skorPanen * $bobotKriteria['panen'];
             }
 
-            $produk->bobot = round($totalBobot, 4); // Disimpan untuk ditampilkan
+            $produk->bobot = round($totalBobot, 4);
             return $produk;
         });
 
@@ -93,6 +107,7 @@ class HomeController extends Controller
         return view('home', [
             'recommendedProducts' => $sortedProduk,
             'filters' => $request->all(),
+            'lokasi' => $lokasi
         ]);
     }
 }

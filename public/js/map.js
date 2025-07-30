@@ -1,15 +1,19 @@
-document.addEventListener("DOMContentLoaded", () => {
-    let hoveredId = null;
-    let hoverTimeout;
-    let lastKecamatan = null;
-    let fitBoundsTimeout = null;
-    let hoveredDesaId = null;
-    let kecamatanBounds = {};
+// map.js
+let markers = [];
+let lokasi = [];
+let map;
+let hoveredId = null;
+let hoverTimeout;
+let lastKecamatan = null;
+let fitBoundsTimeout = null;
+let hoveredDesaId = null;
+let kecamatanBounds = {};
 
+document.addEventListener("DOMContentLoaded", () => {
     mapboxgl.accessToken =
         "pk.eyJ1Ijoia2lraWtzMjMiLCJhIjoiY205dDZiZDgyMDgzdzJtcTk1bW81ZG4wOCJ9.2KzfsbK1tXHs7vuAkwMsKQ";
 
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/mapbox/light-v11",
         center: [108.1806802, -6.4399159],
@@ -17,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     map.on("load", () => {
+        // Tambahkan sumber dan lapisan untuk batas kecamatan
         map.addSource("batas-kec", {
             type: "geojson",
             data: kecamatan,
@@ -84,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
         });
 
+        // Tambahkan sumber dan lapisan untuk batas desa
         map.addSource("batas-desa", {
             type: "geojson",
             data: desa,
@@ -186,8 +192,27 @@ document.addEventListener("DOMContentLoaded", () => {
             filter: ["==", "sub_district", ""],
         });
 
-        let lastFlyToTime = 0;
+        // Tambahkan sumber dan lapisan untuk batas kabupaten
+        map.addSource("batas-kab", {
+            type: "geojson",
+            data: kabupaten,
+        });
 
+        map.addLayer({
+            id: "batas-kab-layer",
+            type: "line",
+            source: "batas-kab",
+            layout: {
+                "line-join": "round",
+                "line-cap": "round",
+            },
+            paint: {
+                "line-color": "#616161",
+                "line-width": 1,
+            },
+        });
+
+        // Event handlers untuk interaksi peta
         map.on("click", "fill-kec-layer", (e) => {
             if (e.features && e.features.length > 0) {
                 const feature = e.features[0];
@@ -198,40 +223,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     const bbox = turf.bbox(feature);
                     const camera = map.cameraForBounds(bbox, {
-                        padding: {
-                            top: 80,
-                            bottom: 80,
-                            left: 100,
-                            right: 100,
-                        },
+                        padding: { top: 80, bottom: 80, left: 100, right: 100 },
                     });
                     if (camera) {
-                        map.easeTo({
-                            ...camera,
-                            duration: 1500,
-                        });
+                        map.easeTo({ ...camera, duration: 1500 });
                     }
 
                     if (hoveredId !== null) {
                         map.setFeatureState(
-                            {
-                                source: "batas-kec",
-                                id: hoveredId,
-                            },
-                            {
-                                hover: false,
-                            }
+                            { source: "batas-kec", id: hoveredId },
+                            { hover: false }
                         );
                     }
                     hoveredId = feature.id;
                     map.setFeatureState(
-                        {
-                            source: "batas-kec",
-                            id: hoveredId,
-                        },
-                        {
-                            hover: true,
-                        }
+                        { source: "batas-kec", id: hoveredId },
+                        { hover: true }
                     );
 
                     map.setFilter("batas-desa-layer", [
@@ -271,13 +278,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (features.length === 0) {
                 if (hoveredId !== null) {
                     map.setFeatureState(
-                        {
-                            source: "batas-kec",
-                            id: hoveredId,
-                        },
-                        {
-                            hover: false,
-                        }
+                        { source: "batas-kec", id: hoveredId },
+                        { hover: false }
                     );
                 }
                 hoveredId = null;
@@ -299,7 +301,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         map.on("mousemove", "fill-desa-layer", (e) => {
-            if (!lastKecamatan) return;
+            if (!lastKecamatan || !e.features || e.features.length === 0)
+                return;
 
             const feature = e.features[0];
             const subDistrict = feature.properties.sub_district.toUpperCase();
@@ -308,64 +311,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (hoveredDesaId !== null) {
                 map.setFeatureState(
-                    {
-                        source: "batas-desa",
-                        id: hoveredDesaId,
-                    },
-                    {
-                        hover: false,
-                    }
+                    { source: "batas-desa", id: hoveredDesaId },
+                    { hover: false }
                 );
             }
 
             hoveredDesaId = feature.id;
 
             map.setFeatureState(
-                {
-                    source: "batas-desa",
-                    id: hoveredDesaId,
-                },
-                {
-                    hover: true,
-                }
+                { source: "batas-desa", id: hoveredDesaId },
+                { hover: true }
             );
         });
 
         map.on("mouseleave", "fill-desa-layer", () => {
             if (hoveredDesaId !== null) {
                 map.setFeatureState(
-                    {
-                        source: "batas-desa",
-                        id: hoveredDesaId,
-                    },
-                    {
-                        hover: false,
-                    }
+                    { source: "batas-desa", id: hoveredDesaId },
+                    { hover: false }
                 );
             }
             hoveredDesaId = null;
         });
-
-        map.addSource("batas-kab", {
-            type: "geojson",
-            data: kabupaten,
-        });
-
-        map.addLayer({
-            id: "batas-kab-layer",
-            type: "line",
-            source: "batas-kab",
-            layout: {
-                "line-join": "round",
-                "line-cap": "round",
-            },
-            paint: {
-                "line-color": "#616161",
-                "line-width": 1,
-            },
-        });
-
-        renderMarkers();
 
         map.on("mousemove", "fill-kec-layer", (e) => {
             if (e.features.length > 0) {
@@ -374,26 +341,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (hoveredId !== null && hoveredId !== id) {
                     map.setFeatureState(
-                        {
-                            source: "batas-kec",
-                            id: hoveredId,
-                        },
-                        {
-                            hover: false,
-                        }
+                        { source: "batas-kec", id: hoveredId },
+                        { hover: false }
                     );
                 }
 
                 hoveredId = id;
 
                 map.setFeatureState(
-                    {
-                        source: "batas-kec",
-                        id: hoveredId,
-                    },
-                    {
-                        hover: true,
-                    }
+                    { source: "batas-kec", id: hoveredId },
+                    { hover: true }
                 );
             }
         });
@@ -401,184 +358,94 @@ document.addEventListener("DOMContentLoaded", () => {
         map.on("mouseleave", "fill-kec-layer", () => {
             if (hoveredId !== null) {
                 map.setFeatureState(
-                    {
-                        source: "batas-kec",
-                        id: hoveredId,
-                    },
-                    {
-                        hover: false,
-                    }
+                    { source: "batas-kec", id: hoveredId },
+                    { hover: false }
                 );
             }
             hoveredId = null;
         });
 
-        function getColorByKomoditas(komoditas) {
-            switch (komoditas.toLowerCase()) {
-                case "udang":
-                    return "red";
-                case "rumput laut":
-                    return "green";
-                case "ikan bandeng":
-                    return "blue";
-                case "ikan gurame":
-                    return "orange";
-                case "ikan lele":
-                    return "purple";
-                case "ikan nila":
-                    return "brown";
-                default:
-                    return "gray";
-            }
+        // Render marker awal
+        if (lokasi && Array.isArray(lokasi)) {
+            renderMarkers();
+        } else {
+            console.error("Data lokasi tidak tersedia atau tidak valid");
         }
 
-        let markers = [];
+        // Tambahkan event listener untuk checkbox filter
+        document.querySelectorAll(".komoditas-filter").forEach((checkbox) => {
+            checkbox.addEventListener("change", () => {
+                renderMarkers();
+            });
+        });
 
-        function aggregateKomoditasByKecamatan(lokasi, selectedKomoditas) {
-            const result = {};
+        // Tambahkan event listener untuk tombol "Pilih Semua"
+        document
+            .getElementById("select-all")
+            .addEventListener("change", (e) => {
+                const isChecked = e.target.checked;
+                document.querySelectorAll(".komoditas-filter").forEach((cb) => {
+                    cb.checked = isChecked;
+                });
+                renderMarkers();
+            });
+        // Di dalam map.on("load", ...)
+        if (lokasi && Array.isArray(lokasi)) {
+            renderMarkers();
+        } else {
+            console.error("Data lokasi tidak tersedia atau tidak valid");
+        }
+    });
 
-            lokasi.forEach((item) => {
-                if (
-                    selectedKomoditas.includes(
-                        item.jenis_komoditas.toLowerCase()
-                    )
-                ) {
-                    const key = item.kecamatan;
-                    if (!result[key]) {
-                        result[key] = {
-                            total: 0,
-                            komoditas: item.jenis_komoditas,
-                            lat: item.latitude,
-                            lng: item.longitude,
-                        };
-                    }
-                    result[key].total += 1;
+    function getColorByKomoditas(komoditas) {
+        const colors = {
+            udang: "#FF0000",
+            "rumput laut": "#00FF00",
+            "ikan bandeng": "#0000FF",
+            "ikan gurame": "#FFFF00",
+            "ikan lele": "#FF00FF",
+            "ikan nila": "#00FFFF",
+        };
+        return colors[komoditas?.toLowerCase()] || "#000000";
+    }
+
+    function aggregateKomoditasByKecamatan(lokasi, selectedKomoditas) {
+        const result = {};
+
+        lokasi.forEach((item) => {
+            if (
+                item.jenis_komoditas &&
+                selectedKomoditas.includes(item.jenis_komoditas.toLowerCase())
+            ) {
+                const key = item.kecamatan;
+                if (!result[key]) {
+                    result[key] = {
+                        total: 0,
+                        komoditas: item.jenis_komoditas,
+                        lat: item.latitude,
+                        lng: item.longitude,
+                    };
                 }
-            });
-
-            return result;
-        }
-
-        function renderCircleMarkers() {
-            if (map.getLayer("circle-markers")) {
-                map.removeLayer("circle-markers");
+                result[key].total += 1;
             }
-            if (map.getSource("circle-source")) {
-                map.removeSource("circle-source");
+        });
+
+        return result;
+    }
+
+    function renderMarkers() {
+        try {
+            if (!map) {
+                throw new Error("Variabel map belum diinisialisasi");
             }
-
-            // Tampilkan semua komoditas karena filter dihapus
-            const selectedKomoditas = [
-                "udang",
-                "rumput laut",
-                "ikan bandeng",
-                "ikan gurame",
-                "ikan lele",
-                "ikan nila",
-            ];
-
-            const aggregatedData = aggregateKomoditasByKecamatan(
-                lokasi,
-                selectedKomoditas
-            );
-
-            const geojsonFeatures = Object.keys(aggregatedData).map(
-                (kecamatan) => ({
-                    type: "Feature",
-                    properties: {
-                        kecamatan: kecamatan,
-                        total: aggregatedData[kecamatan].total,
-                    },
-                    geometry: {
-                        type: "Point",
-                        coordinates: [
-                            aggregatedData[kecamatan].lng,
-                            aggregatedData[kecamatan].lat,
-                        ],
-                    },
-                })
-            );
-
-            map.addSource("circle-source", {
-                type: "geojson",
-                data: {
-                    type: "FeatureCollection",
-                    features: geojsonFeatures,
-                },
-            });
-
-            map.addLayer({
-                id: "circle-markers",
-                type: "circle",
-                source: "circle-source",
-                paint: {
-                    "circle-color": "#ff5722",
-                    "circle-opacity": 0.6,
-                    "circle-radius": [
-                        "interpolate",
-                        ["linear"],
-                        ["get", "total"],
-                        1,
-                        8,
-                        5,
-                        20,
-                        10,
-                        30,
-                        20,
-                        45,
-                    ],
-                    "circle-stroke-color": "#ffffff",
-                    "circle-stroke-width": 1,
-                },
-            });
-
-            map.on("click", "circle-markers", (e) => {
-                const props = e.features[0].properties;
-                new mapboxgl.Popup()
-                    .setLngLat(e.lngLat)
-                    .setHTML(
-                        `<strong>${props.kecamatan}</strong><br>Jumlah: ${props.total}`
-                    )
-                    .addTo(map);
-            });
-
-            let popup = new mapboxgl.Popup({
-                closeButton: false,
-                closeOnClick: false,
-            });
-
-            map.on("mouseenter", "circle-markers", (e) => {
-                map.getCanvas().style.cursor = "pointer";
-                const props = e.features[0].properties;
-                popup
-                    .setLngLat(e.lngLat)
-                    .setHTML(
-                        `<strong>${props.kecamatan}</strong><br>Jumlah: ${props.total}`
-                    )
-                    .addTo(map);
-            });
-
-            map.on("mouseleave", "circle-markers", () => {
-                map.getCanvas().style.cursor = "";
-                popup.remove();
-            });
-        }
-
-        function renderMarkers() {
             markers.forEach((marker) => marker.remove());
             markers = [];
-
-            const selectedKomoditas = [
-                "udang",
-                "rumput laut",
-                "ikan bandeng",
-                "ikan gurame",
-                "ikan lele",
-                "ikan nila",
-            ];
-
+            const selectedKomoditas = Array.from(
+                document.querySelectorAll(".komoditas-filter:checked")
+            ).map((cb) => cb.value.toLowerCase());
             lokasi.forEach((item) => {
                 if (
+                    item.jenis_komoditas &&
                     selectedKomoditas.includes(
                         item.jenis_komoditas.toLowerCase()
                     )
@@ -589,16 +456,117 @@ document.addEventListener("DOMContentLoaded", () => {
                         .setLngLat([item.longitude, item.latitude])
                         .setPopup(
                             new mapboxgl.Popup().setHTML(`
-                            <strong>${item.jenis_komoditas}</strong><br>
-                            Kecamatan: ${item.kecamatan}<br>
-                            Alamat: ${item.alamat}`)
+                                <strong>${item.jenis_komoditas}</strong><br>
+                                Kecamatan: ${item.kecamatan}<br>
+                                Desa: ${item.desa}<br>
+                                Alamat: ${item.alamat}`)
                         )
                         .addTo(map);
                     markers.push(marker);
                 }
             });
-
             renderCircleMarkers();
+        } catch (error) {
+            console.error("Error di renderMarkers:", error);
         }
-    });
+    }
+
+    function renderCircleMarkers() {
+        if (map.getLayer("circle-markers")) {
+            map.removeLayer("circle-markers");
+        }
+        if (map.getSource("circle-source")) {
+            map.removeSource("circle-source");
+        }
+
+        const selectedKomoditas = Array.from(
+            document.querySelectorAll(".komoditas-filter:checked")
+        ).map((cb) => cb.value.toLowerCase());
+
+        const aggregatedData = aggregateKomoditasByKecamatan(
+            lokasi,
+            selectedKomoditas
+        );
+
+        const geojsonFeatures = Object.keys(aggregatedData).map(
+            (kecamatan) => ({
+                type: "Feature",
+                properties: {
+                    kecamatan: kecamatan,
+                    total: aggregatedData[kecamatan].total,
+                },
+                geometry: {
+                    type: "Point",
+                    coordinates: [
+                        aggregatedData[kecamatan].lng,
+                        aggregatedData[kecamatan].lat,
+                    ],
+                },
+            })
+        );
+
+        map.addSource("circle-source", {
+            type: "geojson",
+            data: {
+                type: "FeatureCollection",
+                features: geojsonFeatures,
+            },
+        });
+
+        map.addLayer({
+            id: "circle-markers",
+            type: "circle",
+            source: "circle-source",
+            paint: {
+                "circle-color": "#ff5722",
+                "circle-opacity": 0.6,
+                "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "total"],
+                    1,
+                    8,
+                    5,
+                    20,
+                    10,
+                    30,
+                    20,
+                    45,
+                ],
+                "circle-stroke-color": "#ffffff",
+                "circle-stroke-width": 1,
+            },
+        });
+
+        map.on("click", "circle-markers", (e) => {
+            const props = e.features[0].properties;
+            new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(
+                    `<strong>${props.kecamatan}</strong><br>Jumlah: ${props.total}`
+                )
+                .addTo(map);
+        });
+
+        let popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+        });
+
+        map.on("mouseenter", "circle-markers", (e) => {
+            map.getCanvas().style.cursor = "pointer";
+            const props = e.features[0].properties;
+            popup
+                .setLngLat(e.lngLat)
+                .setHTML(
+                    `<strong>${props.kecamatan}</strong><br>Jumlah: ${props.total}`
+                )
+                .addTo(map);
+        });
+
+        map.on("mouseleave", "circle-markers", () => {
+            map.getCanvas().style.cursor = "";
+            popup.remove();
+        });
+    }
 });

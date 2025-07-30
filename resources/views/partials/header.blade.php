@@ -60,7 +60,7 @@
                             <li>
                                 <a class="dropdown-item py-1 px-3 small"
                                    href="{{ route('pembudidaya.detail_usaha', ['id' => $pembudidaya->id ?? 0]) }}">
-                                    Account Settings
+                                    Detail Usaha
                                 </a>
                             </li>
                         @endif

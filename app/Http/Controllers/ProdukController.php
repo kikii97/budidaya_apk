@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Lokasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -45,6 +46,15 @@ class ProdukController extends Controller
 
         return view('detail_usaha', compact('pembudidaya', 'profil', 'produk'));
     }
+
+    // Hapus metode berikut dari ProdukController.php
+public function home()
+{
+    $lokasi = Produk::where('is_approved', true)->get([
+        'id', 'gambar', 'jenis_komoditas', 'kecamatan', 'desa', 'telepon', 'alamat_lengkap as alamat', 'latitude', 'longitude'
+    ]);
+    return view('home', compact('lokasi'));
+}
 
     public function create()
     {
