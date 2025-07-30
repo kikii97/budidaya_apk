@@ -61,14 +61,16 @@
           </div>
         </div>
 
-        {{-- Tabel Pembudidaya Menunggu Persetujuan --}}
-        <div class="card">
-          <div class="card-header bg-success">
-            <h3 class="card-title">Pembudidaya Menunggu Persetujuan</h3>
+          {{-- Judul Tabel Pembudidaya Menunggu Persetujuan --}}
+          <div class="px-2 pt-2 pb-1">
+            <h5 class="mb-3" style="font-weight: bold; color: #000;">
+              <i class="fas fa-clock" style="color: #000;"></i> Pembudidaya Menunggu Persetujuan
+            </h5>
           </div>
-          <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
-              <thead class="table-dark">
+
+          <div class="table-responsive border rounded">
+            <table class="table table-bordered table-striped table-hover align-middle mb-0">
+              <thead class="table-dark text-center">
                 <tr>
                   <th style="width: 50px;">No</th>
                   <th>Nama</th>
@@ -82,64 +84,64 @@
                 @forelse($pembudidayaMenunggu as $index => $pb)
                   @php $dokumen = $pb->dokumenPembudidaya; @endphp
                   <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <td class="text-center">{{ $pembudidayaMenunggu->firstItem() + $index }}</td>
                     <td>{{ $pb->name }}</td>
                     <td class="text-truncate" style="max-width: 200px;">{{ $pb->email }}</td>
 
-                      {{-- Dokumen --}}
-                      <td>
-                        @if ($dokumen && ($dokumen->surat_usaha_path || $dokumen->foto_usaha_path))
-                            @php 
-                              $suratPaths = $dokumen->surat_usaha_path 
-                                ? (is_array(json_decode($dokumen->surat_usaha_path, true)) 
-                                    ? json_decode($dokumen->surat_usaha_path, true) 
-                                    : [$dokumen->surat_usaha_path]) 
-                                : [];
+                    {{-- Dokumen --}}
+                    <td>
+                      @if ($dokumen && ($dokumen->surat_usaha_path || $dokumen->foto_usaha_path))
+                        @php 
+                          $suratPaths = $dokumen->surat_usaha_path 
+                            ? (is_array(json_decode($dokumen->surat_usaha_path, true)) 
+                                ? json_decode($dokumen->surat_usaha_path, true) 
+                                : [$dokumen->surat_usaha_path]) 
+                            : [];
 
-                              $fotoPaths = $dokumen->foto_usaha_path 
-                                ? (is_array(json_decode($dokumen->foto_usaha_path, true)) 
-                                    ? json_decode($dokumen->foto_usaha_path, true) 
-                                    : [$dokumen->foto_usaha_path]) 
-                                : [];
-                            @endphp
+                          $fotoPaths = $dokumen->foto_usaha_path 
+                            ? (is_array(json_decode($dokumen->foto_usaha_path, true)) 
+                                ? json_decode($dokumen->foto_usaha_path, true) 
+                                : [$dokumen->foto_usaha_path]) 
+                            : [];
+                        @endphp
 
-                            {{-- Tampilkan Surat Usaha --}}
-                            @foreach ($suratPaths as $path)
-                              <a href="{{ asset('storage/' . $path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-1" style="font-size: 0.75rem;">
-                                <i class="fas fa-file-alt"></i> {{ basename($path) }}
-                              </a>
-                            @endforeach
+                        {{-- Tampilkan Surat Usaha --}}
+                        @foreach ($suratPaths as $path)
+                          <a href="{{ asset('storage/' . $path) }}" target="_blank" class="btn btn-sm btn-info d-block mb-1" style="font-size: 0.75rem;">
+                            <i class="fas fa-file-alt"></i> {{ basename($path) }}
+                          </a>
+                        @endforeach
 
-                            {{-- Tampilkan Foto Usaha --}}
-                            @foreach ($fotoPaths as $path)
-                              <img src="{{ asset('storage/' . $path) }}" alt="Foto Usaha" class="img-thumbnail mb-1" style="width: 90px;">
-                            @endforeach
+                        {{-- Tampilkan Foto Usaha --}}
+                        @foreach ($fotoPaths as $path)
+                          <img src="{{ asset('storage/' . $path) }}" alt="Foto Usaha" class="img-thumbnail mb-1" style="width: 90px;">
+                        @endforeach
 
-                            @if (empty($suratPaths) && empty($fotoPaths))
-                              <span class="text-muted">Tidak ada dokumen</span>
-                            @endif
-                        @else
-                            <span class="text-muted">Tidak ada dokumen</span>
+                        @if (empty($suratPaths) && empty($fotoPaths))
+                          <span class="text-muted">Tidak ada dokumen</span>
                         @endif
-                      </td>
+                      @else
+                        <span class="text-muted">Tidak ada dokumen</span>
+                      @endif
+                    </td>
 
                     {{-- Status --}}
-                    <td>
+                    <td class="text-center">
                       <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Menunggu</span>
                     </td>
 
                     {{-- Aksi --}}
-                    <td class="text-nowrap">
+                    <td class="text-nowrap text-center">
                       <a href="{{ route('admin.dokumen.show', $dokumen->id) }}" class="btn btn-sm btn-primary mb-1">
                         <i class="fas fa-eye"></i> Detail
                       </a>
-                      <form action="{{ route('admin.dokumen.approve', $dokumen->id) }}" method="POST" style="display:inline-block;">
+                      <form action="{{ route('admin.dokumen.approve', $dokumen->id) }}" method="POST" class="d-inline-block mb-1">
                         @csrf
-                        <button type="submit" class="btn btn-sm btn-success mb-1" onclick="return confirm('Setujui dokumen pembudidaya ini?')">
+                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Setujui dokumen pembudidaya ini?')">
                             <i class="fas fa-check"></i> Setujui
                         </button>
                       </form>
-                      <form action="{{ route('admin.dokumen.reject', $dokumen->id) }}" method="POST" style="display:inline-block;">
+                      <form action="{{ route('admin.dokumen.reject', $dokumen->id) }}" method="POST" class="d-inline-block">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Tolak dokumen pembudidaya ini?')">
                             <i class="fas fa-times"></i> Tolak
@@ -155,18 +157,20 @@
               </tbody>
             </table>
           </div>
-        </div>
-        <div class="d-flex justify-content-center mt-3">
-          {{ $pembudidayaMenunggu->links() }}
-        </div>
 
-        {{-- Tabel Komoditas Menunggu Persetujuan --}}
-        <div class="card">
-          <div class="card-header bg-warning">
-            <h3 class="card-title">Komoditas Menunggu Persetujuan</h3>
+          <div class="d-flex justify-content-center mt-3">
+            {{ $pembudidayaMenunggu->links() }}
           </div>
-          <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped table-hover align-middle">
+
+          {{-- Tabel Komoditas Menunggu Persetujuan --}}
+          <div class="px-2 pt-2 pb-1">
+            <h5 class="mb-3" style="font-weight: bold; color: #000;">
+              <i class="fas fa-clock" style="color: #000;"></i> Komoditas Menunggu Persetujuan
+            </h5>
+          </div>
+
+          <div class="table-responsive border rounded">
+            <table class="table table-bordered table-striped table-hover align-middle mb-0">
               <thead class="table-dark text-center">
                 <tr>
                   <th>No</th>
@@ -190,7 +194,6 @@
                 @forelse($produkMenunggu as $index => $item)
                   <tr>
                     <td class="text-center">{{ $produkMenunggu->firstItem() + $index }}</td>
-
                     {{-- Gambar --}}
                     <td>
                       @php $gambarList = json_decode($item->gambar, true); @endphp
@@ -204,7 +207,6 @@
                         <span class="text-muted">Tidak ada gambar</span>
                       @endif
                     </td>
-
                     <td>{{ $item->pembudidaya->name ?? '-' }}</td>
                     <td>{{ $item->telepon }}</td>
                     <td>{{ $item->kecamatan }}</td>
@@ -216,12 +218,10 @@
                     <td>Rp {{ number_format($item->kisaran_harga_min, 0, ',', '.') }} - Rp {{ number_format($item->kisaran_harga_max, 0, ',', '.') }}</td>
                     <td>{{ $item->prediksi_panen }}</td>
                     <td>{{ \Illuminate\Support\Str::limit($item->detail, 50) }}</td>
-
                     {{-- Status --}}
                     <td class="text-center">
                       <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Menunggu</span>
                     </td>
-
                     {{-- Aksi --}}
                     <td class="text-nowrap text-center">
                       <a href="{{ route('admin.produk.detail', $item->id) }}" class="btn btn-sm btn-primary mb-1" data-bs-toggle="tooltip" title="Lihat Detail">
@@ -253,10 +253,9 @@
           </div>
 
           {{-- Pagination --}}
-          <div class="d-flex justify-content-center">
+          <div class="d-flex justify-content-center mt-3">
             {{ $produkMenunggu->links() }}
           </div>
-        </div>
 
 
       </div>
