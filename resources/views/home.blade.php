@@ -330,7 +330,8 @@
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form class="modal-body p-3 pb-0" method="GET" action="{{ route('home') }}" style="font-size: 0.8rem; padding: 15px;">
+                                <form class="modal-body p-3 pb-0" method="GET" action="{{ route('home') }}"
+                                    style="font-size: 0.8rem; padding: 15px;">
 
                                     <div class="row mb-2">
                                         <div class="col-12">
@@ -739,12 +740,14 @@
     </script>
 
     <script>
-        const kabupaten = "{{ asset('apk_gis/storage/app/public/kabupaten.json') }}";
+        const lokasi = @json($lokasi);
+        const kabupaten = "{{ asset('storage/app/public/kabupaten.json') }}";
         const kecamatan = "{{ asset('apk_gis/storage/app/public/31kecamatan.geojson') }}";
         const desa = "{{ asset('apk_gis/storage/app/public/desa.geojson') }}";
     </script>
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+<<<<<<< Updated upstream
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Hover interactivity
@@ -1321,6 +1324,8 @@
         });
     </script>
 
+=======
+>>>>>>> Stashed changes
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
@@ -1333,6 +1338,7 @@
     <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/map.js') }}"></script>
 
 </body>
 

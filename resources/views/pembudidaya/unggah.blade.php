@@ -117,8 +117,7 @@
                             font-size: 14px;
                             z-index: 10;
                             cursor: pointer;">
-                            <input type="checkbox" id="use-location" 
-                            name="use_geolocation" value="1" />Gunakan Lokasi Saya
+                        <input type="checkbox" id="use-location" name="use_geolocation" value="1" />Gunakan Lokasi Saya
                     </label>
                 </div>
 
@@ -258,15 +257,33 @@
             function setUserLocation(position) {
                 const lngLat = [position.coords.longitude, position.coords.latitude];
                 if (isWithinBounds(lngLat)) {
-                    map.flyTo({
-                        center: lngLat,
-                        zoom: 14
+                    reverseGeocodeWithNominatim(lngLat[1], lngLat[0]).then(data => {
+                        if (data && data.address && (
+                                data.address.county?.toLowerCase().includes('indramayu') ||
+                                data.address.city?.toLowerCase().includes('indramayu') ||
+                                data.display_name.toLowerCase().includes('indramayu')
+                            )) {
+                            map.flyTo({
+                                center: lngLat,
+                                zoom: 14
+                            });
+                            placeMarker(lngLat[0], lngLat[1]);
+                            updateInputs([lngLat[1], lngLat[0]]);
+                            reverseGeocodeAndUpdate([lngLat[1], lngLat[0]]);
+                        } else {
+                            alert('Lokasi Anda di luar Kabupaten Indramayu. Menggunakan lokasi default.');
+                            const defaultLngLat = [108.321601, -6.326467];
+                            map.flyTo({
+                                center: defaultLngLat,
+                                zoom: 12
+                            });
+                            placeMarker(defaultLngLat[0], defaultLngLat[1]);
+                            updateInputs(defaultLngLat);
+                            reverseGeocodeAndUpdate(defaultLngLat);
+                        }
                     });
-                    placeMarker(lngLat[0], lngLat[1]);
-                    updateInputs([lngLat[1], lngLat[0]]); // lat, lng
-                    reverseGeocodeAndUpdate([lngLat[1], lngLat[0]]);
                 } else {
-                    alert('Lokasi Anda di luar wilayah Indramayu. Menggunakan lokasi default.');
+                    alert('Lokasi Anda di luar Kabupaten Indramayu. Menggunakan lokasi default.');
                     const defaultLngLat = [108.321601, -6.326467];
                     map.flyTo({
                         center: defaultLngLat,
@@ -373,15 +390,32 @@
             // }
 
             // Klik peta untuk menempatkan marker
-            map.on('click', (e) => {
+            map.on('click', async (e) => {
                 const lng = e.lngLat.lng;
                 const lat = e.lngLat.lat;
                 if (isWithinBounds([lng, lat])) {
-                    placeMarker(lng, lat);
-                    updateInputs([lat, lng]);
-                    reverseGeocodeAndUpdate([lat, lng]);
+                    const data = await reverseGeocodeWithNominatim(lat, lng);
+                    if (data && data.address && (
+                            data.address.county?.toLowerCase().includes('indramayu') ||
+                            data.address.city?.toLowerCase().includes('indramayu') ||
+                            data.display_name.toLowerCase().includes('indramayu')
+                        )) {
+                        placeMarker(lng, lat);
+                        updateInputs([lat, lng]);
+                        reverseGeocodeAndUpdate([lat, lng]);
+                    } else {
+                        alert('Lokasi di luar Kabupaten Indramayu. Menggunakan lokasi default.');
+                        const defaultLngLat = [108.321601, -6.326467];
+                        map.flyTo({
+                            center: defaultLngLat,
+                            zoom: 12
+                        });
+                        placeMarker(defaultLngLat[0], defaultLngLat[1]);
+                        updateInputs(defaultLngLat);
+                        reverseGeocodeAndUpdate(defaultLngLat);
+                    }
                 } else {
-                    alert('Lokasi di luar wilayah Indramayu. Menggunakan lokasi default.');
+                    alert('Lokasi di luar Kabupaten Indramayu. Menggunakan lokasi default.');
                     const defaultLngLat = [108.321601, -6.326467];
                     map.flyTo({
                         center: defaultLngLat,
@@ -389,6 +423,7 @@
                     });
                     placeMarker(defaultLngLat[0], defaultLngLat[1]);
                     updateInputs(defaultLngLat);
+                    reverseGeocodeAndUpdate(defaultLngLat);
                 }
             });
 
@@ -400,17 +435,36 @@
                     })
                     .setLngLat([lng, lat])
                     .addTo(map);
-                marker.on('dragend', () => {
+                marker.on('dragend', async () => {
                     const lngLat = marker.getLngLat();
                     if (isWithinBounds([lngLat.lng, lngLat.lat])) {
-                        map.flyTo({
-                            center: [lngLat.lng, lngLat.lat],
-                            zoom: 14
-                        });
-                        updateInputs([lngLat.lat, lngLat.lng]);
-                        reverseGeocodeAndUpdate([lngLat.lat, lngLat.lng]);
+                        const data = await reverseGeocodeWithNominatim(lngLat.lat, lngLat.lng);
+                        if (data && data.address && (
+                                data.address.county?.toLowerCase().includes('indramayu') ||
+                                data.address.city?.toLowerCase().includes('indramayu') ||
+                                data.display_name.toLowerCase().includes('indramayu')
+                            )) {
+                            map.flyTo({
+                                center: [lngLat.lng, lngLat.lat],
+                                zoom: 14
+                            });
+                            updateInputs([lngLat.lat, lngLat.lng]);
+                            reverseGeocodeAndUpdate([lngLat.lat, lngLat.lng]);
+                        } else {
+                            alert(
+                                'Marker di luar Kabupaten Indramayu. Mengembalikan ke posisi default.'
+                                );
+                            const defaultLngLat = [108.321601, -6.326467];
+                            map.flyTo({
+                                center: defaultLngLat,
+                                zoom: 12
+                            });
+                            placeMarker(defaultLngLat[0], defaultLngLat[1]);
+                            updateInputs(defaultLngLat);
+                            reverseGeocodeAndUpdate(defaultLngLat);
+                        }
                     } else {
-                        alert('Marker di luar wilayah Indramayu. Mengembalikan ke posisi default.');
+                        alert('Marker di luar Kabupaten Indramayu. Mengembalikan ke posisi default.');
                         const defaultLngLat = [108.321601, -6.326467];
                         map.flyTo({
                             center: defaultLngLat,
@@ -418,6 +472,7 @@
                         });
                         placeMarker(defaultLngLat[0], defaultLngLat[1]);
                         updateInputs(defaultLngLat);
+                        reverseGeocodeAndUpdate(defaultLngLat);
                     }
                 });
             }
@@ -426,7 +481,7 @@
             async function geocode(query) {
                 const url = `https://nominatim.openstreetmap.org/search?` +
                     `q=${encodeURIComponent(query)}&format=json&addressdetails=1&countrycodes=ID&limit=5` +
-                    `&viewbox=107.98,-6.00,108.50,-6.60&bounded=1`;
+                    `&viewbox=107.98,-6.60,108.50,-6.00&bounded=1`;
                 const response = await fetch(url);
                 const data = await response.json();
                 const filtered = data.filter(item =>
@@ -533,13 +588,63 @@
             async function reverseGeocodeAndUpdate(lngLat) {
                 const [lat, lng] = lngLat;
                 const data = await reverseGeocodeWithNominatim(lat, lng);
-                console.log("Data hasil reverse geocode:", data); // <--- Tambahkan ini
-                if (data && data.address) {
+                console.log("Data hasil reverse geocode:", data); // Untuk debugging
+                if (data && data.address && (
+                        data.address.county?.toLowerCase().includes('indramayu') ||
+                        data.address.city?.toLowerCase().includes('indramayu') ||
+                        data.display_name.toLowerCase().includes('indramayu')
+                    )) {
                     inputAlamat.value = data.display_name || '-';
-                    inputKecamatan.value = data.address.county || data.address.city || '-';
-                    inputDesa.value = data.address.village || data.address.hamlet || data.address.suburb || data
-                        .address.neighbourhood || data.address.locality || '-';
+                    // Prioritaskan sub_district untuk kecamatan, lalu coba field lain
+                    inputKecamatan.value = data.address.sub_district ||
+                        data.address.suburb ||
+                        data.address.town ||
+                        data.address.municipality ||
+                        data.address.district ||
+                        data.address.city ||
+                        extractKecamatanFromDisplayName(data.display_name) ||
+                        '-';
+                    inputDesa.value = data.address.village ||
+                        data.address.hamlet ||
+                        data.address.suburb ||
+                        data.address.neighbourhood ||
+                        data.address.locality ||
+                        '-';
+                } else {
+                    alert('Lokasi di luar Kabupaten Indramayu. Menggunakan lokasi default.');
+                    const defaultLngLat = [108.321601, -6.326467];
+                    map.flyTo({
+                        center: defaultLngLat,
+                        zoom: 12
+                    });
+                    placeMarker(defaultLngLat[0], defaultLngLat[1]);
+                    updateInputs(defaultLngLat);
+                    inputAlamat.value = 'Indramayu, Jawa Barat, Indonesia';
+                    inputKecamatan.value = 'Indramayu';
+                    inputDesa.value = '-';
                 }
+            }
+
+            // Fungsi untuk mengekstrak kecamatan dari display_name
+            function extractKecamatanFromDisplayName(displayName) {
+                if (!displayName) return null;
+                const parts = displayName.split(', ').map(part => part.trim().toLowerCase());
+                // Daftar kecamatan di Kabupaten Indramayu
+                const kecamatanList = [
+                    'haurgeulis', 'gantar', 'kroya', 'gabuskulon', 'ciedug',
+                    'sliyeg', 'jatibarang', 'balongan', 'indramayu', 'sindang',
+                    'cantigi', 'pasekan', 'lohbener', 'arahan', 'juntinyuat',
+                    'sukagumiwang', 'bangodua', 'tukdana', 'widasari', 'kertasemaya',
+                    'krangkeng', 'karangampel', 'kedokanbunder', 'bongas', 'anjatan',
+                    'sukra', 'patrol', 'lelea', 'terisi', 'cendana', 'gabuskulon'
+                ];
+                for (const part of parts) {
+                    if (kecamatanList.includes(part)) {
+                        // Kapitalisasi nama kecamatan
+                        return part.charAt(0).toUpperCase() + part.slice(1);
+                    }
+                }
+                return null;
             }
         });
 

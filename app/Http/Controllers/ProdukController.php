@@ -48,13 +48,21 @@ class ProdukController extends Controller
     }
 
     // Hapus metode berikut dari ProdukController.php
-public function home()
-{
-    $lokasi = Produk::where('is_approved', true)->get([
-        'id', 'gambar', 'jenis_komoditas', 'kecamatan', 'desa', 'telepon', 'alamat_lengkap as alamat', 'latitude', 'longitude'
-    ]);
-    return view('home', compact('lokasi'));
-}
+    public function home()
+    {
+        $lokasi = Produk::where('is_approved', true)->get([
+            'id',
+            'gambar',
+            'jenis_komoditas',
+            'kecamatan',
+            'desa',
+            'telepon',
+            'alamat_lengkap as alamat',
+            'latitude',
+            'longitude'
+        ]);
+        return view('home', compact('lokasi'));
+    }
 
     public function create()
     {
