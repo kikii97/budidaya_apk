@@ -28,21 +28,12 @@ Route::get('/welcome', fn () => view('welcome'));
 // Halaman informasi publik
 Route::view('/tentangkami', 'tentangkami')->name('tentangkami');
 Route::get('/katalog', [ProdukController::class, 'katalog'])->name('katalog');
-Route::view('/profile', 'profile')->name('profile');
 Route::view('/registrasi', 'registrasi')->name('registrasi');
 Route::get('/produk/{id}/detail', [ProdukController::class, 'show'])->name('produk.detail');
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 
 // Rute untuk melihat detail usaha pembudidaya
 Route::get('/detail_usaha/{id}', [DetailUsahaController::class, 'show'])->name('usaha.detail');
-Route::middleware(['auth:pembudidaya'])->group(function () {
-    Route::get('/profil/edit', [PembudidayaController::class, 'edit'])->name('pembudidaya.edit');
-    Route::post('/profil/update', [PembudidayaController::class, 'update'])->name('pembudidaya.update');
-    Route::post('/notifikasi/{id}/read', [NotifikasiController::class, 'read'])->name('notifications.read');
-    Route::post('/notifications/mark-all-read', [NotifikasiController::class, 'markAllRead'])->name('notifications.markAllRead');
-    Route::post('/notifications/clear', [NotifikasiController::class, 'clearAll'])->name('notifications.clearAll');
-    Route::get('/notifications/{id}', [NotifikasiController::class, 'show']);
-});
 
 // Rute otomatis ke detail usaha pembudidaya yang sedang login
 Route::get('/detail_usaha', function () {
@@ -62,6 +53,22 @@ Route::resource('budidaya', BudidayaController::class);
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 Route::get('/auth/google/{tipe}', [GoogleController::class, 'redirectToGoogle'])->name('login.google.with.tipe');
 
+// ─── Rute Notifikasi dan Export untuk Pembudidaya dan User ────────────────────
+Route::middleware(['auth:pembudidaya,web'])->group(function () {
+    Route::post('/notifikasi/{id}/read', [NotifikasiController::class, 'read'])->name('notifications.read');
+    Route::post('/notifications/mark-all-read', [NotifikasiController::class, 'markAllRead'])->name('notifications.markAllRead');
+    Route::post('/notifications/clear', [NotifikasiController::class, 'clearAll'])->name('notifications.clearAll');
+    Route::get('/notifications/{id}', [NotifikasiController::class, 'show'])->name('notifications.show');
+    Route::get('/order/export/{id}', [OrderController::class, 'export'])->name('order.export');
+});
+
+// ─── Rute Khusus untuk Pembudidaya ────────────────────────────────────────────
+Route::middleware(['auth:pembudidaya'])->group(function () {
+    Route::get('/profil/edit', [PembudidayaController::class, 'edit'])->name('pembudidaya.edit');
+    Route::post('/profil/update', [PembudidayaController::class, 'update'])->name('pembudidaya.update');
+    Route::post('/order/konfirmasi/{order_id}', [OrderController::class, 'confirm'])->name('order.confirm');
+});
+
 // ─── Auth Pengguna Umum ───────────────────────────────────────────────────────
 Route::middleware(['guest:web', 'no.cache'])->group(function () {
     Route::get('/login', [LoginRegisterController::class, 'showLoginForm'])->name('login');
@@ -71,7 +78,6 @@ Route::middleware(['guest:web', 'no.cache'])->group(function () {
 });
 
 Route::middleware(['auth:web'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/settings', [ProfileController::class, 'settings'])->name('profile.settings');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
@@ -89,7 +95,7 @@ Route::post('/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
 
-    return redirect()->route('home'); // Perbaikan: Ganti 'produk.rekomendasi' menjadi 'home'
+    return redirect()->route('home');
 })->name('logout');
 
 // ─── Login & Register Admin ───────────────────────────────────────────────────
@@ -127,7 +133,6 @@ Route::prefix('pembudidaya')->name('pembudidaya.')->group(function () {
         Route::get('/waiting', fn () => view('pembudidaya.waiting-approval'))->name('waiting');
         Route::get('/unggah', [ProdukController::class, 'create'])->name('unggah');
         Route::post('/unggah', [ProdukController::class, 'store'])->name('unggah.simpan');
-        Route::get('/profil', [ProdukController::class, 'index'])->name('profil');
         Route::get('/profil', [DetailUsahaController::class, 'index'])->name('profil');
 
         // Dokumen Pembudidaya

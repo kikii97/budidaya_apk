@@ -8,22 +8,19 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-    public function handle(Request $request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next, ...$guards)
     {
-        if ($guard) {
+        $guards = empty($guards) ? [null] : $guards;
+
+        foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                // Redirect sesuai guard
                 if ($guard === 'admin') {
                     return redirect()->route('admin.dashboard');
                 } elseif ($guard === 'pembudidaya') {
-                    return redirect()->route('pembudidaya.profil');
-                } else {
-                    return redirect()->route('profile.index');
+                    return redirect()->route('pembudidaya.detail_usaha'); // Ubah ke rute yang sesuai
+                } elseif ($guard === 'web') {
+                    return redirect()->route('home'); // Arahkan user ke home
                 }
-            }
-        } else {
-            if (Auth::check()) {
-                return redirect()->route('profile.index');
             }
         }
 
