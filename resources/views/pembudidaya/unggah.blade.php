@@ -146,9 +146,23 @@
 
                     <div class="mb-3 col-md-6">
                         <label class="form-label small">Masa Produksi Puncak</label>
-                        <input type="text" class="form-control form-control-sm" name="peak_production_period"
-                            oninvalid="this.setCustomValidity('Harap isi masa produksi puncak Komoditas.')"
+                        <select class="form-control form-control-sm" name="peak_production_period" required
+                            oninvalid="this.setCustomValidity('Harap pilih masa produksi puncak Komoditas.')"
                             oninput="this.setCustomValidity('')">
+                            <option value="">-- Pilih Bulan --</option>
+                            <option value="Januari">Januari</option>
+                            <option value="Februari">Februari</option>
+                            <option value="Maret">Maret</option>
+                            <option value="April">April</option>
+                            <option value="Mei">Mei</option>
+                            <option value="Juni">Juni</option>
+                            <option value="Juli">Juli</option>
+                            <option value="Agustus">Agustus</option>
+                            <option value="September">September</option>
+                            <option value="Oktober">Oktober</option>
+                            <option value="November">November</option>
+                            <option value="Desember">Desember</option>
+                        </select>
                     </div>
                 </div>
 
@@ -156,7 +170,7 @@
                     <div class="mb-3 col-md-6">
                         <label for="price_range_min" class="form-label small">Kisaran Harga Jual (Dari Rp)</label>
                         <input type="number" class="form-control form-control-sm" id="price_range_min"
-                            name="price_range_min" min="0" step="1" required placeholder="1000"
+                            name="price_range_min" min="0" step="500" required placeholder="1000"
                             oninvalid="this.setCustomValidity('Harap isi harga jual minimum.')"
                             oninput="this.setCustomValidity('')">
                     </div>
@@ -164,7 +178,7 @@
                     <div class="mb-3 col-md-6">
                         <label for="price_range_max" class="form-label small">Kisaran Harga Jual (Hingga Rp)</label>
                         <input type="number" class="form-control form-control-sm" id="price_range_max"
-                            name="price_range_max" min="0" step="1" required placeholder="3000"
+                            name="price_range_max" min="0" step="500" required placeholder="3000"
                             oninvalid="this.setCustomValidity('Harap isi harga jual maksimum.')"
                             oninput="this.setCustomValidity('')">
                     </div>

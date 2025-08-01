@@ -216,7 +216,19 @@
                         </div>
                         <div class="form-group">
                             <label>Masa Produksi Puncak</label>
-                            <input type="text" class="form-control" name="peak_production_period" value="{{ old('peak_production_period') }}">
+                            <select class="form-control" name="peak_production_period" required
+                                oninvalid="this.setCustomValidity('Harap pilih masa produksi puncak.')"
+                                oninput="this.setCustomValidity('')">
+                                <option value="">-- Pilih Bulan --</option>
+                                @php
+                                    $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                                            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                    $selectedBulan = old('peak_production_period');
+                                @endphp
+                                @foreach ($bulan as $b)
+                                    <option value="{{ $b }}" {{ $selectedBulan == $b ? 'selected' : '' }}>{{ $b }}</option>
+                                @endforeach
+                            </select>
                             @error('peak_production_period')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -226,18 +238,22 @@
                     <div class="row-layout">
                         <div class="form-group">
                             <label for="price_range_min">Kisaran Harga Jual (Dari Rp)</label>
-                            <input type="number" class="form-control" id="price_range_min" name="price_range_min" min="0" step="1" required placeholder="1000" value="{{ old('price_range_min', ) }}" required
-                                   oninvalid="this.setCustomValidity('Harap isi harga minimum.')"
-                                   oninput="this.setCustomValidity('')">
+                            <input type="number" class="form-control" id="price_range_min" name="price_range_min"
+                                min="0" step="500" required placeholder="1000"
+                                value="{{ old('price_range_min') }}"
+                                oninvalid="this.setCustomValidity('Harap isi harga minimum.')"
+                                oninput="this.setCustomValidity('')">
                             @error('price_range_min')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label for="price_range_max">Kisaran Harga Jual (Hingga Rp)</label>
-                            <input type="number" class="form-control" id="price_range_max" name="price_range_max" min="0" step="1" required placeholder="3000" value="{{ old('price_range_max', ) }}" required
-                                   oninvalid="this.setCustomValidity('Harap isi harga maksimum.')"
-                                   oninput="this.setCustomValidity('')">
+                            <input type="number" class="form-control" id="price_range_max" name="price_range_max"
+                                min="0" step="500" required placeholder="3000"
+                                value="{{ old('price_range_max') }}"
+                                oninvalid="this.setCustomValidity('Harap isi harga maksimum.')"
+                                oninput="this.setCustomValidity('')">
                             @error('price_range_max')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

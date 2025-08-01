@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Usaha - SIBIKANDA')@section('header')
+@section('title', 'Detail Usaha - SIBIKANDA')
+@section('header')
 @include('partials.header')
 @endsection
 
@@ -120,7 +121,7 @@
                                     @endif
                             </div>
                             <div class="row row-cols-2 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-3">
-                                @foreach ($produk as $item)
+                                @foreach ($produk->sortByDesc('created_at') as $item)
                                     <div class="col">
                                         <div class="card position-relative">
                                             @if ($isOwner)
@@ -129,7 +130,6 @@
                                                     style="z-index: 2; transform: scale(1.3);">
                                             @endif
 
-                                            {{-- <img src="{{ Storage::url('images/' . $item->gambar_utama) }}" --}}
                                             <img src="{{ asset('storage/images/' . $item->gambar_utama) }}"
                                                 alt="image" class="card-img-top"
                                                 style="

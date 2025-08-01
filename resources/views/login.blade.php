@@ -177,8 +177,9 @@
                                 {{-- Tombol Masuk dengan Google --}}
                                 <a href="{{ route('login.google.with.tipe', ['tipe' => 'investor']) }}"
                                     class="btn d-inline-flex align-items-center justify-content-center shadow-sm"
-                                    style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px;">
-                                    <i class="fab fa-google me-2" style="color: rgba(0,0,0,0.54); font-size: 14px;"></i>
+                                    style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px; padding: 6px 12px;">
+                                    <img src="{{ asset('images/Google__G__logo.svg.webp') }}"
+                                        alt="Google Logo" style="width: 16px; height: 16px;" class="me-2">
                                     Masuk dengan Google
                                 </a>
                             </div>
@@ -314,8 +315,9 @@
                             {{-- Tombol Masuk dengan Google --}}
                             <a href="{{ route('login.google.with.tipe', ['tipe' => 'usaha']) }}"
                                 class="btn d-inline-flex align-items-center justify-content-center shadow-sm"
-                                style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px;">
-                                <i class="fab fa-google me-2" style="color: rgba(0,0,0,0.54); font-size: 14px;"></i>
+                                style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px; padding: 6px 12px;">
+                                <img src="{{ asset('images/Google__G__logo.svg.webp') }}"
+                                    alt="Google Logo" style="width: 16px; height: 16px;" class="me-2">
                                 DAFTAR dengan Google
                             </a>
                         </div>

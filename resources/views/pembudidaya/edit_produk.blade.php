@@ -146,24 +146,36 @@
                             value="{{ old('production_capacity', $produk->kapasitas_produksi) }}">
                     </div>
 
-                    <div class="mb-3 col-md-6">
-                        <label class="form-label small">Masa Produksi Puncak</label>
-                        <input type="text" class="form-control form-control-sm" name="peak_production_period"
-                            value="{{ old('peak_production_period', $produk->masa_produksi_puncak) }}">
-                    </div>
+                <div class="mb-3 col-md-6">
+                    <label class="form-label small">Masa Produksi Puncak</label>
+                    <select class="form-control form-control-sm" name="peak_production_period" required
+                        oninvalid="this.setCustomValidity('Harap pilih masa produksi puncak Komoditas.')"
+                        oninput="this.setCustomValidity('')">
+                        <option value="">-- Pilih Bulan --</option>
+                        @php
+                            $bulan = [
+                                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                            ];
+                            $selectedBulan = old('peak_production_period', $produk->masa_produksi_puncak);
+                        @endphp
+                        @foreach ($bulan as $b)
+                            <option value="{{ $b }}" {{ $selectedBulan == $b ? 'selected' : '' }}>{{ $b }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="row g-3">
                     <div class="mb-3 col-md-6">
                         <label class="form-label small">Kisaran Harga Minimum</label>
                         <input type="number" class="form-control form-control-sm" name="price_range_min"
-                            value="{{ old('price_range_min', $produk->kisaran_harga_min) }}" required>
+                            value="{{ old('price_range_min', $produk->kisaran_harga_min) }}" required step="500" min="0">
                     </div>
 
                     <div class="mb-3 col-md-6">
                         <label class="form-label small">Kisaran Harga Maksimum</label>
                         <input type="number" class="form-control form-control-sm" name="price_range_max"
-                            value="{{ old('price_range_max', $produk->kisaran_harga_max) }}" required>
+                            value="{{ old('price_range_max', $produk->kisaran_harga_max) }}" required step="500" min="0">
                     </div>
                 </div>
 

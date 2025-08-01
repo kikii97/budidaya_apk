@@ -77,6 +77,13 @@
 .notification-item:hover {
     background-color: #f0f0f0;
 }
+
+    .required {
+        color: #dc3545;
+        font-weight: bold;
+        margin-left: 0.2rem;
+        font-size: 1.2rem;
+    }
 </style>
 
 <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80" tabindex="0">
@@ -397,7 +404,7 @@
 
                                     <div class="row mb-2">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Jenis Komoditas</label>
+                                            <label class="form-label mb-1">Jenis Komoditas <span class="required">*</span></label>
                                             <select class="form-select form-select-sm rounded-2"
                                                 name="jenis_komoditas">
                                                 <option value="">-- Pilih Komoditas --</option>
@@ -412,20 +419,20 @@
                                     </div>
 
                                     <div class="row mb-2">
-                                        <label class="form-label mb-1">Harga (Rp)</label>
+                                        <label class="form-label mb-1">Harga (Rp) <span class="required">*</span></label>
                                         <div class="col-6 mb-1">
                                             <input type="number" class="form-control form-control-sm rounded-2"
-                                                name="harga_min" placeholder="Min">
+                                                name="harga_min" placeholder="min" step="500" min="500">
                                         </div>
                                         <div class="col-6 mb-1">
                                             <input type="number" class="form-control form-control-sm rounded-2"
-                                                name="harga_max" placeholder="Max">
+                                                name="harga_max" placeholder="max" step="500" min="500">
                                         </div>
                                     </div>
 
                                     <div class="row mb-2">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Kapasitas Produksi (kg/bulan)</label>
+                                            <label class="form-label mb-1">Kapasitas Produksi (kg/bulan) <span class="required">*</span></label>
                                             <input type="number" class="form-control form-control-sm rounded-2"
                                                 name="kapasitas" placeholder="Cth: 1000">
                                         </div>
@@ -433,7 +440,7 @@
 
                                     <div class="row mb-2">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Kecamatan</label>
+                                            <label class="form-label mb-1">Kecamatan <span class="required">*</span></label>
                                             <select class="form-select form-select-sm rounded-2" name="kecamatan">
                                                 <option value="">-- Pilih Kecamatan --</option>
                                                 <option>Anjatan</option>
@@ -473,7 +480,7 @@
 
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Prediksi Panen</label>
+                                            <label class="form-label mb-1">Prediksi Panen <span class="required">*</span></label>
                                             <input type="date" class="form-control form-control-sm rounded-2"
                                                 name="prediksi_panen">
                                         </div>
@@ -783,6 +790,23 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[name="harga_min"], input[name="harga_max"]');
+            inputs.forEach(input => {
+            input.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+                if (value < 500) {
+                    this.value = 500; // Set minimum to 500
+                    }    else {
+                    // Round to nearest multiple of 500
+                    this.value = Math.round(value / 500) * 500;
+                    }
+                });
+            });
+        });
+    </script>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const notificationItems = document.querySelectorAll('.notification-item');
@@ -851,26 +875,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 @if ($pembudidaya)
                     if (data.order_id && data.judul && data.judul.toLowerCase().includes('pesanan baru')) {
                         html += `
-                            <div class="mt-3 text-end">
+                            <div class="mt-4 d-flex justify-content-end gap-2 flex-wrap">
                                 <form action="/order/konfirmasi/${data.order_id}" method="POST" class="d-inline">
                                     <input type="hidden" name="_token" value="${csrfToken}">
-                                    <button type="submit" class="btn btn-sm btn-success me-2">✅ Konfirmasi Pesanan</button>
+                                    <button type="submit" class="btn btn-sm btn-success d-flex align-items-center gap-1">
+                                        ✅ <span>Konfirmasi Pesanan</span>
+                                    </button>
                                 </form>
-                                ${data.export_url ? `<a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary">⬇️ Download PDF</a>` : ''}
+                                ${data.export_url ? `
+                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                    ⬇️ <span>Download PDF</span>
+                                </a>` : ''}
                             </div>
                         `;
                     } else if (data.export_url) {
                         html += `
-                            <div class="mt-3 text-end">
-                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary">⬇️ Download PDF</a>
+                            <div class="mt-4 d-flex justify-content-end">
+                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                    ⬇️ <span>Download PDF</span>
+                                </a>
                             </div>
                         `;
                     }
                 @else
                     if (data.export_url) {
                         html += `
-                            <div class="mt-3 text-end">
-                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary">⬇️ Download PDF</a>
+                            <div class="mt-4 d-flex justify-content-end">
+                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                    ⬇️ <span>Download PDF</span>
+                                </a>
                             </div>
                         `;
                     }

@@ -244,26 +244,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 @if ($pembudidaya)
                     if (data.order_id && data.judul && data.judul.toLowerCase().includes('pesanan baru')) {
                         html += `
-                            <div class="mt-3 text-end">
+                            <div class="mt-4 d-flex justify-content-end gap-2">
                                 <form action="/order/konfirmasi/${data.order_id}" method="POST" class="d-inline">
                                     <input type="hidden" name="_token" value="${csrfToken}">
-                                    <button type="submit" class="btn btn-sm btn-success me-2">✅ Konfirmasi Pesanan</button>
+                                    <button type="submit" class="btn btn-sm btn-success d-flex align-items-center gap-1">
+                                        <i class="bi bi-check-circle-fill"></i> Konfirmasi Pesanan
+                                    </button>
                                 </form>
-                                ${data.export_url ? `<a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary">⬇️ Download PDF</a>` : ''}
+                                ${data.export_url ? `
+                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                    <i class="bi bi-file-earmark-arrow-down"></i> Download PDF
+                                </a>` : ''}
                             </div>
                         `;
                     } else if (data.export_url) {
                         html += `
-                            <div class="mt-3 text-end">
-                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary">⬇️ Download PDF</a>
+                            <div class="mt-4 text-end">
+                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                    <i class="bi bi-file-earmark-arrow-down"></i> Download PDF
+                                </a>
                             </div>
                         `;
                     }
                 @else
                     if (data.export_url) {
                         html += `
-                            <div class="mt-3 text-end">
-                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary">⬇️ Download PDF</a>
+                            <div class="mt-4 text-end">
+                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                    <i class="bi bi-file-earmark-arrow-down"></i> Download PDF
+                                </a>
                             </div>
                         `;
                     }

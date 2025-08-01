@@ -51,12 +51,12 @@
                                 <div class="col-md-6">
                                     <label for="price_min" class="form-label">Min:</label>
                                     <input type="number" id="price_min" name="price_min" class="form-control"
-                                        min="0" value="{{ $priceMin }}">
+                                        min="500" step="500" value="{{ $priceMin }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="price_max" class="form-label">Max:</label>
                                     <input type="number" id="price_max" name="price_max" class="form-control"
-                                        min="0" value="{{ $priceMax }}">
+                                        min="500" step="500" value="{{ $priceMax }}">
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                     'Tukdana',
                                     'Widasari',
                                 ];
-                                $visibleCount = 6; // menampilkan 6 item awal (2 kolom × 3 baris)
+                                $visibleCount = 6;
                             @endphp
 
                             <div class="row">
@@ -190,12 +190,12 @@
                             <div class="col-md-6">
                                 <label for="price_min" class="form-label">Min:</label>
                                 <input type="number" id="price_min" name="price_min" class="form-control"
-                                    min="0" value="{{ $priceMin }}">
+                                    min="500" step="500" value="{{ $priceMin }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="price_max" class="form-label">Max:</label>
                                 <input type="number" id="price_max" name="price_max" class="form-control"
-                                    min="0" value="{{ $priceMax }}">
+                                    min="500" step="500" value="{{ $priceMax }}">
                             </div>
                         </div>
                     </div>
@@ -238,7 +238,7 @@
                                 'Tukdana',
                                 'Widasari',
                             ];
-                            $visibleCount = 6; // menampilkan 6 item awal (2 kolom × 3 baris)
+                            $visibleCount = 6;
                         @endphp
 
                         <div class="row">
@@ -364,4 +364,21 @@
             });
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('input[name="price_min"], input[name="price_max"]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                let value = parseInt(this.value) || 500;
+                if (value < 500) {
+                    this.value = 500;
+                } else {
+                    this.value = Math.round(value / 500) * 500;
+                }
+            });
+        });
+    });
+</script>
+
 @endsection
