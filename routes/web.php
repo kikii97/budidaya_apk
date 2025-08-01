@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\LokasiController;
-use App\Http\Controllers\LocationController;
 use App\Http\Controllers\KomoditasController;
 use App\Http\Controllers\BudidayaController;
 use App\Http\Controllers\LoginRegisterController;
@@ -12,6 +10,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminPenggunaController;
 use App\Http\Controllers\AdminPembudidayaController;
+use App\Http\Controllers\AdminStatistikController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DetailUsahaController;
 use App\Http\Controllers\GoogleController;
@@ -110,6 +109,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('pengguna', AdminPenggunaController::class);
         Route::resource('produk', AdminProdukController::class);
         Route::resource('pembudidaya', AdminPembudidayaController::class);
+        Route::resource('statistik', AdminStatistikController::class);
 
         Route::post('/produk/{id}/approve', [AdminProdukController::class, 'approve'])->name('produk.approve');
         Route::post('/produk/{id}/reject', [AdminProdukController::class, 'reject'])->name('produk.reject');

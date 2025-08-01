@@ -1008,8 +1008,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </script>
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
-<<<<<<< Updated upstream
-=======
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             @if (!empty($filters))
@@ -1021,8 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     </script>
 
->>>>>>> Stashed changes
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
