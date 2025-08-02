@@ -119,8 +119,8 @@
                 <div class="mb-3">
                     <label for="registrasiTipe" class="form-label text">Pilih Tipe</label>
                     <select id="registrasiTipe" class="form-select" onchange="tampilkanForm()">
-                        <option value="investor">Daftar Investor</option>
-                        <option value="usaha">Daftar Usaha</option>
+                        <option value="investor">Daftar Pengepul</option>
+                        <option value="usaha">Daftar Pembudidaya</option>
                     </select>
                 </div>
             </div>
@@ -133,7 +133,7 @@
             <div class="card card-custom pb-4">
                 <div class="card-body mt-0 mx-5">
                     <div class="text-center mb-3 pb-2 mt-3">
-                        <h4 style="color: #495057;">Daftar</h4>
+                        <h4 style="color: #495057;">Registrasi</h4>
                     </div>
 
                     <form id="formRegistrasi" class="mb-0">
@@ -226,7 +226,7 @@
                         <div class="float-end">
                             <!-- Submit button -->
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-rounded" style="background-color: #0062CC;">Daftar</button>
+                                class="btn btn-primary btn-rounded" style="background-color: #0062CC;">Registrasi</button>
                         </div>
                     </form>
                 </div>

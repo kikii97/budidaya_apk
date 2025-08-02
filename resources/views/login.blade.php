@@ -113,13 +113,13 @@
                             style="padding-right: 0.8rem; background-color: #0062CC"
                             class="btn btn-outline-primary btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Daftar
+                            Registrasi
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ url()->current() }}?form=register&tipe=investor"
                                 onclick="showForm('register'); showRegisterForm('investor');">Pengepul</a>
                             <a class="dropdown-item" href="{{ url()->current() }}?form=register&tipe=usaha"
-                                onclick="showForm('register'); showRegisterForm('usaha');">Usaha</a>
+                                onclick="showForm('register'); showRegisterForm('usaha');">Pembudidaya</a>
                         </div>
                     </div>
                 </div>
@@ -166,21 +166,21 @@
                                 {{-- Tombol Masuk --}}
                                 <button type="submit" data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-primary btn-rounded px-4 py-2 mb-2" style="width: 220px;">
-                                    MASUK
+                                    Login
                                 </button>
                                 {{-- Garis Pembatas --}}
-                                <div class="d-flex align-items-center justify-content-center mb-2" style="gap: 8px;">
+                                {{-- <div class="d-flex align-items-center justify-content-center mb-2" style="gap: 8px;">
                                     <hr class="flex-grow-1" style="border-top: 1px solid #919191; margin: 0;">
                                     <span class="text-muted" style="font-size: 13px;">atau</span>
                                     <hr class="flex-grow-1" style="border-top: 1px solid #919191; margin: 0;">
-                                </div>
+                                </div> --}}
                                 {{-- Tombol Masuk dengan Google --}}
                                 <a href="{{ route('login.google.with.tipe', ['tipe' => 'investor']) }}"
-                                    class="btn d-inline-flex align-items-center justify-content-center shadow-sm"
-                                    style="background-color: #ffffff; color: rgba(0,0,0,0.54); border: 1px solid #ddd; border-radius: 50px; font-weight: 500; font-size: 12px; padding: 6px 12px;">
+                                    class="btn btn-primary btn-rounded px-4 py-2 mb-2"
+                                    style="background-color: #d0d0d0; color:#495057; width: 220px;">
                                     <img src="{{ asset('images/Google__G__logo.svg.webp') }}"
                                         alt="Google Logo" style="width: 16px; height: 16px;" class="me-2">
-                                    Masuk dengan Google
+                                    Login with Google
                                 </a>
                             </div>
                         </form>

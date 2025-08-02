@@ -67,16 +67,67 @@
         width: 90%;
         height: 100%;
     }
-    .notification-item {
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
 
-.notification-item:hover {
-    background-color: #f0f0f0;
-}
+    .mapboxgl-popup-content {
+        width: 345px;
+    }
+
+    @media (max-width: 600px) {
+        .mapboxgl-popup-content {
+            max-width: 55vw; /* 50% of viewport width */
+            width: 52vw; /* Ensure consistent width */
+            height: 27vw; /* 20% of viewport height */
+            margin: 0 auto; /* Center the popup */
+            font-size: 0.6rem; /* Smaller text for compactness */
+            padding: 5px; /* Smaller text for readability */
+        }
+
+        .mapboxgl-popup-content img {
+            width: 80px !important; /* Smaller image */
+            height: auto !important;
+            margin: auto;
+        }
+
+        .mapboxgl-popup-content .popup-text {
+            padding: 6px; /* Reduced padding */
+            font-size: 0.65rem; /* Even smaller text */
+        }
+
+        .mapboxgl-popup-content .popup-text h5 {
+            font-size: 0.8rem; /* Smaller heading */
+        }
+
+        #filter-komoditas {
+            font-size: 9px; /* Even smaller font size */
+            padding: 6px; /* Further reduced padding */
+            max-width: 150px; /* Smaller width */
+            top: 15px; /* Adjusted position */
+            right: 5px; /* Adjusted position */
+        }
+
+        #filter-komoditas strong {
+            font-size: 11px; /* Smaller header text */
+        }
+
+        #filter-komoditas .row {
+            margin-top: 3px; /* Reduced margin */
+        }
+
+        #filter-komoditas label {
+            margin-bottom: 2px; /* Reduced margin between labels */
+        }
+    }
+
+    .notification-item {
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .notification-item:hover {
+        background-color: #f0f0f0;
+    }
 
     .required {
         color: #dc3545;
@@ -150,176 +201,204 @@
         $user = Auth::user() ?? Auth::guard('pembudidaya')->user();
     @endphp
 
-<header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
-        <a class="logo d-flex align-items-center me-auto me-xl-0" href="{{ url('/') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo">
-        </a>
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+            <a class="logo d-flex align-items-center me-auto me-xl-0" href="{{ url('/') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            </a>
 
-        <nav id="navmenu" class="navmenu d-flex align-items-center gap-2">
-            <ul class="d-none d-xl-flex">
-                <li><a href="{{ url('/') }}">Beranda</a></li>
-                <li><a href="{{ url('/#komoditas') }}">Komoditas</a></li>
-                <li><a href="{{ url('/#budidaya') }}">Budidaya</a></li>
-                <li><a href="{{ url('/#peta') }}">Peta Budidaya</a></li>
-                <li><a href="#kami">Tentang Kami</a></li>
-            </ul>
+            <nav id="navmenu" class="navmenu d-flex align-items-center gap-2">
+                <ul class="d-none d-xl-flex">
+                    <li><a href="{{ url('/') }}">Beranda</a></li>
+                    <li><a href="{{ url('/#komoditas') }}">Komoditas</a></li>
+                    <li><a href="{{ url('/#budidaya') }}">Budidaya</a></li>
+                    <li><a href="{{ url('/#peta') }}">Peta Budidaya</a></li>
+                    <li><a href="#kami">Tentang Kami</a></li>
+                </ul>
 
-            @if ($authenticatedUser)
-                <!-- Tombol Notifikasi Mobile -->
-                <button id="btnNotifMobile" type="button" class="btn btn-outline-secondary position-relative d-xl-none" data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
-                    🔔
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ $authenticatedUser->unreadNotifications->count() ?? 0 }}
-                        <span class="visually-hidden">notifikasi baru</span>
-                    </span>
-                </button>
-            @endif
-
-            <!-- Tombol Hamburger Menu -->
-            <i id="btnHamburger" class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas" data-bs-target="#mobileNav"></i>
-        </nav>
-
-        <div class="d-none d-xl-flex align-items-center gap-2 ms-3">
-            @if ($authenticatedUser)
-                <!-- Tombol Notifikasi Desktop -->
-                <button type="button" class="btn btn-outline-secondary position-relative" data-bs-toggle="offcanvas" data-bs-target="#notificationModal" aria-controls="notificationModal">
-                    🔔
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ $authenticatedUser->unreadNotifications->count() ?? 0 }}
-                        <span class="visually-hidden">notifikasi baru</span>
-                    </span>
-                </button>
-            @endif
-
-            @if ($pembudidaya || $user)
-                <!-- Dropdown User -->
-                <div class="dropdown position-relative">
-                    <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ $pembudidaya?->name ?? $user?->name ?? 'User' }}
-                    </a>
-                    <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown" aria-labelledby="accountDropdown">
-                        @if($pembudidaya)
-                            <li>
-                                <a class="dropdown-item py-1 px-3 small" href="{{ route('pembudidaya.detail_usaha', ['id' => $pembudidaya->id ?? 0]) }}">
-                                    Detail Usaha
-                                </a>
-                            </li>
-                        @endif
-                        <li><hr class="dropdown-divider my-1"></li>
-                        <li>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button class="dropdown-item py-1 px-3 small" type="submit">🚪 Log Out</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            @else
-                <!-- Dropdown Login untuk Desktop -->
-                <div class="dropdown position-relative">
-                    <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Log In
-                    </a>
-                    <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown" aria-labelledby="loginDropdown">
-                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
-                        <li><hr class="dropdown-divider my-1"></li>
-                        <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
-                    </ul>
-                </div>
-            @endif
-        </div>
-    </div>
-</header>
-
-<!-- Offcanvas Notifikasi -->
-<div class="offcanvas offcanvas-end" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true" style="max-width: 90vw;">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="notificationModalLabel">Notifikasi</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-
-    <div class="offcanvas-body">
-        <!-- Tombol Aksi -->
-        <div class="mb-3 d-flex justify-content-between">
-            <form action="{{ route('notifications.markAllRead') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-secondary px-2 py-1" style="font-size: 0.8rem;">✓ Tandai Semua Dibaca</button>
-            </form>
-            <form action="{{ route('notifications.clearAll') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-danger px-2 py-1" style="font-size: 0.8rem;">🗑️ Hapus Semua</button>
-            </form>
-        </div>
-
-        @if ($authenticatedUser && $authenticatedUser->notifications->count())
-            <!-- Daftar Ringkas -->
-            <ul class="list-group mb-3" id="notificationList">
-                @foreach ($authenticatedUser->notifications as $notification)
-                    <li class="list-group-item notification-item {{ is_null($notification->read_at) ? 'fw-bold' : 'text-muted' }}" data-id="{{ $notification->id }}" style="cursor: pointer;">
-                        📩 {{ $notification->data['judul'] ?? 'Notifikasi' }}
-                        <br>
-                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p class="text-muted">Tidak ada notifikasi baru.</p>
-        @endif
-
-        <!-- Detail Notifikasi (selalu tampil di DOM) -->
-        <template id="notificationDetailTemplate">
-            <div class="card notification-detail">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h6 class="fw-bold detail-title">Detail Notifikasi</h6>
-                        <button type="button" class="btn-close btn-sm btn-close-detail" aria-label="Tutup"></button>
-                    </div>
-                    <div class="detail-content small text-muted"></div>
-                </div>
-            </div>
-        </template>
-    </div>
-</div>
-    <!-- Mobile Menu (Offcanvas) -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="mobileNavLabel">Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="navbar-nav">
-            <li><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
-            <li><a class="nav-link" href="{{ url('/#komoditas') }}">Komoditas</a></li>
-            <li><a class="nav-link" href="{{ url('/#budidaya') }}">Budidaya</a></li>
-            <li><a class="nav-link" href="{{ url('/#peta') }}">Peta Budidaya</a></li>
-            <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
-
-            @if ($user || $pembudidaya)
-                @if($pembudidaya)
-                    <li><a class="nav-link" href="{{ route('pembudidaya.detail_usaha', ['id' => $pembudidaya->id ?? 0]) }}">Detail Usaha</a></li>
+                @if ($authenticatedUser)
+                    <!-- Tombol Notifikasi Mobile -->
+                    <button id="btnNotifMobile" type="button"
+                        class="btn btn-outline-secondary position-relative d-xl-none" data-bs-toggle="offcanvas"
+                        data-bs-target="#notificationModal" aria-controls="notificationModal">
+                        🔔
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $authenticatedUser->unreadNotifications->count() ?? 0 }}
+                            <span class="visually-hidden">notifikasi baru</span>
+                        </span>
+                    </button>
                 @endif
-                <li>
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button class="dropdown-item py-2" type="submit">🚪 Log Out</button>
-                    </form>
-                </li>
+
+                <!-- Tombol Hamburger Menu -->
+                <i id="btnHamburger" class="mobile-nav-toggle d-xl-none bi bi-list" data-bs-toggle="offcanvas"
+                    data-bs-target="#mobileNav"></i>
+            </nav>
+
+            <div class="d-none d-xl-flex align-items-center gap-2 ms-3">
+                @if ($authenticatedUser)
+                    <!-- Tombol Notifikasi Desktop -->
+                    <button type="button" class="btn btn-outline-secondary position-relative"
+                        data-bs-toggle="offcanvas" data-bs-target="#notificationModal"
+                        aria-controls="notificationModal">
+                        🔔
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $authenticatedUser->unreadNotifications->count() ?? 0 }}
+                            <span class="visually-hidden">notifikasi baru</span>
+                        </span>
+                    </button>
+                @endif
+
+                @if ($pembudidaya || $user)
+                    <!-- Dropdown User -->
+                    <div class="dropdown position-relative">
+                        <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
+                            id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ $pembudidaya?->name ?? ($user?->name ?? 'User') }}
+                        </a>
+                        <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
+                            aria-labelledby="accountDropdown">
+                            @if ($pembudidaya)
+                                <li>
+                                    <a class="dropdown-item py-1 px-3 small"
+                                        href="{{ route('pembudidaya.detail_usaha', ['id' => $pembudidaya->id ?? 0]) }}">
+                                        Detail Usaha
+                                    </a>
+                                </li>
+                            @endif
+                            <li>
+                                <hr class="dropdown-divider my-1">
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item py-1 px-3 small" type="submit">🚪 Log Out</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <!-- Dropdown Login untuk Desktop -->
+                    <div class="dropdown position-relative">
+                        <a class="btn btn-primary rounded-pill px-4 py-2 dropdown-toggle" href="#"
+                            id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Log In
+                        </a>
+                        <ul class="dropdown-menu shadow-sm border-0 rounded-3 mt-2 small-dropdown"
+                            aria-labelledby="loginDropdown">
+                            <li><a class="dropdown-item py-1 px-3 small" href="{{ url('login') }}">Log In</a></li>
+                            <li>
+                                <hr class="dropdown-divider my-1">
+                            </li>
+                            <li><a class="dropdown-item py-1 px-3 small"
+                                    href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Pengepul</a></li>
+                        </ul>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </header>
+
+    <!-- Offcanvas Notifikasi -->
+    <div class="offcanvas offcanvas-end" id="notificationModal" tabindex="-1"
+        aria-labelledby="notificationModalLabel" aria-hidden="true" style="max-width: 90vw;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="notificationModalLabel">Notifikasi</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body">
+            <!-- Tombol Aksi -->
+            <div class="mb-3 d-flex justify-content-between">
+                <form action="{{ route('notifications.markAllRead') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-secondary px-2 py-1"
+                        style="font-size: 0.8rem;">✓ Tandai Semua Dibaca</button>
+                </form>
+                <form action="{{ route('notifications.clearAll') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-danger px-2 py-1"
+                        style="font-size: 0.8rem;">🗑️ Hapus Semua</button>
+                </form>
+            </div>
+
+            @if ($authenticatedUser && $authenticatedUser->notifications->count())
+                <!-- Daftar Ringkas -->
+                <ul class="list-group mb-3" id="notificationList">
+                    @foreach ($authenticatedUser->notifications as $notification)
+                        <li class="list-group-item notification-item {{ is_null($notification->read_at) ? 'fw-bold' : 'text-muted' }}"
+                            data-id="{{ $notification->id }}" style="cursor: pointer;">
+                            📩 {{ $notification->data['judul'] ?? 'Notifikasi' }}
+                            <br>
+                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                        </li>
+                    @endforeach
+                </ul>
             @else
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Log In
-                    </a>
-                    <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0" aria-labelledby="mobileLoginDropdown">
-                        <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2" href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
-                    </ul>
-                </li>
+                <p class="text-muted">Tidak ada notifikasi baru.</p>
             @endif
-        </ul>
+
+            <!-- Detail Notifikasi (selalu tampil di DOM) -->
+            <template id="notificationDetailTemplate">
+                <div class="card notification-detail">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="fw-bold detail-title">Detail Notifikasi</h6>
+                            <button type="button" class="btn-close btn-sm btn-close-detail"
+                                aria-label="Tutup"></button>
+                        </div>
+                        <div class="detail-content small text-muted"></div>
+                    </div>
+                </div>
+            </template>
+        </div>
     </div>
-</div>
+    <!-- Mobile Menu (Offcanvas) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="mobileNavLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
+                <li><a class="nav-link" href="{{ url('/#komoditas') }}">Komoditas</a></li>
+                <li><a class="nav-link" href="{{ url('/#budidaya') }}">Budidaya</a></li>
+                <li><a class="nav-link" href="{{ url('/#peta') }}">Peta Budidaya</a></li>
+                <li><a class="nav-link" href="#kami">Tentang Kami</a></li>
+
+                @if ($user || $pembudidaya)
+                    @if ($pembudidaya)
+                        <li><a class="nav-link"
+                                href="{{ route('pembudidaya.detail_usaha', ['id' => $pembudidaya->id ?? 0]) }}">Detail
+                                Usaha</a></li>
+                    @endif
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button class="dropdown-item py-2" type="submit">🚪 Log Out</button>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="mobileLoginDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Log In
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-sm w-100 mt-0 rounded-0"
+                            aria-labelledby="mobileLoginDropdown">
+                            <li><a class="dropdown-item py-2" href="{{ url('login') }}">Log In</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item py-2"
+                                    href="{{ url('login?form=register&tipe=investor') }}">📝 Gabung Investor</a></li>
+                        </ul>
+                    </li>
+                @endif
+            </ul>
+        </div>
+    </div>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="mobileNavLabel">Menu</h5>
@@ -404,7 +483,8 @@
 
                                     <div class="row mb-2">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Jenis Komoditas <span class="required">*</span></label>
+                                            <label class="form-label mb-1">Jenis Komoditas <span
+                                                    class="required">*</span></label>
                                             <select class="form-select form-select-sm rounded-2"
                                                 name="jenis_komoditas">
                                                 <option value="">-- Pilih Komoditas --</option>
@@ -419,7 +499,8 @@
                                     </div>
 
                                     <div class="row mb-2">
-                                        <label class="form-label mb-1">Harga (Rp) <span class="required">*</span></label>
+                                        <label class="form-label mb-1">Harga (Rp) <span
+                                                class="required">*</span></label>
                                         <div class="col-6 mb-1">
                                             <input type="number" class="form-control form-control-sm rounded-2"
                                                 name="harga_min" placeholder="min" step="500" min="500">
@@ -432,7 +513,8 @@
 
                                     <div class="row mb-2">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Kapasitas Produksi (kg/bulan) <span class="required">*</span></label>
+                                            <label class="form-label mb-1">Kapasitas Produksi (kg/bulan) <span
+                                                    class="required">*</span></label>
                                             <input type="number" class="form-control form-control-sm rounded-2"
                                                 name="kapasitas" placeholder="Cth: 1000">
                                         </div>
@@ -440,7 +522,8 @@
 
                                     <div class="row mb-2">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Kecamatan <span class="required">*</span></label>
+                                            <label class="form-label mb-1">Kecamatan <span
+                                                    class="required">*</span></label>
                                             <select class="form-select form-select-sm rounded-2" name="kecamatan">
                                                 <option value="">-- Pilih Kecamatan --</option>
                                                 <option>Anjatan</option>
@@ -480,7 +563,8 @@
 
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <label class="form-label mb-1">Prediksi Panen <span class="required">*</span></label>
+                                            <label class="form-label mb-1">Prediksi Panen <span
+                                                    class="required">*</span></label>
                                             <input type="date" class="form-control form-control-sm rounded-2"
                                                 name="prediksi_panen">
                                         </div>
@@ -585,86 +669,86 @@
         </div>
     </section>
 
-<section id="budidaya" style="padding-bottom: 3.5rem;">
-    <div class="container-lg">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-header d-flex justify-content-between align-items-center flex-wrap gap-2"
-                    style="row-gap: 0.5rem;">
-                    <h2 class="section-title m-0 fs-4">Etalase Produk Budidaya</h2>
-                    <div class="d-flex align-items-center">
-                        <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
+    <section id="budidaya" style="padding-bottom: 3.5rem;">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+                        style="row-gap: 0.5rem;">
+                        <h2 class="section-title m-0 fs-4">Etalase Produk Budidaya</h2>
+                        <div class="d-flex align-items-center">
+                            <a href="{{ url('katalog') }}" class="btn btn-primary rounded-1">View All</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" style="zoom: 90%">
-                <div
-                    class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-                    @foreach ($recommendedProducts as $index => $product)
-                        <div class="col-6 col-md-4">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ route('produk.detail', $product->id) }}"
-                                       title="{{ $product->nama }}">
-                                        @php
-                                            $gambarList = json_decode($product->gambar, true);
-                                            $thumbnail = $gambarList[0] ?? 'default.jpg';
-                                        @endphp
-                                        <img src="{{ asset('storage/images/' . $thumbnail) }}"
-                                             alt="Thumbnail {{ $product->nama }}" class="tab-image"
-                                             style="width: 100%; height: 180px; object-fit: contain; border-radius: 6px; background: #f0f0f0;">
-                                    </a>
-                                </figure>
+            <div class="row">
+                <div class="col-md-12" style="zoom: 90%">
+                    <div
+                        class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                        @foreach ($recommendedProducts as $index => $product)
+                            <div class="col-6 col-md-4">
+                                <div class="product-item">
+                                    <figure>
+                                        <a href="{{ route('produk.detail', $product->id) }}"
+                                            title="{{ $product->nama }}">
+                                            @php
+                                                $gambarList = json_decode($product->gambar, true);
+                                                $thumbnail = $gambarList[0] ?? 'default.jpg';
+                                            @endphp
+                                            <img src="{{ asset('storage/images/' . $thumbnail) }}"
+                                                alt="Thumbnail {{ $product->nama }}" class="tab-image"
+                                                style="width: 100%; height: 180px; object-fit: contain; border-radius: 6px; background: #f0f0f0;">
+                                        </a>
+                                    </figure>
 
-                                {{-- Menampilkan Nilai & Nomor Urut jika hasil dari form rekomendasi dan produk memiliki bobot --}}
-                                @if (!empty($filters) && isset($product->bobot))
-                                    <div class="d-flex justify-content-center mb-2">
-                                        <div class="px-3 py-1 border border-primary rounded-pill bg-light text-dark shadow-sm"
-                                             style="font-size: 0.75rem;">
-                                            <strong>Nilai:</strong> {{ number_format($product->bobot, 4) }}
-                                            <span class="mx-1">|</span>
-                                            <strong>No:</strong> {{ $index + 1 }}
+                                    {{-- Menampilkan Nilai & Nomor Urut jika hasil dari form rekomendasi dan produk memiliki bobot --}}
+                                    @if (!empty($filters) && isset($product->bobot))
+                                        <div class="d-flex justify-content-center mb-2">
+                                            <div class="px-3 py-1 border border-primary rounded-pill bg-light text-dark shadow-sm"
+                                                style="font-size: 0.75rem;">
+                                                <strong>Nilai:</strong> {{ number_format($product->bobot, 4) }}
+                                                <span class="mx-1">|</span>
+                                                <strong>No:</strong> {{ $index + 1 }}
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
+                                    @endif
 
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
-                                    <div class="mb-1">
-                                        <div class="fw-semibold fs-6">
-                                            {{ $product->jenis_komoditas ?? 'Tidak tersedia' }}
+                                    <div class="d-flex flex-column text-center">
+                                        <h3 class="fs-6 fw-normal">{{ $product->nama }}</h3>
+                                        <div class="mb-1">
+                                            <div class="fw-semibold fs-6">
+                                                {{ $product->jenis_komoditas ?? 'Tidak tersedia' }}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <span class="fw-semibold text-dark fs-6 m-0 p-0">
-                                            Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} –
-                                            Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
-                                        </span>
-                                        <span class="text-warning fw-semibold fs-6">/kg</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2 d-flex justify-content-center">
-                                            <div class="col-7">
-                                                <a href="{{ route('produk.detail', $product->id) }}"
-                                                   class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#detail"></use>
-                                                    </svg> Detail
-                                                </a>
+                                        <div class="text-center">
+                                            <span class="fw-semibold text-dark fs-6 m-0 p-0">
+                                                Rp{{ number_format($product->kisaran_harga_min, 0, ',', '.') }} –
+                                                Rp{{ number_format($product->kisaran_harga_max, 0, ',', '.') }}
+                                            </span>
+                                            <span class="text-primary fw-semibold fs-6">/kg</span>
+                                        </div>
+                                        <div class="button-area p-3 pt-0">
+                                            <div class="row g-1 mt-2 d-flex justify-content-center">
+                                                <div class="col-7">
+                                                    <a href="{{ route('produk.detail', $product->id) }}"
+                                                        class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#detail"></use>
+                                                        </svg> Detail
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <section id="peta" class="py-5"
         style="display: flex; justify-content: center; align-items: center; padding-top: 1rem !important;">
@@ -794,71 +878,71 @@
         document.addEventListener('DOMContentLoaded', function() {
             const inputs = document.querySelectorAll('input[name="harga_min"], input[name="harga_max"]');
             inputs.forEach(input => {
-            input.addEventListener('input', function() {
-            let value = parseInt(this.value) || 0;
-                if (value < 500) {
-                    this.value = 500; // Set minimum to 500
-                    }    else {
-                    // Round to nearest multiple of 500
-                    this.value = Math.round(value / 500) * 500;
+                input.addEventListener('input', function() {
+                    let value = parseInt(this.value) || 0;
+                    if (value < 500) {
+                        this.value = 500; // Set minimum to 500
+                    } else {
+                        // Round to nearest multiple of 500
+                        this.value = Math.round(value / 500) * 500;
                     }
                 });
             });
         });
     </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const notificationItems = document.querySelectorAll('.notification-item');
-    const detailTemplate = document.getElementById('notificationDetailTemplate');
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-    const markAllReadForm = document.querySelector('form[action$="mark-all-read"]');
-    const clearAllForm = document.querySelector('form[action$="clear"]');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const notificationItems = document.querySelectorAll('.notification-item');
+            const detailTemplate = document.getElementById('notificationDetailTemplate');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const markAllReadForm = document.querySelector('form[action$="mark-all-read"]');
+            const clearAllForm = document.querySelector('form[action$="clear"]');
 
-    let currentDetailElement = null;
+            let currentDetailElement = null;
 
-    // Handle klik notifikasi untuk menampilkan detail
-    notificationItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const notifId = item.getAttribute('data-id');
+            // Handle klik notifikasi untuk menampilkan detail
+            notificationItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const notifId = item.getAttribute('data-id');
 
-            if (!notifId) {
-                console.error('Notification ID is missing');
-                alert('ID notifikasi tidak ditemukan.');
-                return;
-            }
+                    if (!notifId) {
+                        console.error('Notification ID is missing');
+                        alert('ID notifikasi tidak ditemukan.');
+                        return;
+                    }
 
-            fetch(`/notifications/${notifId}`, {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken || '',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                console.log('Fetched notification data:', data);
+                    fetch(`/notifications/${notifId}`, {
+                            method: 'GET',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': csrfToken || '',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(res => {
+                            if (!res.ok) {
+                                throw new Error(`HTTP error! Status: ${res.status}`);
+                            }
+                            return res.json();
+                        })
+                        .then(data => {
+                            console.log('Fetched notification data:', data);
 
-                if (currentDetailElement) {
-                    currentDetailElement.remove();
-                    currentDetailElement = null;
-                }
+                            if (currentDetailElement) {
+                                currentDetailElement.remove();
+                                currentDetailElement = null;
+                            }
 
-                const clone = detailTemplate.content.cloneNode(true);
-                const detailCard = clone.querySelector('.notification-detail');
-                const detailTitle = clone.querySelector('.detail-title');
-                const detailContent = clone.querySelector('.detail-content');
-                const closeBtn = clone.querySelector('.btn-close-detail');
+                            const clone = detailTemplate.content.cloneNode(true);
+                            const detailCard = clone.querySelector('.notification-detail');
+                            const detailTitle = clone.querySelector('.detail-title');
+                            const detailContent = clone.querySelector('.detail-content');
+                            const closeBtn = clone.querySelector('.btn-close-detail');
 
-                detailTitle.textContent = data.judul || 'Detail Notifikasi';
+                            detailTitle.textContent = data.judul || 'Detail Notifikasi';
 
-                let html = `
+                            let html = `
                     ${data.message ? `<p>${data.message}</p>` : ''}
                     ${data.no_hp ? `<p><strong>No. HP:</strong> ${data.no_hp}</p>` : ''}
                     ${data.tanggal_order ? `<p><strong>Tanggal Order:</strong> ${data.tanggal_order}</p>` : ''}
@@ -871,10 +955,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${data.tanggal_disetujui ? `<p><strong>Tanggal Disetujui:</strong> ${data.tanggal_disetujui}</p>` : ''}
                 `;
 
-                // Tambahkan tombol aksi berdasarkan guard
-                @if ($pembudidaya)
-                    if (data.order_id && data.judul && data.judul.toLowerCase().includes('pesanan baru')) {
-                        html += `
+                            // Tambahkan tombol aksi berdasarkan guard
+                            @if ($pembudidaya)
+                                if (data.order_id && data.judul && data.judul.toLowerCase()
+                                    .includes('pesanan baru')) {
+                                    html += `
                             <div class="mt-4 d-flex justify-content-end gap-2 flex-wrap">
                                 <form action="/order/konfirmasi/${data.order_id}" method="POST" class="d-inline">
                                     <input type="hidden" name="_token" value="${csrfToken}">
@@ -883,155 +968,159 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </button>
                                 </form>
                                 ${data.export_url ? `
-                                <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
-                                    ⬇️ <span>Download PDF</span>
-                                </a>` : ''}
+                                        <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                            ⬇️ <span>Download PDF</span>
+                                        </a>` : ''}
                             </div>
                         `;
-                    } else if (data.export_url) {
-                        html += `
+                                } else if (data.export_url) {
+                                    html += `
                             <div class="mt-4 d-flex justify-content-end">
                                 <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
                                     ⬇️ <span>Download PDF</span>
                                 </a>
                             </div>
                         `;
-                    }
-                @else
-                    if (data.export_url) {
-                        html += `
+                                }
+                            @else
+                                if (data.export_url) {
+                                    html += `
                             <div class="mt-4 d-flex justify-content-end">
                                 <a href="${data.export_url}" target="_blank" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
                                     ⬇️ <span>Download PDF</span>
                                 </a>
                             </div>
                         `;
-                    }
-                @endif
+                                }
+                            @endif
 
-                detailContent.innerHTML = html;
+                            detailContent.innerHTML = html;
 
-                item.classList.remove('fw-bold');
-                item.classList.add('text-muted');
+                            item.classList.remove('fw-bold');
+                            item.classList.add('text-muted');
 
-                item.insertAdjacentElement('afterend', detailCard);
-                currentDetailElement = detailCard;
+                            item.insertAdjacentElement('afterend', detailCard);
+                            currentDetailElement = detailCard;
 
-                closeBtn.addEventListener('click', () => {
-                    detailCard.remove();
-                    currentDetailElement = null;
+                            closeBtn.addEventListener('click', () => {
+                                detailCard.remove();
+                                currentDetailElement = null;
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching notification:', error);
+                            if (currentDetailElement) {
+                                currentDetailElement.querySelector('.detail-content')
+                                    .innerHTML =
+                                    '<p class="text-danger">Gagal memuat detail notifikasi. Silakan coba lagi.</p>';
+                            } else {
+                                const clone = detailTemplate.content.cloneNode(true);
+                                const detailCard = clone.querySelector('.notification-detail');
+                                const detailContent = clone.querySelector('.detail-content');
+                                detailContent.innerHTML =
+                                    '<p class="text-danger">Gagal memuat detail notifikasi. Silakan coba lagi.</p>';
+                                item.insertAdjacentElement('afterend', detailCard);
+                                currentDetailElement = detailCard;
+
+                                const closeBtn = clone.querySelector('.btn-close-detail');
+                                closeBtn.addEventListener('click', () => {
+                                    detailCard.remove();
+                                    currentDetailElement = null;
+                                });
+                            }
+                        });
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching notification:', error);
-                if (currentDetailElement) {
-                    currentDetailElement.querySelector('.detail-content').innerHTML = '<p class="text-danger">Gagal memuat detail notifikasi. Silakan coba lagi.</p>';
-                } else {
-                    const clone = detailTemplate.content.cloneNode(true);
-                    const detailCard = clone.querySelector('.notification-detail');
-                    const detailContent = clone.querySelector('.detail-content');
-                    detailContent.innerHTML = '<p class="text-danger">Gagal memuat detail notifikasi. Silakan coba lagi.</p>';
-                    item.insertAdjacentElement('afterend', detailCard);
-                    currentDetailElement = detailCard;
-
-                    const closeBtn = clone.querySelector('.btn-close-detail');
-                    closeBtn.addEventListener('click', () => {
-                        detailCard.remove();
-                        currentDetailElement = null;
-                    });
-                }
             });
-        });
-    });
 
-    // Handle "Tandai Semua Dibaca" dengan AJAX
-    if (markAllReadForm) {
-        markAllReadForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            fetch('/notifications/mark-all-read', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                console.log('Mark all read response:', data);
-                document.querySelectorAll('.notification-item').forEach(item => {
-                    item.classList.remove('fw-bold');
-                    item.classList.add('text-muted');
+            // Handle "Tandai Semua Dibaca" dengan AJAX
+            if (markAllReadForm) {
+                markAllReadForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    fetch('/notifications/mark-all-read', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(res => {
+                            if (!res.ok) {
+                                throw new Error(`HTTP error! Status: ${res.status}`);
+                            }
+                            return res.json();
+                        })
+                        .then(data => {
+                            console.log('Mark all read response:', data);
+                            document.querySelectorAll('.notification-item').forEach(item => {
+                                item.classList.remove('fw-bold');
+                                item.classList.add('text-muted');
+                            });
+                            document.querySelectorAll('.badge.bg-danger').forEach(badge => {
+                                badge.textContent = '0';
+                            });
+                            alert(data.message || 'Semua notifikasi telah ditandai sebagai dibaca.');
+                        })
+                        .catch(error => {
+                            console.error('Error marking all notifications as read:', error);
+                            alert('Gagal menandai semua notifikasi. Silakan coba lagi.');
+                        });
                 });
-                document.querySelectorAll('.badge.bg-danger').forEach(badge => {
-                    badge.textContent = '0';
+            }
+
+            // Handle "Hapus Semua" dengan AJAX
+            if (clearAllForm) {
+                clearAllForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    fetch('/notifications/clear', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(res => {
+                            if (!res.ok) {
+                                throw new Error(`HTTP error! Status: ${res.status}`);
+                            }
+                            return res.json();
+                        })
+                        .then(data => {
+                            console.log('Clear all response:', data);
+                            document.querySelector('#notificationList').innerHTML =
+                                '<p class="text-muted">Tidak ada notifikasi baru.</p>';
+                            document.querySelectorAll('.badge.bg-danger').forEach(badge => {
+                                badge.textContent = '0';
+                            });
+                            alert(data.message || 'Semua notifikasi telah dihapus.');
+                        })
+                        .catch(error => {
+                            console.error('Error clearing all notifications:', error);
+                            alert('Gagal menghapus semua notifikasi. Silakan coba lagi.');
+                        });
                 });
-                alert(data.message || 'Semua notifikasi telah ditandai sebagai dibaca.');
-            })
-            .catch(error => {
-                console.error('Error marking all notifications as read:', error);
-                alert('Gagal menandai semua notifikasi. Silakan coba lagi.');
-            });
+            }
         });
-    }
+    </script>
 
-    // Handle "Hapus Semua" dengan AJAX
-    if (clearAllForm) {
-        clearAllForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            fetch('/notifications/clear', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                console.log('Clear all response:', data);
-                document.querySelector('#notificationList').innerHTML = '<p class="text-muted">Tidak ada notifikasi baru.</p>';
-                document.querySelectorAll('.badge.bg-danger').forEach(badge => {
-                    badge.textContent = '0';
-                });
-                alert(data.message || 'Semua notifikasi telah dihapus.');
-            })
-            .catch(error => {
-                console.error('Error clearing all notifications:', error);
-                alert('Gagal menghapus semua notifikasi. Silakan coba lagi.');
-            });
+    <script>
+        const notifModal = document.getElementById('notificationModal');
+        const notifBtn = document.getElementById('btnNotifMobile');
+        const hamburgerBtn = document.getElementById('btnHamburger');
+
+        notifModal.addEventListener('show.bs.offcanvas', function() {
+            notifBtn?.classList.add('d-none');
+            hamburgerBtn?.classList.add('d-none');
         });
-    }
-});
-</script>
 
-<script>
-    const notifModal = document.getElementById('notificationModal');
-    const notifBtn = document.getElementById('btnNotifMobile');
-    const hamburgerBtn = document.getElementById('btnHamburger');
+        notifModal.addEventListener('hidden.bs.offcanvas', function() {
+            notifBtn?.classList.remove('d-none');
+            hamburgerBtn?.classList.remove('d-none');
+        });
+    </script>
 
-    notifModal.addEventListener('show.bs.offcanvas', function () {
-        notifBtn?.classList.add('d-none');
-        hamburgerBtn?.classList.add('d-none');
-    });
-
-    notifModal.addEventListener('hidden.bs.offcanvas', function () {
-        notifBtn?.classList.remove('d-none');
-        hamburgerBtn?.classList.remove('d-none');
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         const lokasi = @json($lokasi);
@@ -1042,11 +1131,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             @if (!empty($filters))
                 const budidayaSection = document.getElementById('budidaya');
                 if (budidayaSection) {
-                    budidayaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    budidayaSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             @endif
         });

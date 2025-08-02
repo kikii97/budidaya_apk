@@ -11,11 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
     mapboxgl.accessToken =
         "pk.eyJ1Ijoia2lraWtzMjMiLCJhIjoiY205dDZiZDgyMDgzdzJtcTk1bW81ZG4wOCJ9.2KzfsbK1tXHs7vuAkwMsKQ";
 
+    const isMobile = window.innerWidth <= 768; // Threshold untuk mobile
+    const initialZoom = isMobile ? 8.5 : 9.5; // Zoom lebih kecil untuk mobile
     const map = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/mapbox/light-v11",
         center: [108.1806802, -6.4399159],
-        zoom: 9.5,
+        zoom: initialZoom,
     });
 
     map.on("load", () => {
@@ -188,8 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
             filter: ["==", "sub_district", ""],
         });
 
-        
-
         let lastFlyToTime = 0;
 
         map.on("click", "fill-kec-layer", (e) => {
@@ -203,14 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Ambil langsung feature geometry
                     const bbox = turf.bbox(feature);
 
-                    const camera = map.cameraForBounds(bbox, {
-                        padding: {
-                            top: 80,
-                            bottom: 80,
-                            left: 100,
-                            right: 100,
-                        },
-                    });
+                    const padding = isMobile
+                        ? { top: 150, bottom: 150, left: 50, right: 50 }
+                        : { top: 80, bottom: 80, left: 100, right: 100 };
+                    const camera = map.cameraForBounds(bbox, { padding });
                     if (camera) {
                         map.easeTo({
                             ...camera,
@@ -486,10 +482,47 @@ document.addEventListener("DOMContentLoaded", () => {
         return result;
     }
 
+    function getPopupContent(item, isMobile) {
+        const gambar = Array.isArray(JSON.parse(item.gambar || "[]"))
+            ? JSON.parse(item.gambar)[0]
+            : item.gambar;
+        const gambarUrl = gambar
+            ? `apk_gis/public/storage/images/${gambar}`
+            : "/storage/images/default.png";
+        return isMobile
+            ? `
+            <div style="display: flex; align-items: center; width: 100%; max-width: 200px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; background: #fff; padding: 8px;">
+                <img src="${gambarUrl}" alt="${item.jenis_komoditas}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; margin-right: 10px;">
+                <div style="flex: 1;">
+                    <h5 style="margin: 0 0 6px; font-size: 0.85rem; color: #007bff;">${item.jenis_komoditas}</h5>
+                    <a href="/produk/${item.id}/detail" style="display: inline-block; padding: 4px 6px; font-size: 0.7rem; background-color: #007bff; color: white; border-radius: 4px; text-decoration: none; font-weight: 500;">
+                        Lihat Detail
+                    </a>
+                </div>
+            </div>
+        `
+            : `
+            <div style="display: flex; flex-wrap: wrap; width: 100%; max-width: 320px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; background: #fff;">
+                <div style="flex: 0 0 80px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; padding: 8px;">
+                    <img src="${gambarUrl}" alt="${item.jenis_komoditas}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;">
+                </div>
+                <div style="flex: 1; padding: 8px; font-size: 0.8rem; color: #333; overflow: hidden; line-height: 1.2;">
+                    <h5 style="margin: 0 0 3px; font-size: 0.9rem; color: #007bff;">${item.jenis_komoditas}</h5>
+                    <p style="margin: 0 0 3px;"><strong>Kecamatan:</strong> ${item.kecamatan}</p>
+                    <p style="margin: 0 0 3px;"><strong>Desa:</strong> ${item.desa}</p>
+                    <p style="margin: 0 0 3px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"><strong>Alamat:</strong> ${item.alamat}</p>
+                    <p style="margin: 0 0 6px;"><strong>Telepon:</strong> ${item.telepon}</p>
+                    <a href="/produk/${item.id}/detail" style="display: inline-block; padding: 4px 6px; font-size: 0.7rem; background-color: #007bff; color: white; border-radius: 4px; text-decoration: none; font-weight: 500;">
+                        Lihat Detail
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
     function renderMarkers() {
         clearTimeout(renderTimeout);
         renderTimeout = setTimeout(() => {
-            // Hapus semua marker
             markers.forEach((marker) => marker.remove());
             markers = [];
 
@@ -512,8 +545,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     el.style.borderRadius = "50%";
                     el.style.border = "2px solid #ffffff";
                     el.style.cursor = "pointer";
-
-                    // Gunakan background image langsung
                     el.style.backgroundImage = `url(${getIconByKomoditas(
                         item.jenis_komoditas
                     )})`;
@@ -521,45 +552,57 @@ document.addEventListener("DOMContentLoaded", () => {
                     el.style.backgroundPosition = "center";
                     el.style.backgroundRepeat = "no-repeat";
 
-                    // Ambil gambar pertama jika ada beberapa gambar
-                    const gambar = Array.isArray(
-                        JSON.parse(item.gambar || "[]")
-                    )
-                        ? JSON.parse(item.gambar)[0]
-                        : item.gambar;
-                    const gambarUrl = gambar
-                        ? `apk_gis/public/storage/images/${gambar}`
-                        : "/storage/images/default.png";
-
                     const marker = new mapboxgl.Marker({
                         element: el,
                         anchor: "center",
                     })
                         .setLngLat([item.longitude, item.latitude])
                         .setPopup(
-                            new mapboxgl.Popup().setHTML(`
-                                    <div style="max-width: 300px;">
-                                        <img src="${gambarUrl}" alt="${item.jenis_komoditas}" style="max-width: 20%; height: auto; border-radius: 5px; margin-bottom: 10px;">
-
-                                        <!-- Informasi -->
-                                        <strong>Jenis Komoditas: ${item.jenis_komoditas}</strong><br>
-                                        Kecamatan: ${item.kecamatan}<br>
-                                        Desa: ${item.desa}<br>
-                                        Alamat: ${item.alamat}<br>
-                                        Telepon: ${item.telepon}<br>
-                                        
-                                        <!-- Tombol Detail -->
-                                        <a href="/produk/${item.id}/detail" class="btn-detail" style="display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Lihat Detail</a>
-                                    </div>
-                                `)
+                            new mapboxgl.Popup({
+                                offset: 25,
+                                anchor: "right",
+                                maxWidth: "none",
+                            }).setHTML(
+                                getPopupContent(item, window.innerWidth <= 600)
+                            )
                         )
                         .addTo(map);
 
+                    marker.itemData = item;
                     markers.push(marker);
                 }
             });
         }, 100);
     }
+
+    function updatePopupsOnResize() {
+        markers.forEach((marker) => {
+            const item = marker.itemData;
+            marker
+                .getPopup()
+                .setHTML(getPopupContent(item, window.innerWidth <= 600));
+        });
+    }
+
+    window.addEventListener("resize", () => {
+        updatePopupsOnResize();
+    });
+
+    map.on("popupopen", (e) => {
+        const popupEl = document.getElementById("custom-popup");
+        if (!popupEl) return;
+
+        // Get popup bounding box
+        const popupBox = e.popup._container.getBoundingClientRect();
+        const mapBox = map.getContainer().getBoundingClientRect();
+
+        // Cek apakah popup keluar viewport kanan/kiri
+        if (popupBox.right > mapBox.right) {
+            popupEl.style.maxWidth = mapBox.right - popupBox.left - 20 + "px";
+        } else if (popupBox.left < mapBox.left) {
+            popupEl.style.maxWidth = popupBox.right - mapBox.left - 20 + "px";
+        }
+    });
 
     // Fungsi untuk mendapatkan warna fill berdasarkan komoditas
     function getColorByKomoditas(komoditas) {
